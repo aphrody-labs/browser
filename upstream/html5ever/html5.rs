@@ -10,4 +10,5 @@ pub mod util {
     pub mod buffer_queue;
 }
 
+pub mod macros;
 pub mod tokenizer;

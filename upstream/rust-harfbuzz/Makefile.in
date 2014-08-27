@@ -19,7 +19,7 @@ ifeq ($(CFG_OSTYPE),linux-androideabi)
     OSTYPE=android
 endif
 
-RUST_SRC = $(shell find $(VPATH)/. -type f -name '*.rs')
+RUST_SRC = $(shell find $(VPATH)/src -type f -name '*.rs')
 
 C_SRC = \
 	harfbuzz/src/hb-blob.cc \
@@ -75,17 +75,17 @@ libharfbuzz.a: $(C_OBJS)
 harfbuzz/src/%.o: harfbuzz/src/%.cc
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-libharfbuzz-servo.dummy: harfbuzz.rc $(RUST_SRC) libharfbuzz.a $(EXT_DEPS)
+libharfbuzz-servo.dummy: src/lib.rs $(RUST_SRC) libharfbuzz.a $(EXT_DEPS)
 	$(RUSTC) $(RUSTFLAGS) $< --out-dir . -C extra-filename=-servo
 	touch $@
 
-harfbuzz-test: harfbuzz.rc $(RUST_SRC) libharfbuzz.a
+harfbuzz-test: src/lib.rs $(RUST_SRC) libharfbuzz.a
 	$(RUSTC) $(RUSTFLAGS) $< -o $@ --test
 
 .PHONY: doc
 doc: $(RUSTDOC_TARGET)/harfbuzz/index.html
 
-$(RUSTDOC_TARGET)/harfbuzz/index.html: harfbuzz.rc $(RUST_SRC) libharfbuzz.a $(EXT_DEPS)
+$(RUSTDOC_TARGET)/harfbuzz/index.html: src/lib.rs $(RUST_SRC) libharfbuzz.a $(EXT_DEPS)
 	$(RUSTDOC) $(RUSTDOC_FLAGS) $< -o $(RUSTDOC_TARGET)
 
 check: harfbuzz-test

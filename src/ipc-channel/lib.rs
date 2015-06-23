@@ -13,8 +13,5 @@ extern crate cocoa;
 extern crate libc;
 extern crate rand;
 
-pub mod platform {
-    #[cfg(target_os="macos")]
-    pub mod macos;
-}
+pub mod platform;
 

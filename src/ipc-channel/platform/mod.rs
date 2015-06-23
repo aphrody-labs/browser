@@ -8,6 +8,8 @@
 // except according to those terms.
 
 #[cfg(target_os="macos")]
+pub use platform::macos::channel;
+#[cfg(target_os="macos")]
 pub use platform::macos::MachReceiver as OsIpcReceiver;
 #[cfg(target_os="macos")]
 pub use platform::macos::MachSender as OsIpcSender;

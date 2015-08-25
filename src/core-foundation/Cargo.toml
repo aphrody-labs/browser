@@ -9,3 +9,4 @@ license = "MIT / Apache-2.0"
 
 [dependencies]
 libc = "0.1"
+core-foundation-sys = { path = "../core-foundation-sys" }

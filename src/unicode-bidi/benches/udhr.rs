@@ -71,21 +71,21 @@ fn bench_reorder_line(b: &mut Bencher, texts: &[&str]) {
 
 
 #[bench]
-fn bench_bidi_info_new_for_ltr_texts(b: &mut Bencher) {
+fn bench_1_bidi_info_new_for_ltr_texts(b: &mut Bencher) {
     bench_bidi_info_new(b, LTR_TEXTS);
 }
 
 #[bench]
-fn bench_bidi_info_new_for_bidi_texts(b: &mut Bencher) {
+fn bench_2_bidi_info_new_for_bidi_texts(b: &mut Bencher) {
     bench_bidi_info_new(b, BIDI_TEXTS);
 }
 
 #[bench]
-fn bench_reorder_line_for_ltr_texts(b: &mut Bencher) {
+fn bench_3_reorder_line_for_ltr_texts(b: &mut Bencher) {
     bench_reorder_line(b, LTR_TEXTS);
 }
 
 #[bench]
-fn bench_reorder_line_for_bidi_texts(b: &mut Bencher) {
+fn bench_4_reorder_line_for_bidi_texts(b: &mut Bencher) {
     bench_reorder_line(b, BIDI_TEXTS);
 }

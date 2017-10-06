@@ -55,7 +55,7 @@ pub struct JsonFrameWriter {
 }
 
 impl JsonFrameWriter {
-    pub fn new(path: &Path) -> JsonFrameWriter {
+    pub fn new(path: &Path) -> Self {
         let mut rsrc_base = path.to_owned();
         rsrc_base.push("res");
         fs::create_dir_all(&rsrc_base).ok();

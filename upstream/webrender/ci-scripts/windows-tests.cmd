@@ -16,8 +16,6 @@ popd
 pushd webrender
 cargo test %CARGOFLAGS%
 if %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
-cargo check %CARGOFLAGS% --no-default-features --features pathfinder
-if %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 popd
 
 pushd wrench

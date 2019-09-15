@@ -143,14 +143,13 @@ impl Device {
     /// library; for example, by Glutin. It's legal to use this method to wrap a context rendering
     /// to any target: either a window or a pbuffer. The target is opaque to `surfman`; the library
     /// will not modify or try to detect the render target. This means that any of the methods that
-    /// query or replace the surface—e.g. `replace_context_color_surface`—will fail if called with
-    /// a context object created via this method.
+    /// query or replace the surface—e.g. `replace_context_surface`—will fail if called with a
+    /// context object created via this method.
     pub unsafe fn from_current_context() -> Result<(Device, Context), Error> {
         let mut next_context_id = CREATE_CONTEXT_MUTEX.lock().unwrap();
 
         // Grab the current context.
         let native_context = Box::new(UnsafeCGLContextRef::current());
-        println!("Device::from_current_context() = {:x}", native_context.cgl_context() as usize);
 
         // Create the context.
         let mut context = Context {
@@ -195,8 +194,6 @@ impl Device {
             if err != kCGLNoError {
                 return Err(Error::MakeCurrentFailed(err.to_windowing_api_error()));
             }
-
-            println!("Device::create_context() = {:x}", native_context.cgl_context() as usize);
 
             let mut context = Context {
                 native_context,

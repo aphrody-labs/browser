@@ -1,3 +1,5 @@
+// surfman/src/platform/src/macos/adapter.rs
+//
 //! A wrapper for Core OpenGL adapters.
 
 use crate::Error;

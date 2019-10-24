@@ -6,6 +6,8 @@ use crate::egl::types::{EGLenum, EGLint};
 use crate::egl;
 use crate::gl::types::GLuint;
 use crate::gl::{self, Gl};
+use crate::platform::generic::egl::context::{self, CurrentContextGuard, NativeContext};
+use crate::platform::generic::egl::context::{OwnedEGLContext, UnsafeEGLContextRef};
 use crate::platform::generic::egl::error::ToWindowingApiError;
 use crate::surface::Framebuffer;
 use crate::{ContextAttributeFlags, ContextAttributes, Error, GLApi, GLVersion, SurfaceAccess};
@@ -29,22 +31,18 @@ use winapi::um::d3dcommon::D3D_DRIVER_TYPE_UNKNOWN;
 use winapi::um::winbase::INFINITE;
 use wio::com::ComPtr;
 
+pub use crate::platform::generic::egl::context::ContextDescriptor;
+
 const EGL_DEVICE_EXT: EGLenum = 0x322c;
 
 thread_local! {
-    pub static GL_FUNCTIONS: Gl = Gl::load_with(get_proc_address);
+    pub static GL_FUNCTIONS: Gl = Gl::load_with(context::get_proc_address);
 }
 
 pub struct Context {
     pub(crate) native_context: Box<dyn NativeContext>,
     pub(crate) id: ContextID,
     framebuffer: Framebuffer<Surface>,
-}
-
-pub(crate) trait NativeContext {
-    fn egl_context(&self) -> EGLContext;
-    fn is_destroyed(&self) -> bool;
-    unsafe fn destroy(&mut self, device: &Device);
 }
 
 impl Drop for Context {
@@ -56,59 +54,14 @@ impl Drop for Context {
     }
 }
 
-#[derive(Clone)]
-pub struct ContextDescriptor {
-    egl_config_id: EGLint,
-    egl_context_client_version: EGLint,
-}
-
 impl Device {
-    // TODO(pcwalton): Move to the generic EGL module.
+    #[inline]
     pub fn create_context_descriptor(&self, attributes: &ContextAttributes)
                                      -> Result<ContextDescriptor, Error> {
-        let flags = attributes.flags;
-        let alpha_size   = if flags.contains(ContextAttributeFlags::ALPHA)   { 8  } else { 0 };
-        let depth_size   = if flags.contains(ContextAttributeFlags::DEPTH)   { 24 } else { 0 };
-        let stencil_size = if flags.contains(ContextAttributeFlags::STENCIL) { 8  } else { 0 };
-
         unsafe {
-            // Create config attributes.
-            let config_attributes = [
-                egl::SURFACE_TYPE as EGLint,         egl::PBUFFER_BIT as EGLint,
-                egl::RENDERABLE_TYPE as EGLint,      egl::OPENGL_ES2_BIT as EGLint,
-                egl::BIND_TO_TEXTURE_RGBA as EGLint, 1 as EGLint,
-                egl::RED_SIZE as EGLint,             8,
-                egl::GREEN_SIZE as EGLint,           8,
-                egl::BLUE_SIZE as EGLint,            8,
-                egl::ALPHA_SIZE as EGLint,           alpha_size,
-                egl::DEPTH_SIZE as EGLint,           depth_size,
-                egl::STENCIL_SIZE as EGLint,         stencil_size,
-                egl::NONE as EGLint,                 0,
-                0,                                   0,
-            ];
-
-            // Pick a config.
-            let (mut config, mut config_count) = (ptr::null(), 0);
-            let result = egl::ChooseConfig(self.native_display.egl_display(),
-                                           config_attributes.as_ptr(),
-                                           &mut config,
-                                           1,
-                                           &mut config_count);
-            if result == egl::FALSE {
-                let err = egl::GetError().to_windowing_api_error();
-                return Err(Error::PixelFormatSelectionFailed(err));
-            }
-            if config_count == 0 || config.is_null() {
-                return Err(Error::NoPixelFormatFound);
-            }
-
-            // Get the config ID and version.
-            let egl_config_id = get_config_attr(self.native_display.egl_display(),
-                                                config,
-                                                egl::CONFIG_ID as EGLint);
-            let egl_context_client_version = attributes.version.major as EGLint;
-
-            Ok(ContextDescriptor { egl_config_id, egl_context_client_version })
+            ContextDescriptor::new(self.native_display.egl_display(),
+                                   config_attributes,
+                                   &[egl::BIND_TO_TEXTURE_RGBA as EGLint, 1 as EGLint])
         }
     }
 
@@ -167,7 +120,7 @@ impl Device {
             d3d_driver_type: D3D_DRIVER_TYPE_UNKNOWN,
         };
 
-        // Create the config.
+        // Create the context.
         let mut context = Context {
             native_context,
             id: *next_context_id,
@@ -184,26 +137,9 @@ impl Device {
                           surface_type: &SurfaceType<NativeWidget>)
                           -> Result<Context, Error> {
         let mut next_context_id = CREATE_CONTEXT_MUTEX.lock().unwrap();
-
-        let egl_config = self.context_descriptor_to_egl_config(descriptor);
-        let egl_context_client_version = descriptor.egl_context_client_version;
-
         unsafe {
-            // Include some extra zeroes to work around broken implementations.
-            let egl_context_attributes = [
-                egl::CONTEXT_CLIENT_VERSION as EGLint, egl_context_client_version,
-                egl::NONE as EGLint, 0,
-                0, 0,
-            ];
-
-            let mut egl_context = egl::CreateContext(self.native_display.egl_display(),
-                                                     egl_config,
-                                                     egl::NO_CONTEXT,
-                                                     egl_context_attributes.as_ptr());
-            if egl_context == egl::NO_CONTEXT {
-                let err = egl::GetError().to_windowing_api_error();
-                return Err(Error::ContextCreationFailed(err));
-            }
+            let egl_context = context::create_context(self.native_display.egl_display(),
+                                                      descriptor)?;
 
             let mut context = Context {
                 native_context: Box::new(OwnedEGLContext { egl_context }),
@@ -237,14 +173,8 @@ impl Device {
 
     pub fn context_descriptor(&self, context: &Context) -> ContextDescriptor {
         unsafe {
-            let egl_config_id = get_context_attr(self.native_display.egl_display(),
-                                                 context.native_context.egl_context(),
-                                                 egl::CONFIG_ID as EGLint);
-            let egl_context_client_version =
-                get_context_attr(self.native_display.egl_display(),
-                                 context.native_context.egl_context(),
-                                 egl::CONTEXT_CLIENT_VERSION as EGLint);
-            ContextDescriptor { egl_config_id, egl_context_client_version }
+            ContextDescriptor::from_egl_context(self.native_display.egl_display(),
+                                                context.native_context.egl_context())
         }
     }
 
@@ -271,15 +201,7 @@ impl Device {
 
     pub fn make_no_context_current(&self) -> Result<(), Error> {
         unsafe {
-            let result = egl::MakeCurrent(self.native_display.egl_display(),
-                                          egl::NO_SURFACE,
-                                          egl::NO_SURFACE,
-                                          egl::NO_CONTEXT);
-            if result == egl::FALSE {
-                let err = egl::GetError().to_windowing_api_error();
-                return Err(Error::MakeCurrentFailed(err));
-            }
-            Ok(())
+            context::make_no_context_current(self.native_display.egl_display()
         }
     }
 
@@ -360,29 +282,11 @@ impl Device {
         self.context_surface(context).map(|surface| surface.id())
     }
 
+    #[inline]
     pub fn context_descriptor_attributes(&self, context_descriptor: &ContextDescriptor)
                                          -> ContextAttributes {
-        let egl_display = self.native_display.egl_display();
-        let egl_config = self.context_descriptor_to_egl_config(context_descriptor);
-
         unsafe {
-            let alpha_size = get_config_attr(egl_display, egl_config, egl::ALPHA_SIZE as EGLint);
-            let depth_size = get_config_attr(egl_display, egl_config, egl::DEPTH_SIZE as EGLint);
-            let stencil_size = get_config_attr(egl_display,
-                                               egl_config,
-                                               egl::STENCIL_SIZE as EGLint);
-
-            // Convert to `surfman` context attribute flags.
-            let mut attribute_flags = ContextAttributeFlags::empty();
-            attribute_flags.set(ContextAttributeFlags::ALPHA, alpha_size != 0);
-            attribute_flags.set(ContextAttributeFlags::DEPTH, depth_size != 0);
-            attribute_flags.set(ContextAttributeFlags::STENCIL, stencil_size != 0);
-
-            // Create appropriate context attributes.
-            ContextAttributes {
-                flags: attribute_flags,
-                version: GLVersion::new(context_descriptor.egl_context_client_version as u8, 0),
-            }
+            context_descriptor.attributes(self.native_display.egl_display())
         }
     }
 
@@ -395,27 +299,15 @@ impl Device {
 
     #[inline]
     pub fn get_proc_address(&self, _: &Context, symbol_name: &str) -> *const c_void {
-        get_proc_address(symbol_name)
+        context::get_proc_address(symbol_name)
     }
 
+    #[inline]
     pub(crate) fn context_descriptor_to_egl_config(&self, context_descriptor: &ContextDescriptor)
                                                    -> EGLConfig {
         unsafe {
-            let config_attributes = [
-                egl::CONFIG_ID as EGLint,   context_descriptor.egl_config_id,
-                egl::NONE as EGLint,        0,
-                0,                          0,
-            ];
-
-            let (mut config, mut config_count) = (ptr::null(), 0);
-            let result = egl::ChooseConfig(self.native_display.egl_display(),
-                                           config_attributes.as_ptr(),
-                                           &mut config,
-                                           1,
-                                           &mut config_count);
-            assert_ne!(result, egl::FALSE);
-            assert!(config_count > 0);
-            config
+            context::egl_config_from_id(self.native_display.egl_display(),
+                                        context_descriptor.egl_config_id)
         }
     }
 
@@ -457,110 +349,3 @@ impl Device {
         Some(surface)
     }
 }
-
-struct OwnedEGLContext {
-    egl_context: EGLContext,
-}
-
-impl NativeContext for OwnedEGLContext {
-    #[inline]
-    fn egl_context(&self) -> EGLContext {
-        self.egl_context
-    }
-
-    #[inline]
-    fn is_destroyed(&self) -> bool {
-        self.egl_context == egl::NO_CONTEXT
-    }
-
-    unsafe fn destroy(&mut self, device: &Device) {
-        assert!(!self.is_destroyed());
-        egl::MakeCurrent(device.native_display.egl_display(),
-                         egl::NO_SURFACE,
-                         egl::NO_SURFACE,
-                         egl::NO_CONTEXT);
-        let result = egl::DestroyContext(device.native_display.egl_display(), self.egl_context);
-        assert_ne!(result, egl::FALSE);
-        self.egl_context = egl::NO_CONTEXT;
-    }
-}
-
-struct UnsafeEGLContextRef {
-    egl_context: EGLContext,
-}
-
-impl NativeContext for UnsafeEGLContextRef {
-    #[inline]
-    fn egl_context(&self) -> EGLContext {
-        self.egl_context
-    }
-
-    #[inline]
-    fn is_destroyed(&self) -> bool {
-        self.egl_context == egl::NO_CONTEXT
-    }
-
-    unsafe fn destroy(&mut self, device: &Device) {
-        assert!(!self.is_destroyed());
-        self.egl_context = egl::NO_CONTEXT;
-    }
-}
-
-pub(crate) fn get_config_attr(egl_display: EGLDisplay, egl_config: EGLConfig, attr: EGLint)
-                              -> EGLint {
-    unsafe {
-        let mut value = 0;
-        let result = egl::GetConfigAttrib(egl_display, egl_config, attr, &mut value);
-        assert_ne!(result, egl::FALSE);
-        value
-    }
-}
-
-fn get_context_attr(egl_display: EGLDisplay, egl_context: EGLContext, attr: EGLint) -> EGLint {
-    unsafe {
-        let mut value = 0;
-        let result = egl::QueryContext(egl_display, egl_context, attr, &mut value);
-        assert_ne!(result, egl::FALSE);
-        value
-    }
-}
-
-pub fn get_proc_address(symbol_name: &str) -> *const c_void {
-    unsafe {
-        let symbol_name: CString = CString::new(symbol_name).unwrap();
-        egl::GetProcAddress(symbol_name.as_ptr() as *const u8 as *const c_char) as *const c_void
-    }
-}
-
-#[must_use]
-struct CurrentContextGuard {
-    old_egl_display: EGLDisplay,
-    old_egl_draw_surface: EGLSurface,
-    old_egl_read_surface: EGLSurface,
-    old_egl_context: EGLContext,
-}
-
-impl Drop for CurrentContextGuard {
-    fn drop(&mut self) {
-        unsafe {
-            egl::MakeCurrent(self.old_egl_display,
-                             self.old_egl_draw_surface,
-                             self.old_egl_read_surface,
-                             self.old_egl_context);
-        }
-    }
-}
-
-impl CurrentContextGuard {
-    fn new() -> CurrentContextGuard {
-        unsafe {
-            CurrentContextGuard {
-                old_egl_display: egl::GetCurrentDisplay(),
-                old_egl_draw_surface: egl::GetCurrentSurface(egl::DRAW as EGLint),
-                old_egl_read_surface: egl::GetCurrentSurface(egl::READ as EGLint),
-                old_egl_context: egl::GetCurrentContext(),
-            }
-        }
-    }
-}
-

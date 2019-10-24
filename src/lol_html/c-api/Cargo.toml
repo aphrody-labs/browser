@@ -8,6 +8,9 @@ edition = "2018"
 cool_thing = { path = "../" }
 libc = "0"
 
+[build-dependencies]
+cc = "1.0.46"
+
 [profile.release]
 panic = "abort"
 lto = true

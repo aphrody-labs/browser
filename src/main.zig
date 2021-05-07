@@ -10,6 +10,7 @@ const js_ast = @import("js_ast.zig");
 const linker = @import("linker.zig");
 usingnamespace @import("ast/base.zig");
 usingnamespace @import("defines.zig");
+usingnamespace @import("global.zig");
 const panicky = @import("panic_handler.zig");
 
 const MainPanicHandler = panicky.NewPanicHandler(panicky.default_panic);
@@ -23,7 +24,15 @@ pub fn panic(msg: []const u8, error_return_trace: ?*std.builtin.StackTrace) nore
 }
 
 pub fn main() anyerror!void {
-    try alloc.setup(std.heap.page_allocator);
+    // The memory allocator makes a massive difference.
+    // std.heap.raw_c_allocator and std.heap.c_allocator perform similarly.
+    // std.heap.GeneralPurposeAllocator makes this about 3x _slower_ than esbuild.
+    // var root_alloc = std.heap.ArenaAllocator.init(std.heap.raw_c_allocator);
+    // var root_alloc_ = &root_alloc.allocator;
+    try alloc.setup(std.heap.c_allocator);
+    Output.source.Stream = std.io.getStdOut();
+    Output.source.writer = Output.source.Stream.?.writer();
+    Output.source.errorWriter = std.io.getStdErr().writer();
     var log = logger.Log.init(alloc.dynamic);
     var panicker = MainPanicHandler.init(&log);
     MainPanicHandler.Singleton = &panicker;
@@ -77,7 +86,7 @@ pub fn main() anyerror!void {
             ast = res.ast;
         },
         else => {
-            std.debug.panic("Unsupported loader: {s}", .{opts.loader});
+            Global.panic("Unsupported loader: {s}", .{opts.loader});
         },
     }
 

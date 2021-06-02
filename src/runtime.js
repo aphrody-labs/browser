@@ -7,8 +7,16 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 
 export var __markAsModule = (target) =>
   __defProp(target, "__esModule", { value: true });
-export var __commonJS = (cb, mod) => () => {
-  return mod || cb((mod = { exports: {} }).exports, mod), mod.exports;
+export var __commonJS = (cb, name, mod) => () => {
+  return (
+    mod,
+    // friendly name for any errors while requiring
+    (__name(cb, `export default ${name}`),
+    cb((mod = { exports: {} }), mod.exports).exports,
+    __name(mod, name),
+    mod),
+    mod.exports
+  );
 };
 
 export var __reExport = (target, module, desc) => {
@@ -41,13 +49,20 @@ export var __toModule = (module) => {
 
 export var __name = (target, name) => {
   Object.defineProperty(target, "name", {
-    get() {
-      return name;
-    },
-    set(v) {
-      name = v;
-    },
+    value: name,
+    enumerable: false,
+    configurable: true,
   });
 
   return target;
 };
+
+// browsers handles ensuring the same ESM is not loaded multiple times
+export var __require = (n) => {
+  return Object.prototype.hasOwnProperty.call(n, "default") &&
+    Object.keys(n).length === 1
+    ? n["default"]
+    : n;
+};
+
+export const __esModule = true;

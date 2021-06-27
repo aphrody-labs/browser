@@ -1,4 +1,4 @@
-usingnamespace @import("global.zig");
+    usingnamespace @import("global.zig");
 
 usingnamespace @import("./http.zig");
 const std = @import("std");

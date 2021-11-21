@@ -259,16 +259,8 @@ pub fn buildRequest(this: *const HTTPClient, body_len: usize) picohttp.Request {
 pub fn connect(
     this: *HTTPClient,
 ) !tcp.Client {
-    var client: tcp.Client = try tcp.Client.init(tcp.Domain.ip, .{ .close_on_exec = true });
     const port = this.url.getPortAuto();
-    client.setNoDelay(true) catch {};
-    client.setReadBufferSize(http_req_buf.len) catch {};
-    client.setQuickACK(true) catch {};
-
-    if (this.timeout > 0) {
-        client.setReadTimeout(this.timeout) catch {};
-        client.setWriteTimeout(this.timeout) catch {};
-    }
+    var client: tcp.Client = undefined;
 
     // if (this.url.isLocalhost()) {
     //     try client.connect(
@@ -277,7 +269,16 @@ pub fn connect(
     // } else {
     // } else if (this.url.isDomainName()) {
     var stream = try std.net.tcpConnectToHost(default_allocator, this.url.hostname, port);
-    client.socket = std.x.os.Socket.from(stream.handle);
+    client = tcp.Client{ .socket = std.x.os.Socket.from(stream.handle) };
+
+    if (this.timeout > 0) {
+        client.setReadTimeout(this.timeout) catch {};
+        client.setWriteTimeout(this.timeout) catch {};
+    }
+
+    client.setNoDelay(true) catch {};
+    client.setReadBufferSize(http_req_buf.len) catch {};
+    client.setQuickACK(true) catch {};
 
     // }
     // } else if (this.url.getIPv4Address()) |ip_addr| {

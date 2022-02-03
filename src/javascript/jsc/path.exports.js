@@ -21,7 +21,7 @@ path.posix = posix;
 export var posix = bound(Bun._Path(false));
 export var win32 = bound(Bun._Path(true));
 
-var {
+export var {
   basename,
   dirname,
   extname,
@@ -36,21 +36,5 @@ var {
   sep,
   delimiter,
 } = path;
-
-export {
-  basename,
-  dirname,
-  extname,
-  format,
-  isAbsolute,
-  join,
-  normalize,
-  parse,
-  relative,
-  resolve,
-  toNamespacedPath,
-  sep,
-  delimiter,
-};
 
 export default path;

@@ -194,6 +194,34 @@ export const DotEnvBehaviorKeys = {
   3: "load_all",
   load_all: "load_all",
 };
+export enum ImportKind {
+  entry_point = 1,
+  stmt = 2,
+  require = 3,
+  dynamic = 4,
+  require_resolve = 5,
+  at = 6,
+  url = 7,
+  internal = 8,
+}
+export const ImportKindKeys = {
+  1: "entry_point",
+  entry_point: "entry_point",
+  2: "stmt",
+  stmt: "stmt",
+  3: "require",
+  require: "require",
+  4: "dynamic",
+  dynamic: "dynamic",
+  5: "require_resolve",
+  require_resolve: "require_resolve",
+  6: "at",
+  at: "at",
+  7: "url",
+  url: "url",
+  8: "internal",
+  internal: "internal",
+};
 export enum TransformResponseStatus {
   success = 1,
   fail = 2,
@@ -508,6 +536,22 @@ export interface Transform {
   options?: TransformOptions;
 }
 
+export interface Scan {
+  path?: string;
+  contents?: Uint8Array;
+  loader?: Loader;
+}
+
+export interface ScanResult {
+  exports: string[];
+  imports: ScannedImport[];
+}
+
+export interface ScannedImport {
+  path: string;
+  kind: ImportKind;
+}
+
 export interface OutputFile {
   data: Uint8Array;
   path: string;
@@ -807,6 +851,18 @@ export declare function encodeTransform(
   bb: ByteBuffer
 ): void;
 export declare function decodeTransform(buffer: ByteBuffer): Transform;
+export declare function encodeScan(message: Scan, bb: ByteBuffer): void;
+export declare function decodeScan(buffer: ByteBuffer): Scan;
+export declare function encodeScanResult(
+  message: ScanResult,
+  bb: ByteBuffer
+): void;
+export declare function decodeScanResult(buffer: ByteBuffer): ScanResult;
+export declare function encodeScannedImport(
+  message: ScannedImport,
+  bb: ByteBuffer
+): void;
+export declare function decodeScannedImport(buffer: ByteBuffer): ScannedImport;
 export declare function encodeOutputFile(
   message: OutputFile,
   bb: ByteBuffer

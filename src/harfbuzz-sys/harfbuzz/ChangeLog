@@ -1,3 +1,4621 @@
+commit 7236c7e29cef1c2d76c7a284c5081ff4d3aa1127
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Sun Dec 27 01:59:00 2020 +0200
+
+    2.7.4
+
+ NEWS             | 7 +++++++
+ configure.ac     | 2 +-
+ meson.build      | 2 +-
+ src/hb-version.h | 4 ++--
+ 4 files changed, 11 insertions(+), 4 deletions(-)
+
+commit 6808b1fb3075990c389e3a2e80cee8c4874a8f6f
+Merge: 010bd540 e8c15b7a
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Sun Dec 27 01:55:15 2020 +0200
+
+    Merge pull request #2781 from harfbuzz/g-i-dist
+    
+    [ci] Install gobject-introspection on distcheck job
+
+commit e8c15b7a1cd2c2174658e221193bb83d1ca4c635
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Sat Dec 26 23:05:48 2020 +0200
+
+    [ci] Install gobject-introspection on distcheck job
+    
+    To fix missing --enable-introspection from release tarballs.
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2779
+
+ .circleci/config.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 010bd5404008e45bb23ff63613551a03e3b60f58
+Merge: 462b71ea fdf3e448
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Sat Dec 26 01:17:27 2020 +0200
+
+    Merge pull request #2777 from harfbuzz/docs-unicode
+    
+    [docs] Improve hb-unicode docs a bit
+
+commit 462b71eaf3aff628cc50554f2ebcb78e27262e39
+Merge: 95416714 22468c8a
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Sat Dec 26 01:16:32 2020 +0200
+
+    Merge pull request #1676 from n8willis/docs-gtkdoc-core
+    
+    [Docs] Add gtkdoc comments for low-level core APIs
+
+commit 22468c8a9046d03751039ae82626c780c74fdc66
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 22:38:06 2020 +0200
+
+    [docs] Give destroy callbacks have (optional) annotation
+
+ src/hb-blob.cc       |  4 ++--
+ src/hb-font.h        | 30 +++++++++++++++---------------
+ src/hb-ft.cc         |  2 +-
+ src/hb-map.cc        |  2 +-
+ src/hb-set.cc        |  2 +-
+ src/hb-shape-plan.cc |  2 +-
+ src/hb-unicode.cc    |  2 +-
+ src/hb-unicode.h     | 12 ++++++------
+ 8 files changed, 28 insertions(+), 28 deletions(-)
+
+commit 35c4a15a676beb6d9198e2a9b7f06ac5ab669b2c
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 22:34:02 2020 +0200
+
+    [docs] Update hb-font documentation
+
+ src/hb-font.cc | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+commit 8586f15957ac593aad786ad839b49596e45c0fa8
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 22:23:47 2020 +0200
+
+    [docs] Update hb-common documentation
+
+ src/hb-common.cc |  5 +++--
+ src/hb-common.h  | 16 +++++++---------
+ 2 files changed, 10 insertions(+), 11 deletions(-)
+
+commit e8c21e003dfe84a2b8c8801821176575bfa7bbb4
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 21:56:31 2020 +0200
+
+    [docs] Remove comments the duplicate docs
+
+ src/hb-font.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+commit ff96f73f8f62344fc9d0c557bcc79cd6c2d0b95f
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 21:53:11 2020 +0200
+
+    [docs] Add some missing API to harfbuzz-sections.txt
+
+ docs/harfbuzz-sections.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit cb319f0d80ab76da00c7263a7e0a433558fa73a2
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 21:47:05 2020 +0200
+
+    [docs] Add some missing annotations to hb-buffer.cc
+
+ src/hb-buffer.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 9af0edd9511cdba61ad3bd2ce23eb789e9eb58fe
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 21:40:41 2020 +0200
+
+    [docs] Document return value of hb_blob_get_data()
+
+ src/hb-blob.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f88e845fc789cb1af3956b53b749987af8d6adc8
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 21:28:37 2020 +0200
+
+    [docs] Minor fixes
+
+ src/hb-blob.cc    | 6 +++---
+ src/hb-buffer.cc  | 4 ++--
+ src/hb-face.cc    | 2 +-
+ src/hb-font.cc    | 2 +-
+ src/hb-map.cc     | 2 +-
+ src/hb-set.cc     | 2 +-
+ src/hb-unicode.cc | 2 +-
+ 7 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 82092d4005aa1ce38e069b43d35282089af4ea79
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Mon Apr 22 15:31:24 2019 +0100
+
+    [docs] Update gtk-doc comments in hb-font
+
+ src/hb-font.cc | 623 +++++++++++++++++++++++++++++++++++----------------------
+ src/hb-font.h  | 371 ++++++++++++++++++++++++++--------
+ 2 files changed, 679 insertions(+), 315 deletions(-)
+
+commit e8de26e1ef7b4486ff7b13aadb89c06300f1b705
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Sun Apr 21 20:31:54 2019 +0100
+
+    [docs] Add gtkdoc comments to hb-buffer
+
+ src/hb-buffer.cc | 235 +++++++++++++++++++++++++++++--------------------------
+ src/hb-buffer.h  |  17 ++++
+ 2 files changed, 139 insertions(+), 113 deletions(-)
+
+commit d13b7eaaf18e772387ce25e899e2b3d4252c9e96
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Sun Apr 21 20:31:31 2019 +0100
+
+    [docs] Add gtkdoc comments to hb-blob
+
+ src/hb-blob.cc | 48 +++++++++++++++++++++++++++---------------------
+ src/hb-blob.h  | 35 ++++++++++++++++++++++++++---------
+ 2 files changed, 53 insertions(+), 30 deletions(-)
+
+commit 4cdb12a3fa804392ec93e29633235f9552a4e106
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Sun Apr 21 20:31:09 2019 +0100
+
+    [docs] Add gtkdoc comments to hb-common
+
+ src/hb-common.cc |  82 +++++++++-------
+ src/hb-common.h  | 295 +++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 337 insertions(+), 40 deletions(-)
+
+commit 922c32eb2df9bfedc15420ceef99f35c6be07e12
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Sun Apr 21 20:30:54 2019 +0100
+
+    [docs] Add gtkdoc comments to hb-map
+
+ src/hb-map.cc | 87 ++++++++++++++++++++++++++++++++++++-----------------------
+ src/hb-map.h  |  6 +++++
+ 2 files changed, 60 insertions(+), 33 deletions(-)
+
+commit 71af2c6d9b58213963577a01c97dc9dc021dc6b7
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Sun Apr 21 20:30:36 2019 +0100
+
+    [docs] Add gtkdoc comments to hb-set
+
+ src/hb-set.cc | 207 ++++++++++++++++++++++++++++++++--------------------------
+ src/hb-set.h  |   9 +++
+ 2 files changed, 124 insertions(+), 92 deletions(-)
+
+commit ec98730ff69a744955c5d98aa38078eb0bb8fd24
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Wed Apr 17 14:44:25 2019 +0100
+
+    [docs] regularize whitespace in function params
+
+ src/hb-font.cc | 563 ++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 295 insertions(+), 268 deletions(-)
+
+commit fdf3e448fdf92385675e64563b0489d8aea2e1b8
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 00:41:45 2020 +0200
+
+    [docs] Improve hb-unicode docs a bit
+    
+    Down to only one warning.
+
+ src/hb-unicode.h | 80 ++++++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 58 insertions(+), 22 deletions(-)
+
+commit 0fd6144a5fd0de86c509e35a552105faca458fb2
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Thu Dec 24 00:10:27 2020 +0200
+
+    [docs] Fix warnings about unknown annotations
+    
+    Use square brackets so that gtk-doc does not consider these to be
+    annotations.
+
+ src/hb-unicode.h | 168 +++++++++++++++++++++++++++----------------------------
+ 1 file changed, 84 insertions(+), 84 deletions(-)
+
+commit 954167143befde8366150dcb885f50a9e64346a3
+Merge: 8560c3e3 71a3b54f
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Wed Dec 23 23:04:17 2020 +0200
+
+    Merge pull request #2776 from harfbuzz/release
+    
+    2.7.3
+
+commit 71a3b54f3c6c6fba52a2f99e6a9258c62b5104cd
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Wed Dec 23 15:33:15 2020 +0200
+
+    2.7.3
+
+ NEWS             | 23 +++++++++++++++++++++++
+ configure.ac     |  2 +-
+ meson.build      |  2 +-
+ src/hb-buffer.cc |  2 +-
+ src/hb-version.h |  4 ++--
+ 5 files changed, 28 insertions(+), 5 deletions(-)
+
+commit 8560c3e355dbfd199fbd9e7052151c40a9039b29
+Merge: 769a21aa 296e9d7f
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Wed Dec 23 00:25:10 2020 -0800
+
+    Merge pull request #2774 from harfbuzz/misc-doc
+    
+    Doc fixes
+
+commit 769a21aab6a2b1c43cc10d56de3861a3add723de
+Author: Ryan <ryan@luciaonline.net>
+Date:   Wed Dec 23 02:31:03 2020 -0500
+
+    meson: avoid regenerating hb-version.h unnecessarily
+    
+    The file is a dependency for the library as a whole, so previously editing the Meson build files at all would force a full rebuild. This will only rebuild it if the version has changed.
+
+ src/gen-hb-version.py | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+commit 296e9d7f33fb314d0bd4e0dad5a85f60aefdade9
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Wed Dec 23 01:18:10 2020 +0200
+
+    [ci] Install fonttools using pip on msys2
+    
+    Hopefully fixes the broken package.
+
+ .github/workflows/msys2-ci.yml | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit 3dba7ea93638df814b93d75d31ad3da24605704d
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Wed Dec 23 00:55:21 2020 +0200
+
+    [docs] Add missing API index for 1.4.0 release
+
+ docs/harfbuzz-docs.xml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit c2e2c40bacb296526e1b395a957af0e13da4486f
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Wed Dec 23 00:49:23 2020 +0200
+
+    [docs] Fix gtk-doc comment syntax
+    
+    The documentation was not picked otherwise.
+
+ src/hb-aat-layout.cc | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 0826940821e9b8068b0341dae4d3ea237df86aa2
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Wed Dec 23 00:45:39 2020 +0200
+
+    [docs] Add messing sections
+    
+    Docs for these sections were not generated at all.
+
+ docs/harfbuzz-docs.xml |  4 ++++
+ src/hb-directwrite.cc  |  9 +++++++++
+ src/hb-gdi.cc          | 10 ++++++++++
+ src/hb-ot-metrics.cc   |  9 +++++++++
+ 4 files changed, 32 insertions(+)
+
+commit b8b13018edc4115e9857d7871d254c5737f90046
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Wed Dec 23 00:22:56 2020 +0200
+
+    [docs] Make gtk-doc find these typedef’s
+
+ src/hb-aat-layout.h    | 3 +--
+ src/hb-buffer.h        | 3 +--
+ src/hb-font.h          | 6 ++----
+ src/hb-ot-color.h      | 3 +--
+ src/hb-ot-deprecated.h | 3 +--
+ src/hb-ot-name.h       | 3 +--
+ src/hb-ot-var.h        | 3 +--
+ 7 files changed, 8 insertions(+), 16 deletions(-)
+
+commit 8c3a530fd7aa832215b84f4f38d58f58ac8a5832
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Tue Dec 22 23:52:46 2020 +0200
+
+    [docs] Some formatting fixes
+
+ src/hb-buffer-serialize.cc | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+commit b029a45caa6067c752643e49b30233a74a8be721
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Tue Dec 22 23:32:48 2020 +0200
+
+    [docs] Add new API to harfbuzz-sections.txt
+
+ docs/harfbuzz-docs.xml     | 1 +
+ docs/harfbuzz-sections.txt | 3 +++
+ 2 files changed, 4 insertions(+)
+
+commit ea4476d7389b8b5d30f1d969787c752856c32088
+Author: Khaled Hosny <khaled@aliftype.com>
+Date:   Mon Dec 21 17:44:03 2020 +0200
+
+    [autotools] Don’t fallback to icu-config
+    
+    ICU pkg-config support have been available for a long time, and
+    icu-config often breaks cross-compiling when the one from host system is
+    found.
+
+ configure.ac | 19 -------------------
+ 1 file changed, 19 deletions(-)
+
+commit 2953a66ab685957f57e52fb45f42445030d41e06
+Author: Chun-wei Fan <fanchunwei@src.gnome.org>
+Date:   Wed Dec 9 12:24:18 2020 +0800
+
+    CMake: Define HAVE_GOBJECT when harfbuzz-gobject is built
+    
+    Without this, the built library for harfbuzz-gobject is unuseful.
+
+ CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 25c0a792e3c2642e3796e0428fb315da9dc2618e
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Thu Dec 10 14:29:47 2020 -0700
+
+    Remove unused+wrong UnsizedArrayOf<> operators
+    
+    Said compiler is wrong to err since they are unused. But yeah, they
+    didn't make sense and were copy/paste leftover.
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2763
+
+ src/hb-open-type.hh | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit 07e304b2a488261a89e74f396902399cb28f5608
+Merge: 7c241651 5f32fdff
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Tue Dec 1 22:32:19 2020 +0200
+
+    Merge pull request #2755 from Myaamori/master
+    
+    meson: use meson.current_source_dir() instead of @CURRENT_SOURCE_DIR@
+
+commit 7c241651ac3c8a4d97a0a04d4db5bd0088988ed9
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Mon Nov 30 16:38:53 2020 -0700
+
+    [algs] Don't forward rvalue twice
+    
+    Part of https://github.com/harfbuzz/harfbuzz/issues/2293
+
+ src/hb-algs.hh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 53806e5b83cee0e275eac038d0780f95ac56588c
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Wed Nov 25 11:51:37 2020 -0700
+
+    Tiny improvement on previous commit
+    
+    Functionally the same.
+
+ src/hb-blob.hh               | 1 +
+ src/hb-null.hh               | 1 +
+ src/hb-ot-layout-gsubgpos.hh | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
+
+commit a5f6f869e80c371665026dfe9d156f0088f2553d
+Author: Dominik Röttsches <drott@chromium.org>
+Date:   Fri Oct 23 14:25:05 2020 +0300
+
+    Drop layout table if layout lookup accelerator allocation failed
+    
+    If the table is kept, when the table is present but only the accelerator
+    allocation failed, then we run into nullptr dereferences downstream in
+    hb_ot_map_t::apply when trying to access proxy.accels[i].
+    
+    To fix this, instead of only setting lookup_count of accelerator_t
+    itself, drop the whole table to avoid hb-ot-map construction assuming
+    that the lookups will work correctly despite accelerator allocation
+    having failed.
+    
+    Fixes:
+    https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24490
+    https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24490
+
+ src/hb-ot-layout-gsubgpos.hh | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit 5f32fdff11bca45ca842dea583f1afd51a6435b9
+Author: Myaamori <myaamori1993@gmail.com>
+Date:   Tue Nov 24 01:29:24 2020 +0000
+
+    meson: use meson.current_source_dir() instead of @CURRENT_SOURCE_DIR@
+    
+    @CURRENT_SOURCE_DIR@ is not listed as a valid string substitution
+    for custom targets in the Meson reference, and in practice
+    it does not get substituted when using the vs2019 backend.
+
+ src/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit b2e7bb2a7caa20af244b7452ec960f9957eb8bba
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Tue Oct 27 19:50:33 2020 -0400
+
+    Don’t map BCP 47 to coincidentally similar OT tag
+
+ src/gen-tag-table.py   |  34 ++++++++---
+ src/hb-ot-tag-table.hh | 163 +++++++++++++++++++++++++++++++++++++++++++++++++
+ src/hb-ot-tag.cc       |   1 +
+ test/api/test-ot-tag.c |   4 ++
+ 4 files changed, 194 insertions(+), 8 deletions(-)
+
+commit e1df2c5277a365d5e0c83d811f0b95f66428430b
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Mon Oct 26 19:16:35 2020 -0400
+
+    Map ISO 639 code qul to language system tag 'QUH '
+
+ src/gen-tag-table.py   | 1 +
+ src/hb-ot-tag-table.hh | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit bac8a856f8ce034fde04f024065455c8b29bba5e
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sat Nov 21 16:07:57 2020 +0200
+
+    Revert "[CI] Don’t install ragel on circleci jobs"
+    
+    This reverts commit 9a9da110a54ea03a0bdd1e64fa9ff7a2b98ba53c.
+
+ .circleci/config.yml | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+commit f579c66108d4b9d122213704078c998bc194d427
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sat Nov 21 16:06:27 2020 +0200
+
+    Mark variable unused
+    
+    Hopefully fixes build with newer ragel.
+    
+    https://github.com/adrian-thurston/ragel/issues/56
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2752
+
+ src/hb-ot-shape-complex-use-machine.hh | 2 +-
+ src/hb-ot-shape-complex-use-machine.rl | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit f83496a9101f764e4eaec2ce205d55aa4f78558f
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Fri Nov 20 08:16:36 2020 -0500
+
+    [use] Remove workaround for reserved code points
+    
+    See <https://github.com/microsoft/font-tools/issues/12>.
+
+ src/gen-use-table.py                            | 4 +---
+ src/ms-use/IndicSyllabicCategory-Additional.txt | 5 ++++-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+commit 17da41bd06f2b993976379c8ab9287b485f58dee
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Tue Nov 17 14:29:05 2020 -0500
+
+    Update language system tag registry to OT 1.8.4
+
+ src/gen-tag-table.py   |   7 +-
+ src/hb-ot-tag-table.hh | 909 +++++++++++++++++++++++++++++++++++++------------
+ test/api/test-ot-tag.c |   6 +-
+ 3 files changed, 704 insertions(+), 218 deletions(-)
+
+commit 385d9c08d8906002690a7fbff86c1592f5b627b9
+Merge: c4ade4fd 9722b4b2
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Tue Nov 17 19:43:22 2020 +0200
+
+    Merge pull request #2700 from xclaesse/cairo-ft
+    
+    meson: Fix cairo_ft_dep when fontconfig is a subproject
+
+commit 9722b4b269bda2d7e84c3164d69caa1324f8f8b3
+Author: Xavier Claessens <xavier.claessens@collabora.com>
+Date:   Tue Nov 17 11:56:52 2020 -0500
+
+    Meson: Update all wrap files to latest version
+
+ subprojects/expat.wrap            | 19 +++++++++----------
+ subprojects/fontconfig.wrap       |  6 +++---
+ subprojects/google-benchmark.wrap | 15 ++++++++-------
+ subprojects/libpng.wrap           | 22 ++++++++++++----------
+ subprojects/zlib.wrap             | 17 ++++++++++++-----
+ 5 files changed, 44 insertions(+), 35 deletions(-)
+
+commit a082fe400d1c981e22061168299334c853ad85a6
+Author: Xavier Claessens <xavier.claessens@collabora.com>
+Date:   Fri Nov 6 13:02:21 2020 -0500
+
+    ci: Install meson 0.56.0 in crossbuild-win32
+    
+    It is required for using cairo as subproject.
+
+ .circleci/config.yml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit e2ba0e009e499e82b2922db7e58e91bc5f452d03
+Author: Xavier Claessens <xavier.claessens@collabora.com>
+Date:   Sat Oct 3 21:34:24 2020 -0400
+
+    meson: Fix check for cairo and cairo-ft dependencies
+    
+    When cairo comes from a subproject fallback it should still take
+    cairo-ft dependency, otherwise it miss freetype2 cflags.
+    
+    Also update wrap file to use upstream repository now that meson support
+    has been merged.
+    
+    This requires Meson >= 0.54.0 because cairo itself requires that version
+    and we use the new `fallback: 'cairo'` syntax without specifying a
+    variable name because cairo does not provide a variable name for
+    cairo-ft.
+
+ meson.build            | 37 +++++++++++++++++--------------------
+ subprojects/cairo.wrap |  4 ++--
+ 2 files changed, 19 insertions(+), 22 deletions(-)
+
+commit c4ade4fdd681b59c0694b7422d7a123fd1e9e6b8
+Merge: e6c21d7b fd8f4ffc
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Tue Nov 17 14:32:04 2020 +0200
+
+    Merge pull request #2686 from simoncozens/more-tracing
+    
+    More tracing
+
+commit fd8f4ffcc6851ff9024957779be50411e87724d5
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 16:37:22 2020 +0100
+
+    Trace reorder, not normalize
+
+ src/hb-ot-shape-normalize.cc | 3 ++-
+ src/hb-ot-shape.cc           | 5 +----
+ 2 files changed, 3 insertions(+), 5 deletions(-)
+
+commit 2e0193d7417d1134e1710bf3fa7690332bc561e0
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 16:28:29 2020 +0100
+
+    Add more cast spaces
+
+ src/hb-ot-shape.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 4bb6d54e3bd16ae42364587f9703128b95de89de
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 16:26:08 2020 +0100
+
+    Missing cast
+
+ src/hb-ot-shape-complex-indic.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8e1bedc50b13d19e1fb3c0fbb0cfa6d87f042f51
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 16:25:43 2020 +0100
+
+    Keep phase names
+
+ src/hb-ot-shape.cc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 428c111f1389e3ebf8b694f342ffdc011f2ee043
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 16:24:47 2020 +0100
+
+    Fix spacing around casts
+
+ src/hb-ot-layout.cc                | 4 ++--
+ src/hb-ot-shape-complex-indic.cc   | 2 +-
+ src/hb-ot-shape-complex-khmer.cc   | 2 +-
+ src/hb-ot-shape-complex-myanmar.cc | 2 +-
+ src/hb-ot-shape-complex-use.cc     | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
+
+commit f19018da412cf0949748dc8ba80e1a0a376238af
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Thu Sep 17 15:08:32 2020 +0100
+
+    Smaller issues from review
+
+ src/hb-ot-shape-complex-indic.cc   | 12 ++++++------
+ src/hb-ot-shape-complex-myanmar.cc |  2 +-
+ src/hb-ot-shape.cc                 |  6 +++---
+ 3 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 8b3b835a0aaf7b21825ad87f0e0ab9efbff34dcc
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Thu Sep 17 14:27:31 2020 +0100
+
+    Trace normalization and preprocessing stages
+
+ src/hb-ot-shape.cc | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+commit b50099bff22f9add10e100b6ace5a063a574a066
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Thu Sep 17 14:25:30 2020 +0100
+
+    Trace reordering in pause functions
+
+ src/hb-ot-shape-complex-indic.cc   | 10 ++++++++--
+ src/hb-ot-shape-complex-khmer.cc   | 10 ++++++----
+ src/hb-ot-shape-complex-myanmar.cc |  9 ++++++---
+ src/hb-ot-shape-complex-use.cc     | 10 +++++++---
+ 4 files changed, 27 insertions(+), 12 deletions(-)
+
+commit e6c21d7b58224f483395a6c9355fe89d88aedd54
+Merge: 3bd43bd0 0c3dcfae
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Tue Nov 17 08:53:32 2020 +0200
+
+    Merge pull request #2692 from ffontaine/master
+    
+    src/meson.build: allow introspection when cross-compiling
+
+commit 0c3dcfae193efd8d5333c44075ba01932edc1059
+Merge: 2604201a 3bd43bd0
+Author: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date:   Tue Nov 17 07:31:07 2020 +0100
+
+    Merge remote-tracking branch 'upstream/master'
+
+commit 3bd43bd023ab713781058f9ce5bcb7566ecb2d68
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Mon Nov 16 21:55:02 2020 -0500
+
+    Map more ISO 15924 variants to `hb_script_t`s
+
+ src/hb-common.cc | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit 27170e058d2925ea05bf59f1ee8f56fb0bcb576a
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Wed Oct 28 18:02:55 2020 -0400
+
+    Fix names for language tag in gen-tag-table.py
+    
+    A BCP 47 language tag with both a script subtag and a region subtag
+    would be printed as a human-readable name in hb-ot-tag-table.hh as if it
+    only had its language subtag.
+
+ src/gen-tag-table.py   |  18 +++----
+ src/hb-ot-tag-table.hh | 126 ++++++++++++++++++++++++-------------------------
+ 2 files changed, 73 insertions(+), 71 deletions(-)
+
+commit 5091ea7e247b118009c719076650a93b3e2dde6d
+Merge: 69cc214c 07961dae
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Sat Oct 24 22:37:52 2020 +0200
+
+    Merge pull request #2733 from astiob/buffer-context-doc
+    
+    [docs] Describe buffer context applicability more explicitly
+
+commit 07961daed06d181615d8087b25122985c83760cc
+Author: Oleg Oshmyan <chortos@inbox.lv>
+Date:   Sat Oct 24 21:58:02 2020 +0300
+
+    [docs] Describe buffer context applicability more explicitly
+    
+    Make it abundantly clear that the context's script etc. don't matter.
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2730
+
+ docs/usermanual-buffers-language-script-and-direction.xml | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+commit 69cc214c9a47ec9f19bfe477149c6c68cff6a483
+Merge: 49ebb9eb 5adc1344
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Sat Oct 24 10:41:33 2020 +0200
+
+    Merge pull request #2729 from khaledhosny/autotools-pkg-config
+    
+    [autotools] Require pkg-config 0.28
+
+commit 5adc1344a4c695ed655aabd02c8bfab114bb4d52
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Fri Oct 23 18:39:34 2020 +0200
+
+    [ci] Upload meason logs on some CircleCI jobs
+
+ .circleci/config.yml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 71376f88ef07163f1330f1f54f9f479cd3a67306
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Fri Oct 23 18:21:41 2020 +0200
+
+    [ci] CircleCI removed xcode:9.0.1 image
+    
+    The replacement run newer versions of macOS (10.13.3), making this job
+    obsolete as it tests nothing the other jobs don’t test.
+
+ .circleci/config.yml | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+commit 05403a07b5accbc248064ec44fb884efeb811fa2
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Fri Oct 23 17:24:29 2020 +0200
+
+    [autotools] Require pkg-config 0.28
+    
+    Follow up 0615c7b64b63400b2a70a1a6dd8a57d0b0fff10c, which fixes #1565.
+    This seems to be the version that fixed the circular dependency, based
+    on the ChangeLog:
+    https://cgit.freedesktop.org/pkg-config/commit/?h=pkg-config-0.28&id=74ceac54ef6f9247c00f08eecd8cca811a3c5934
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 49ebb9ebdd689490c74da835a3fb829f14df6ed1
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Sat Oct 17 12:03:44 2020 -0400
+
+    [use] Remove redundant O entries from the table
+
+ src/gen-use-table.py                 | 11 +++---
+ src/hb-ot-shape-complex-use-table.cc | 69 ++++++++++++++++++------------------
+ 2 files changed, 39 insertions(+), 41 deletions(-)
+
+commit 79fd5ce22e03d9db6553dadc0a5e3862b0bfa20d
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Sat Oct 17 11:57:08 2020 -0400
+
+    [use] Merge IND and Rsv classes into O
+
+ src/gen-use-table.py                   | 10 ++-------
+ src/hb-ot-shape-complex-use-machine.hh | 40 +++++++++++++++++-----------------
+ src/hb-ot-shape-complex-use-machine.rl |  6 ++---
+ src/hb-ot-shape-complex-use-table.cc   | 20 +++++++----------
+ src/hb-ot-shape-complex-use.hh         |  2 --
+ 5 files changed, 32 insertions(+), 46 deletions(-)
+
+commit c2cdcd4901132ea7690bda655602d84e63505eb1
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sat Oct 17 21:57:27 2020 +0200
+
+    [tests] warning: unused variable 'num_glyphs'
+
+ test/api/test-buffer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit e25aa49a1bcd8f25eeda1846c7daf9b887571d84
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Sat Oct 17 12:32:41 2020 -0400
+
+    Fix a dead link in CMakeLists.txt
+
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9a9da110a54ea03a0bdd1e64fa9ff7a2b98ba53c
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Sat Oct 17 17:58:11 2020 +0200
+
+    [CI] Don’t install ragel on circleci jobs
+    
+    Latest ragel version is broken (https://github.com/adrian-thurston/ragel/issues/56), but we also don’t need to regenerate state machine on CI jobs.
+
+ .circleci/config.yml | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit cde2cf84c0d6515c701296351b9d5a80a41d78c5
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 16 23:49:31 2020 -0600
+
+    [use] Minor clean-up of unused categories
+
+ src/hb-ot-shape-complex-use-machine.hh | 34 +++++++++++++++++-----------------
+ src/hb-ot-shape-complex-use-machine.rl |  7 -------
+ src/hb-ot-shape-complex-use.cc         |  3 +--
+ src/hb-ot-shape-complex-use.hh         |  7 -------
+ 4 files changed, 18 insertions(+), 33 deletions(-)
+
+commit 0792690b73010e24848fe82d5983ef01f38ed1fb
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Fri Oct 16 22:41:12 2020 -0400
+
+    [use] Skip WJ and ZWJ when clustering
+
+ src/gen-use-table.py                               |  13 +-
+ src/hb-ot-shape-complex-use-machine.hh             | 580 ++++++++++-----------
+ src/hb-ot-shape-complex-use-machine.rl             |   9 +-
+ src/hb-ot-shape-complex-use-table.cc               |   8 +-
+ src/hb-ot-shape-complex-use.hh                     |   2 -
+ .../shaping/data/in-house/tests/use-syllable.tests |   2 +
+ 6 files changed, 272 insertions(+), 342 deletions(-)
+
+commit 3fcf466b7b77f8eaf281f7a1a4e6ca90b5be54fe
+Author: Laurenz <laurmaedje@gmail.com>
+Date:   Fri Oct 16 23:03:01 2020 +0200
+
+    [hb-shape-fallback] Use signed int for correction
+
+ src/hb-ot-shape-fallback.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 77e704d1dbfbdb6c54127112814b24358ec52eea
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Thu Oct 15 02:02:04 2020 -0600
+
+    [buffer] Add assert_unicode()/assert_glyphs() and use internally
+
+ src/hb-buffer-serialize.cc | 13 ++++---------
+ src/hb-buffer.cc           | 10 ++++------
+ src/hb-buffer.hh           | 10 ++++++++++
+ src/hb-shape-plan.cc       |  3 ++-
+ 4 files changed, 20 insertions(+), 16 deletions(-)
+
+commit 5ef0613909b8223396f2342119d217e2f24aff26
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Thu Oct 15 01:54:28 2020 -0600
+
+    [buffer] Add ensure_glyphs()/ensure_unicode()
+    
+    Use in deserialize. To be used more.
+
+ src/hb-buffer-deserialize-json.hh | 1257 +++++++++++++-----------------
+ src/hb-buffer-deserialize-json.rl |   21 +-
+ src/hb-buffer-deserialize-text.hh | 1531 +++++++++++++++++--------------------
+ src/hb-buffer-deserialize-text.rl |   21 +-
+ src/hb-buffer.hh                  |   23 +
+ 5 files changed, 1270 insertions(+), 1583 deletions(-)
+
+commit 84dd65a8740a91e58eaef43c0006ace3a3aa54a7
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Tue Oct 13 20:21:28 2020 +0200
+
+    [test] Remove timeout from test runners
+    
+    See https://github.com/harfbuzz/harfbuzz/issues/2707#issuecomment-707744079
+    
+    This wasn’t inconsistent as well, HB_TEST_SUBSET_FUZZER_TIMEOUT defaulted
+    to 12 in the test runner, but it was overridden to 50 in meson.build,
+    and then meson has its own test timeout.
+
+ .circleci/config.yml                    | 2 +-
+ test/fuzzing/meson.build                | 1 -
+ test/fuzzing/run-draw-fuzzer-tests.py   | 2 +-
+ test/fuzzing/run-shape-fuzzer-tests.py  | 2 +-
+ test/fuzzing/run-subset-fuzzer-tests.py | 2 +-
+ 5 files changed, 4 insertions(+), 5 deletions(-)
+
+commit 3232e6f2a9053e31da67fc7ff293e007e698ef39
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Thu Oct 15 00:20:17 2020 -0600
+
+    [buffer] Add hb_buffer_has_positions()
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2716
+
+ docs/harfbuzz-sections.txt |  1 +
+ src/hb-buffer.cc           | 21 ++++++++++++++++++++-
+ src/hb-buffer.h            |  3 +++
+ 3 files changed, 24 insertions(+), 1 deletion(-)
+
+commit 97a093c52f87dbfb0c800dd09a23436479e69861
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Mon Oct 12 15:32:22 2020 +0200
+
+    [hb-subset] Improve error handling a bit
+    
+    * Check that output-file option is actually set before trying to open
+      it.
+    * Print file name and errno when opening the output file fails.
+    * Be more resilient when writing output file and use ferror() to check
+      for errors.
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2711
+
+ util/hb-subset.cc | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
+
+commit fa771a7f85d6d07ed64db438c8f07cd6b3f65e3e
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sun Oct 11 22:11:17 2020 +0200
+
+    [tests] Fix memory leak in test
+    
+    To make valgrind bot happy.
+
+ test/api/test-buffer.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+commit dec52006d939755e38dfc3da6de100f2443d574c
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Sat Oct 10 14:49:55 2020 -0400
+
+    Map BCP 47 tags to all macrolanguages
+    
+    The general rule is that if a BCP 47 macrolanguage maps to an OpenType
+    language system tag, all its individual languages map to it too.
+    Previously, a tag like "prs" (Dari) would not map to the language system
+    tag ('FAR ') of its macrolanguage ("fa") because "prs" already has its
+    own language system tag ('DRI '). That exception has been removed: now
+    "prs" maps to 'DRI ' and falls back to 'FAR '.
+
+ src/gen-tag-table.py   |   7 +--
+ src/hb-ot-tag-table.hh | 128 ++++++++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 112 insertions(+), 23 deletions(-)
+
+commit 1d53268dfe39b6842b5129ce731f67021cb1d844
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Sat Oct 10 14:46:36 2020 -0400
+
+    Fix two-way mapping of "man" and 'MNK '
+
+ src/gen-tag-table.py   | 4 ++--
+ src/hb-ot-tag-table.hh | 2 ++
+ test/api/test-ot-tag.c | 2 ++
+ 3 files changed, 6 insertions(+), 2 deletions(-)
+
+commit ab38cf674658fbdde5732171b218fddaaccecbf9
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Sat Oct 10 14:21:20 2020 -0400
+
+    Map hy-arevmda to 'HYE ' instead of HYE0
+
+ src/gen-tag-table.py   | 3 +++
+ src/hb-ot-tag-table.hh | 7 +++++++
+ 2 files changed, 10 insertions(+)
+
+commit 916c5a900708f25b3b6efa7079ae0b9ce701643c
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Sat Oct 10 14:15:16 2020 -0400
+
+    Consistently emit BCP 47 subtag scope suffixes
+
+ src/gen-tag-table.py   |  23 ++++++++---
+ src/hb-ot-tag-table.hh | 102 ++++++++++++++++++++++++-------------------------
+ 2 files changed, 69 insertions(+), 56 deletions(-)
+
+commit 1c05f6789b86ae7bf54fb74255b3c8cea31d9978
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Sun Oct 11 12:28:25 2020 -0600
+
+    [buffer] Increase work limits
+    
+    Our previous limits of 64 per input character was already hit
+    by David Corbett's under-development Duployan font.
+    
+    Increase work limits by factor of 16, and number of glyphs by factor of 2.
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2707
+
+ src/hb-buffer.hh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit b37edebfcb10ef9d37258d504de4d1a97847d6eb
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 21:26:09 2020 -0600
+
+    [buffer/deserialize] Do not clear() buffer upon content type mismatch
+    
+    We return false. I don't see reason to clear buffer.
+
+ src/hb-buffer-deserialize-json.hh | 54 +++++++++++-------------
+ src/hb-buffer-deserialize-json.rl |  8 +---
+ src/hb-buffer-deserialize-text.hh | 86 ++++++++++++++++-----------------------
+ src/hb-buffer-deserialize-text.rl |  8 +---
+ 4 files changed, 63 insertions(+), 93 deletions(-)
+
+commit c396e1600f732e6e53a8733815b0a215ab9be6ce
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 21:13:10 2020 -0600
+
+    [buffer/deserialize] Accept arbitrary glyph names
+    
+    Accepts escapes. Added TODO items for matching escaping in serialize().
+
+ src/hb-buffer-deserialize-json.hh | 201 ++++++------
+ src/hb-buffer-deserialize-json.rl |  17 +-
+ src/hb-buffer-deserialize-text.hh | 630 +++++++++++++++++++++++---------------
+ src/hb-buffer-deserialize-text.rl |   9 +-
+ src/hb-buffer-serialize.cc        |  14 +-
+ 5 files changed, 524 insertions(+), 347 deletions(-)
+
+commit 4a4eebcf86f258b3dc465400092063300a588bbf
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 21:06:20 2020 -0600
+
+    [buffer/serialize] Minor renames in Ragel machines
+    
+    As per my previous review on:
+    https://github.com/harfbuzz/harfbuzz/pull/2687
+
+ src/hb-buffer-deserialize-json.hh |   2 +-
+ src/hb-buffer-deserialize-json.rl |  18 +++----
+ src/hb-buffer-deserialize-text.hh | 104 +++++++++++++++++++++++---------------
+ src/hb-buffer-deserialize-text.rl |  20 +++++---
+ 4 files changed, 86 insertions(+), 58 deletions(-)
+
+commit 540d2cdddb4ae4a39194d3cf0efc19a9e9edaf22
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 18:07:28 2020 -0600
+
+    [tests/buffer] Revert unintended whitespace changes
+    
+    From 9e5538d6a3d6f1ffbee7fad3c821621f17d61494
+    
+    Tried squashing into, but too much merge conflict.
+
+ test/api/test-buffer.c | 1332 ++++++++++++++++++++++++------------------------
+ 1 file changed, 667 insertions(+), 665 deletions(-)
+
+commit 78fb6a11afde1b4b62c343d72ea31f9f21580402
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 18:02:16 2020 -0600
+
+    Whitespace
+
+ src/hb-buffer-serialize.cc | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit 140552cec98684cdab72a29ee59ba6ddfcca75b4
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 18:01:32 2020 -0600
+
+    [buffer/serialize] Only serialize empty buffers of CONTENT_TYPE_INVALID
+
+ src/hb-buffer-serialize.cc | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 04658ec48f9c934e8453583b161e7b5260231a8d
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 17:59:54 2020 -0600
+
+    [tests/buffer] Update tests for previous commit
+
+ test/api/test-buffer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 8f5d8b155c0cbf9f61cf6a23d73dbc7130df21e0
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 17:58:57 2020 -0600
+
+    [buffer] Buffer start <= end <= len requirement in (de-)serialize
+
+ src/hb-buffer-serialize.cc | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 3b64122a7fd5218df6e0f8b345becb7ff73510f7
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Fri Oct 9 17:55:21 2020 -0600
+
+    [buffer] Fix immutable case with end_ptr==nullptr
+
+ src/hb-buffer-serialize.cc | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 7c0bc0bb926a37a5bc1289c1c0867843e476e863
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 25 21:24:41 2020 +0100
+
+    Serialize invalid buffer to !! (text) or [] (json)
+    
+    There is no generic deserialize - you have to choose glyphs or unicode - so there is no way to deserialize this buffer.
+
+ src/hb-buffer-serialize.cc | 49 +++++++++++++++++++++++++++++++++++++++++-----
+ test/api/test-buffer.c     | 20 ++++++++++++++++---
+ 2 files changed, 61 insertions(+), 8 deletions(-)
+
+commit 5bb88c4f4569a2740d392c1a432ebb3537935e9c
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 25 10:08:00 2020 +0100
+
+    Oops debug print
+
+ src/hb-buffer-serialize.cc | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit f56eb402f06003ef66f3922dd948257516fec18e
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 25 10:06:33 2020 +0100
+
+    Immutable buffer fix
+
+ src/hb-buffer-serialize.cc | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit 150f391438a56ada7227fbcb94a6a86f3305c68e
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 25 10:04:39 2020 +0100
+
+    Prohibit mixed glyphs/unicode buffers in deserialization
+
+ src/hb-buffer-deserialize-json.hh |  190 ++++--
+ src/hb-buffer-deserialize-json.rl |   28 +-
+ src/hb-buffer-deserialize-text.hh |  130 ++--
+ src/hb-buffer-deserialize-text.rl |   28 +-
+ test/api/test-buffer.c            | 1315 +++++++++++++++++++------------------
+ 5 files changed, 938 insertions(+), 753 deletions(-)
+
+commit 6b1726b6efcd5c2a7c610277d58be57b0ec659dd
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Mon Sep 21 16:35:40 2020 +0100
+
+    Typos
+
+ src/hb-buffer-serialize.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 3d3c87e7e7bb8a6ec104da72aa7e6103941045bd
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Mon Sep 21 14:35:05 2020 +0100
+
+    Put the flags back in and serialize clusters.
+    
+    Note that now JSON glyph buffers and Unicode buffers look very similar, except for the g/u property difference.
+
+ src/hb-buffer-deserialize-json.hh | 467 +++++++++++++++++---------------------
+ src/hb-buffer-deserialize-json.rl |   9 +-
+ src/hb-buffer-deserialize-text.hh | 434 +++++++++++++++++++----------------
+ src/hb-buffer-deserialize-text.rl |   2 +-
+ src/hb-buffer-serialize.cc        |  45 +++-
+ src/hb-buffer.h                   |   3 +-
+ test/api/test-buffer.c            |  19 +-
+ 7 files changed, 500 insertions(+), 479 deletions(-)
+
+commit 432a05b2af8522c2c5f0c7c21f06e44ab6d6a07a
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 14:19:39 2020 +0100
+
+    (Simple) tests for Unicode serialization/deserialization
+
+ test/api/test-buffer.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+
+commit c03a2001b2e19ff8b88e24f5b489af58952a86e7
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 14:19:17 2020 +0100
+
+    Deserialization routines for Unicode buffers
+
+ src/hb-buffer-deserialize-json.hh | 467 ++++++++++++++++++++++----------------
+ src/hb-buffer-deserialize-json.rl |   8 +-
+ src/hb-buffer-deserialize-text.hh | 456 +++++++++++++++++++++++--------------
+ src/hb-buffer-deserialize-text.rl |  19 +-
+ src/hb-buffer-serialize.cc        |  87 ++++++-
+ src/hb-buffer.h                   |   8 +
+ 6 files changed, 655 insertions(+), 390 deletions(-)
+
+commit c0716bb5dc8b25ec452e71afc74ebebbc927fed8
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 10:31:28 2020 +0100
+
+    Move delimiter addition into hb-buffer-serialize
+
+ src/hb-buffer-serialize.cc | 23 ++++++++++++++++++++++-
+ util/options.cc            |  8 --------
+ 2 files changed, 22 insertions(+), 9 deletions(-)
+
+commit 36ede569622f64406b441758d03c7a44a55a3c50
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 10:24:29 2020 +0100
+
+    Fix docs
+    
+    Note the delimiters stuff isn’t true yet, will be working on that
+
+ src/hb-buffer-serialize.cc | 59 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 58 insertions(+), 1 deletion(-)
+
+commit bb7b634cd044846e95f47538fe0f3bb8c35abd5f
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 09:49:19 2020 +0100
+
+    Simplify JSON unicode serialization
+    
+    It’s just an array of codepoints; no need to turn them into objects
+
+ src/hb-buffer-serialize.cc | 5 -----
+ 1 file changed, 5 deletions(-)
+
+commit 57a528ab2ca09b2252598008e3d83a9bda1576ae
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 09:35:05 2020 +0100
+
+    Convert tabs to spaces
+
+ src/hb-buffer-serialize.cc | 298 +++++++++++++++++++++------------------------
+ 1 file changed, 136 insertions(+), 162 deletions(-)
+
+commit aff6a362665cd6c582c9f79cbc3724fb918e22ce
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Fri Sep 18 09:27:27 2020 +0100
+
+    Use auxbuffer for serialize_unicode_text
+
+ src/hb-buffer-serialize.cc | 39 ++++++++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
+
+commit a0203a28bb8e22a960eaeda8256ea7e657b2552a
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Thu Sep 17 16:49:59 2020 +0100
+
+    Use hb_buffer_serialize to trace in utils
+
+ util/hb-shape.cc |  2 +-
+ util/options.cc  | 37 +++++++++++++------------------------
+ util/options.hh  |  4 +---
+ 3 files changed, 15 insertions(+), 28 deletions(-)
+
+commit 58bcc1cedd5a38a0a0da569e7e11c7641cdfc910
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Thu Sep 17 16:29:40 2020 +0100
+
+    Serialize Unicode buffers
+
+ src/hb-buffer-serialize.cc | 181 +++++++++++++++++++++++++++++++++++++++++++++
+ src/hb-buffer.h            |  20 +++++
+ 2 files changed, 201 insertions(+)
+
+commit c39ab82c90479341dcf28eaa8174af6f08c0d7ae
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Tue Oct 6 16:51:40 2020 -0400
+
+    Fix usage text of gen-use-table.py
+
+ src/gen-use-table.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a99e8721bfdb3f346d169e0d3ff0a52e13fbd1d7
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Mon Sep 28 21:12:46 2020 -0400
+
+    [use] Fix tests with MSVC
+
+ src/hb-ot-shape-complex-use-machine.hh | 17 +++++++++--------
+ src/hb-ot-shape-complex-use-machine.rl |  3 ++-
+ 2 files changed, 11 insertions(+), 9 deletions(-)
+
+commit 7e6070a47f2127c90ad233ab3794097357a3f4ed
+Author: Koji Ishii <kojii@chromium.org>
+Date:   Mon Aug 31 17:21:21 2020 +0900
+
+    Set *coord to nullptr
+
+ src/hb-ot-layout-base-table.hh | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
+
+commit 4e0bddb7fea3ada6dc1ba05ed2fab9f2b813640d
+Author: Koji Ishii <kojii@chromium.org>
+Date:   Wed Aug 19 20:49:10 2020 +0900
+
+    get_baseline
+
+ src/hb-ot-layout-base-table.hh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 48fcb9094aeb04bb4ff581c04603fbb7acfd71df
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Sun Sep 27 16:53:32 2020 -0600
+
+    [docs] Remove misleading wording re OpenType
+    
+    HarfBuzz has not *just* been implementing OpenType for a while.
+    At least since 2.0, where we added native AAT support in Oct 2018.
+
+ docs/harfbuzz-docs.xml | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit 5539d158b75470dcf41bb86e2e8b9a7a986447c0
+Merge: 1a15bf1c cc7b3a1a
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Sat Sep 26 10:41:38 2020 +0200
+
+    Merge pull request #1679 from n8willis/docs-gtkdoc-extern
+    
+    [Docs] Add GTK-Doc comments for external APIs
+
+commit 1a15bf1c535236c4117dcf5eb9afa4e462fbe364
+Merge: 8c5d1332 fb0195ba
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Sat Sep 26 10:41:04 2020 +0200
+
+    Merge pull request #2695 from khaledhosny/docs-fix
+    
+    Minor build docs improvement
+
+commit cc7b3a1abd24aebabd812a151e0c206bf6f09635
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sat Sep 26 10:22:39 2020 +0200
+
+    [Docs] Address review comments
+
+ src/hb-face.cc    | 11 ++++++-----
+ src/hb-face.h     |  2 --
+ src/hb-unicode.cc |  5 +++++
+ 3 files changed, 11 insertions(+), 7 deletions(-)
+
+commit 41b46a3cb2d18417d642c3101aacc38fc6a56dc9
+Author: n8willis <n8willis@users.noreply.github.com>
+Date:   Sun Apr 26 16:01:31 2020 +0100
+
+    Update hb-face.cc
+
+ src/hb-face.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 726e320ece912a75918f4a3208dff973b18c4b45
+Author: n8willis <n8willis@users.noreply.github.com>
+Date:   Sun Apr 26 15:56:57 2020 +0100
+
+    Update inline doc for hb_face_create: explain index
+
+ src/hb-face.cc | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 70331ca4850427b2c5b235ab46f6b5fb6f7036f6
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Mon Apr 22 19:25:42 2019 +0100
+
+    [Docs] Minor
+    
+    update GTK-Doc comments in hb-ot-layout.
+
+ src/hb-ot-layout.cc | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
+
+commit eb10ef46aa1c62d6871f4780831e7ea326af10cf
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Mon Apr 22 19:22:24 2019 +0100
+
+    [Docs] Add GTK-Doc comments for hb-ot-font and hb-ot-shape.
+
+ src/hb-ot-font.cc  |  3 +++
+ src/hb-ot-shape.cc | 15 +++++++++++++++
+ 2 files changed, 18 insertions(+)
+
+commit 3e72febde020649cb7c213f71675804e09fb1926
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Mon Apr 22 19:21:27 2019 +0100
+
+    [Docs] Add GTK-Doc comments for hb-face.
+
+ src/hb-face.cc | 174 +++++++++++++++++++++++++++++++++------------------------
+ src/hb-face.h  |   8 +++
+ 2 files changed, 110 insertions(+), 72 deletions(-)
+
+commit 88cdea60e07187139419c0dc2cc76eb7a3c81a6e
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Mon Apr 22 19:17:40 2019 +0100
+
+    [Docs] Add GTK-Doc comments to hb-shape-plan.
+
+ src/hb-shape-plan.cc | 140 ++++++++++++++++++++++++++++++++++-----------------
+ src/hb-shape-plan.h  |  14 ++++++
+ 2 files changed, 109 insertions(+), 45 deletions(-)
+
+commit 5b43eb5a4caadd1494a7402ff0bea893102556d7
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Mon Apr 22 19:16:48 2019 +0100
+
+    [Docs] Add GTK-Dod comments to hb-unicode.
+
+ src/hb-unicode.cc | 118 ++++++++++++---------
+ src/hb-unicode.h  | 307 +++++++++++++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 339 insertions(+), 86 deletions(-)
+
+commit fb0195ba8314a3e15e436ad82b68a65b20711098
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sat Sep 26 09:33:41 2020 +0200
+
+    [docs] Fix syntax and expand Windows section a tiny bit
+
+ docs/usermanual-install-harfbuzz.xml | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+commit db2381c92d2ffae66f155567b09576ecbfaca0af
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sat Sep 26 09:30:25 2020 +0200
+
+    [docs] Fix indentation of commands
+    
+    DocBook outputs the extra spacing before the commands verbatim.
+
+ docs/usermanual-install-harfbuzz.xml | 52 +++++++++---------------------------
+ 1 file changed, 13 insertions(+), 39 deletions(-)
+
+commit 2604201ae0f4f4e5b659d7af00684cb38d79c502
+Author: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date:   Thu Sep 24 21:00:34 2020 +0200
+
+    src/meson.build: allow introspection when cross-compiling
+    
+    introspection can be enabled when cross-compiling on certains conditions
+    (for example it is supported by buildroot) so, as suggested by
+    Tim-Philipp Müller, disable it by default for cross builds unless the
+    option was explicitly enabled by the user
+    
+    Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+ src/meson.build | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+commit 8c5d1332f152383563c2ef4b3377b9d54b151def
+Merge: 82fe1318 df00f45e
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Thu Sep 24 13:09:38 2020 +0200
+
+    Merge pull request #1664 from n8willis/docs-gtkdoc-otvar
+    
+    [Docs] Add gtk-doc comments for hb-ot-var
+
+commit df00f45e261df757caf42d9435ec06f015e4a54d
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Thu Sep 24 11:57:12 2020 +0200
+
+    Fix annotation in previous commits
+
+ src/hb-ot-var.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 5a695a79a0f1269b1ad3b4601f5dfb9794729982
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Sat May 11 13:54:40 2019 +0100
+
+    Swap # for () in gtk-doc function mention.
+
+ src/hb-ot-var.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 379be7b7c8d25f86f3d302ea4179e1bf93f025b9
+Author: n8willis <n8willis@users.noreply.github.com>
+Date:   Thu May 9 14:40:57 2019 +0100
+
+    Update src/hb-ot-var.cc
+    
+    Co-Authored-By: Khaled Hosny <khaledhosny@eglug.org>
+
+ src/hb-ot-var.cc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 938add712a25d20fbc9752963885a32753e30937
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Thu Apr 11 19:45:12 2019 +0100
+
+    Add GTK-Doc comments for hb-ot-var.
+
+ src/hb-ot-var.cc | 115 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ src/hb-ot-var.h  |  41 +++++++++++++++++++-
+ 2 files changed, 150 insertions(+), 6 deletions(-)
+
+commit 82fe13182d928e5d0e7f2c93528bddc0848e163b
+Merge: a1f4d285 9a1be3fe
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Tue Sep 22 17:40:38 2020 +0200
+
+    Merge pull request #1661 from n8willis/docs-gtkdoc-aat
+    
+    [Docs] Add gtk-doc comments for hb-aat-layout
+
+commit 9a1be3fed58e75d23dcda087de63f7e410680631
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Tue Sep 22 16:46:03 2020 +0200
+
+    Fix enum documentation syntax
+
+ src/hb-aat-layout.h | 643 +++++++++++++++++++++++-----------------------------
+ 1 file changed, 283 insertions(+), 360 deletions(-)
+
+commit 3c9244e662c8225ed11c72db0c095dfe04b0f925
+Author: n8willis <n8willis@users.noreply.github.com>
+Date:   Sat May 11 16:44:30 2019 +0100
+
+    Update src/hb-aat-layout.cc
+    
+    Co-Authored-By: Khaled Hosny <khaledhosny@eglug.org>
+
+ src/hb-aat-layout.cc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit d619ba0681504a107e0bb8bde85d0564f9327edd
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Mon Apr 8 20:17:38 2019 +0100
+
+    Add gtk-doc documentation to AAT layout functions and enums.
+
+ src/hb-aat-layout.cc | 26 ++++++++++-----
+ src/hb-aat-layout.h  | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 106 insertions(+), 12 deletions(-)
+
+commit 514e6baaf061ee5c601f6b181f8dd9cd436843a9
+Author: Nathan Willis <nwillis@glyphography.com>
+Date:   Thu Apr 4 10:18:29 2019 +0100
+
+    [gtk-doc] document AAT functions and enums.
+
+ src/hb-aat-layout.cc |  63 ++++++++---
+ src/hb-aat-layout.h  | 293 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 341 insertions(+), 15 deletions(-)
+
+commit a1f4d285e1305fda5da771c3c5555c912b8e2d65
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Mon Sep 21 16:50:11 2020 -0600
+
+    [buffer] Fix invalid write access in hb_buffer_deserialize_glyphs()
+    
+    If buffer is immutable, we were trying to set content_type on it.
+    Ouch!
+
+ src/hb-buffer-serialize.cc | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 18b8046c6aa2e311f0b47bfa66613c764d13283e
+Merge: 1f8b1e7f e43b9a29
+Author: Caleb Maclennan <caleb@chiefworks.com>
+Date:   Mon Sep 21 17:32:34 2020 +0300
+
+    Merge pull request #2678 from alerque/post-artifacts
+
+commit 1f8b1e7f186f44db575e18d0958c9fb3ea14a594
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Mon Sep 21 11:39:38 2020 +0330
+
+    [ENOMEM] Return gracefully if stages isn't initialized correctly (#2639)
+    
+    This happens if calls to 'm.lookups[table_index].push ()' has been
+    silently failed due to lack of memory.
+    
+    This change just returns gracefully instead issuing the assert.
+    
+    Fixes https://crbug.com/oss-fuzz/24494
+
+ src/hb-ot-map.hh                                         |   4 ++--
+ ...z-testcase-minimized-hb-shape-fuzzer-5753845452636160 | Bin 0 -> 2109 bytes
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit a0ebea5280abddb9eb22dcc8fd97c521c38da597
+Merge: e40c0d82 f9f473a4
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Fri Sep 18 17:04:38 2020 +0200
+
+    Merge pull request #2665 from khaledhosny/doc-default-features
+    
+    [docs] Improve documentation for default features
+
+commit f9f473a4c40d95392fd314ff7e31f89d8b3b452d
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Wed Sep 2 16:40:52 2020 +0200
+
+    [docs] Improve documentation for default features
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2213
+
+ docs/usermanual-opentype-features.xml | 44 +++++++++++++++++++++++++++++------
+ 1 file changed, 37 insertions(+), 7 deletions(-)
+
+commit e40c0d82e2c01af4c180f7e4f8ccc4200e6a5362
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Wed Sep 16 12:48:30 2020 -0600
+
+    [ENOMEM] Handle immutable buffer in shape_full()
+    
+    Move the content_type changing to shape_plan_execute() where it belongs.
+    Skip setting if content type is UNKNOWN, which happens with empty buffers
+    only, including the immutable buffer.
+    
+    Alternate fix to https://github.com/harfbuzz/harfbuzz/pull/2606
+    and https://github.com/harfbuzz/harfbuzz/pull/2625
+
+ src/hb-shape-plan.cc | 55 +++++++++++++++++++++++++++++++++-------------------
+ src/hb-shape.cc      |  4 ----
+ 2 files changed, 35 insertions(+), 24 deletions(-)
+
+commit bbbcad0dbbe980209be946612de352cadae98522
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Sep 16 11:19:40 2020 -0700
+
+    Revert "[ENOMEM] don't perform set process operations if the other set is in an error state."
+    
+    This reverts commit f3929abafe3b64f15d0dc2d21ad7b493eeb92dfe.
+
+ src/hb-set.hh                                            |   1 -
+ ...-testcase-minimized-hb-subset-fuzzer-5345734743031808 | Bin 1240 -> 0 bytes
+ 2 files changed, 1 deletion(-)
+
+commit f3929abafe3b64f15d0dc2d21ad7b493eeb92dfe
+Author: Garret Rieger <grieger@google.com>
+Date:   Tue Sep 15 13:06:36 2020 -0700
+
+    [ENOMEM] don't perform set process operations if the other set is in an error state.
+    Running a process while the other set is in an error state can potentially corrupt this sets map map (for example by overwritting all of the major values with 0).
+
+ src/hb-set.hh                                            |   1 +
+ ...-testcase-minimized-hb-subset-fuzzer-5345734743031808 | Bin 0 -> 1240 bytes
+ 2 files changed, 1 insertion(+)
+
+commit 584d3a43b269032322b00a19e240e3222425f2a9
+Merge: 8c3d4de7 7d64b097
+Author: Simon Cozens <simon@simon-cozens.org>
+Date:   Wed Sep 16 15:08:50 2020 +0100
+
+    Merge pull request #2681 from khaledhosny/myanmar-liga
+    
+    [myanmar] Don’t disable liga feature
+
+commit 7d64b09765e326da810e98d3234ca72209cd5aae
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sat Sep 12 21:17:18 2020 +0200
+
+    [myanmar] Don’t disable liga feature
+    
+    This seems to have been carried over from the Indic shaper, but
+    Uniscribe enables it by default.
+    
+    See https://github.com/harfbuzz/harfbuzz/issues/2213#issuecomment-686062915
+
+ src/hb-ot-shape-complex-myanmar.cc                       |   8 +-------
+ test/shaping/data/in-house/Makefile.sources              |   1 +
+ .../fonts/065b01e54f35f0d849fd43bd5b936212739a50cb.ttf   | Bin 0 -> 1808 bytes
+ test/shaping/data/in-house/meson.build                   |   1 +
+ test/shaping/data/in-house/tests/myanmar-misc.tests      |   1 +
+ 5 files changed, 4 insertions(+), 7 deletions(-)
+
+commit 8c3d4de796d8d691c63d5c20ac32051c652d72b8
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Sep 9 12:38:34 2020 -0700
+
+    [subset] Fix integer underflow in ContextFormat2.
+
+ src/hb-ot-layout-gsubgpos.hh                            |   2 +-
+ ...testcase-minimized-hb-subset-fuzzer-5689082504806400 | Bin 0 -> 84172 bytes
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+commit e43b9a29a98d303240976bb0a7de27a0e3a56504
+Author: Caleb Maclennan <caleb@alerque.com>
+Date:   Fri Sep 11 22:15:10 2020 +0300
+
+    [ci] Trigger dependencies of publish jobs on tags
+
+ .circleci/config.yml | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+commit deb09e0d7556cbe88e8003c6ff0fa2192052c337
+Author: Caleb Maclennan <caleb@alerque.com>
+Date:   Fri Sep 11 19:52:46 2020 +0300
+
+    [ci] Tweak job names so config is valid Circle 2.1 schema
+
+ .circleci/config.yml | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit f4dea33f6d9acd6eea16f4a3130c9ec5d57928bf
+Author: Caleb Maclennan <caleb@alerque.com>
+Date:   Fri Sep 11 17:23:00 2020 +0300
+
+    [ci] Move repeated artifact upload job code to script
+
+ .ci/publish_release_artifact.sh | 20 ++++++++++++++++++++
+ .circleci/config.yml            | 22 +++++-----------------
+ 2 files changed, 25 insertions(+), 17 deletions(-)
+
+commit 65be538fffb01a03d98212e77f5240225580dfe0
+Author: Caleb Maclennan <caleb@alerque.com>
+Date:   Fri Sep 11 16:46:34 2020 +0300
+
+    [ci] Add job to publish autotools dist file to GitHub
+
+ .circleci/config.yml | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+commit 42bcc47d01d86eb44feae2df9d9fc6d4345270bb
+Author: Caleb Maclennan <caleb@alerque.com>
+Date:   Fri Sep 11 16:40:32 2020 +0300
+
+    [ci] Use executor with Circle's image for autotools job
+
+ .circleci/config.yml | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+commit c70f5090229ea4dbdea823d5f92cc17e3d2e73f3
+Author: Caleb Maclennan <caleb@alerque.com>
+Date:   Fri Sep 11 14:54:02 2020 +0300
+
+    [ci] Use `ghr` CLI tool to post Win32 artifact to GitHub
+
+ .circleci/config.yml | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+commit 610ed3b42c8a1b411f99654f45c68aba2215afbd
+Author: Caleb Maclennan <caleb@alerque.com>
+Date:   Fri Sep 11 10:47:08 2020 +0300
+
+    [ci] Add job to publish Win32 releases and pass it artifacts
+
+ .circleci/config.yml | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+commit a2d45cd5f7a16c8757f148f452561fdbe531ee4c
+Author: Caleb Maclennan <caleb@alerque.com>
+Date:   Fri Sep 11 14:14:20 2020 +0300
+
+    [ci] Use Circle's customized image for workspace support
+
+ .circleci/config.yml | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+commit ac3f859a30731fcd2cf4be044d69a64cc43b5225
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Wed Sep 9 11:49:56 2020 -0400
+
+    Demote unregistered vendor-specific language tags
+
+ src/gen-tag-table.py   | 12 +-----------
+ src/hb-ot-tag-table.hh |  4 +---
+ 2 files changed, 2 insertions(+), 14 deletions(-)
+
+commit ee12c078ed775cda64f177055a1d1640675fb2d2
+Merge: 695d85ca 5aff8310
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Tue Sep 8 15:37:30 2020 +0200
+
+    Merge pull request #2668 from rossburton/meson
+    
+    meson: add hb-version.h to dependencies correctly
+
+commit 695d85ca327cf6aaafcde36870a21f70d46fa863
+Merge: 91fe20f0 e876886d
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Tue Sep 8 15:37:00 2020 +0200
+
+    Merge pull request #2674 from rossburton/reprod
+    
+    src/hb-gobject-enums.cc.tmpl: write out only the filename, not the full path
+
+commit 91fe20f0f5b868fc375291c525a32a6777554bd3
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Fri Sep 4 09:18:19 2020 -0400
+
+    Disambiguate OT tags when primary tag is not first
+
+ src/gen-tag-table.py   | 4 ++++
+ src/hb-ot-tag-table.hh | 8 +++++++-
+ test/api/test-ot-tag.c | 3 +++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
+
+commit e876886d1e877ad90b6f02badefd6ebee1bc0b09
+Author: Alexander Kanavin <alex.kanavin@gmail.com>
+Date:   Tue Aug 18 10:31:47 2020 +0000
+
+    src/hb-gobject-enums.cc.tmpl: write out only the filename, not the full path
+    
+    This is beneficial for reproducible builds, as build paths can vary
+    between builds.
+
+ src/hb-gobject-enums.cc.tmpl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 5aff83104e03d6d2617987d24a51e490ab7a5cd1
+Author: Ross Burton <ross.burton@arm.com>
+Date:   Mon Sep 7 10:55:33 2020 +0100
+
+    [build] generate hb-version.h once at configure time with Meson
+    
+    Currently with Meson hb-version.h is generated during the build without
+    any explicit dependencies which can result in build failures due races
+    over the file.
+    
+    Change this to be generated at configure time, so that the file is always
+    generated once before the build itself.
+    
+    Closes #2667
+
+ src/meson.build | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+commit bc1c93fbe04459a4b12c76c713ba1b750d2d9108
+Author: Ross Burton <ross.burton@arm.com>
+Date:   Mon Sep 7 17:11:17 2020 +0100
+
+    [build] No need to pass source directory to gen-hb-version
+    
+    The input file is by definition in the source directory, so dirname()
+    that instead of needing the directory to be passed.
+    
+    Needed because a follow-up commit will change when this is called, and the
+    source directory isn't trivially available at that point.
+
+ src/gen-hb-version.py | 6 +++---
+ src/meson.build       | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit faf09f5466370a45e1a9d7c07968af517d680d78
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Fri Aug 14 18:30:20 2020 -0400
+
+    [USE] Support hieroglyph clusters
+
+ src/gen-use-table.py                   |  24 ++
+ src/hb-ot-shape-complex-use-machine.hh | 465 +++++++++++++++++----------------
+ src/hb-ot-shape-complex-use-machine.rl |   6 +
+ src/hb-ot-shape-complex-use-table.cc   | 104 +++++++-
+ src/hb-ot-shape-complex-use.cc         |   2 +
+ src/hb-ot-shape-complex-use.hh         |   4 +
+ 6 files changed, 366 insertions(+), 239 deletions(-)
+
+commit 06f49fc8ae40f083758e1ca8e9bd9879549d8c39
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Thu Aug 13 13:37:45 2020 -0400
+
+    [USE] Update to the 2020-08-13 USE specification
+    
+    This also uses the data files from
+    <https://github.com/microsoft/font-tools/tree/78b2134fdca84df41a931d30d5c48fec115eca41/USE>.
+
+ src/gen-use-table.py                              | 210 +++++++-----
+ src/hb-ot-shape-complex-use-machine.hh            | 330 +++++++++---------
+ src/hb-ot-shape-complex-use-machine.rl            |   3 +-
+ src/hb-ot-shape-complex-use-table.cc              | 398 ++++++++++++++++++----
+ src/hb-ot-shape-complex-vowel-constraints.cc      |   2 +-
+ src/hb-ot-shape-complex.hh                        |   7 +
+ src/ms-use/IndicPositionalCategory-Additional.txt | 102 ++++++
+ src/ms-use/IndicShapingInvalidCluster.txt         |   4 +-
+ src/ms-use/IndicSyllabicCategory-Additional.txt   | 207 +++++++++++
+ src/update-unicode-tables.make                    |   2 +-
+ 10 files changed, 946 insertions(+), 319 deletions(-)
+
+commit e3db84a9d05f40c5281d889a726eb2e4baa12328
+Author: David Corbett <corbett.dav@husky.neu.edu>
+Date:   Fri May 3 23:29:58 2019 -0400
+
+    [use] Test CGJ and ZWNJ
+
+ test/shaping/data/in-house/tests/use-syllable.tests | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit 6a38adeb577444cd164eeb6ace70741fe1a33791
+Author: David Corbett <corbett.dav@husky.neu.edu>
+Date:   Fri May 3 14:16:50 2019 -0400
+
+    [use] Skip most default ignorables when clustering
+
+ src/Makefile.sources                     |   1 +
+ src/gen-use-table.py                     |  12 +-
+ src/hb-ot-shape-complex-machine-index.hh |  69 ++++
+ src/hb-ot-shape-complex-use-machine.hh   | 592 +++++++++++++++----------------
+ src/hb-ot-shape-complex-use-machine.rl   |  55 ++-
+ src/hb-ot-shape-complex-use-table.cc     |  76 ++--
+ src/hb-ot-shape-complex-use.hh           |   2 -
+ 7 files changed, 422 insertions(+), 385 deletions(-)
+
+commit 645f4e7cdd874bd454fceec76b33e57c0a205775
+Author: David Corbett <corbett.dav@husky.neu.edu>
+Date:   Fri May 3 18:28:18 2019 -0400
+
+    Unhide CGJ before ccc=0 characters
+    
+    If a CGJ precedes a starter, then it cannot have blocked any reordering,
+    so it can safely be skipped.
+
+ src/hb-ot-shape-normalize.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9825e3dd2eaea4e267054adebc8d972e1f01cc0d
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Aug 26 17:31:50 2020 -0700
+
+    [ENOMEM] fix access to unitialized memory.
+    If the serialize() call fails to write the object then we can't safely read varstore_prime fields. Fixes https://oss-fuzz.com/testcase-detail/5137462782066688.
+
+ src/hb-ot-layout-common.hh                              |   5 ++++-
+ ...testcase-minimized-hb-subset-fuzzer-5137462782066688 | Bin 0 -> 76354 bytes
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+commit 45de128930a902004baa875831e38ef62780ae2e
+Merge: 9c98b2b9 fe6381d9
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Tue Sep 1 04:58:50 2020 +0300
+
+    Merge pull request #2661 from khaledhosny/failing-dw-build
+    
+    [ci] Fix failing DirectWrite build
+
+commit fe6381d9f1a34f33f020d4f7c871304376dc2844
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Tue Sep 1 03:44:01 2020 +0200
+
+    [build] Minor
+
+ src/meson.build | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+commit a4f3a752ddd89b1155978fe862d6f45bd5a89d53
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Tue Sep 1 03:21:12 2020 +0200
+
+    [build] hb-directwrite needs a C++ linker
+
+ src/meson.build | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+commit 9c98b2b9a9e43669c5e2b37eaa41b1e07de1ede3
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Sat Aug 29 00:39:42 2020 +0200
+
+    2.7.2
+
+ NEWS             | 9 ++++++++-
+ configure.ac     | 2 +-
+ meson.build      | 2 +-
+ src/hb-version.h | 4 ++--
+ 4 files changed, 12 insertions(+), 5 deletions(-)
+
+commit c0a76cb5192f6c334c6713444ac5a02d59faaf74
+Merge: fcddf3b9 a495a542
+Author: Khaled Hosny <dr.khaled.hosny@gmail.com>
+Date:   Sat Aug 29 00:14:01 2020 +0300
+
+    Merge pull request #2660 from harfbuzz/arabic-shaping-in-use
+    
+    [USE] Fix assertion failure for joining scripts
+
+commit a495a54236d69def7e8b1293f2887f18a6b2fecc
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Fri Aug 28 14:33:25 2020 -0400
+
+    Ignore T & U when determining the joining scripts
+
+ src/gen-arabic-joining-list.py                 | 2 ++
+ src/hb-ot-shape-complex-arabic-joining-list.hh | 1 -
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 420a74f7725bec2d3d4688fda226163b06f9a564
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Fri Aug 28 14:11:48 2020 -0400
+
+    [USE] Fix assertion failure for joining scripts
+
+ src/hb-ot-shape-complex-use.cc             | 2 +-
+ test/shaping/data/in-house/tests/use.tests | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit fcddf3b9b43e391a9ec33c823ef22827d18a1fb9
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Fri Aug 14 10:19:33 2020 +0430
+
+    [docs] Minor in TESTING.md
+    
+    Start the fuzzer with test/fuzzing/fonts seeds
+
+ TESTING.md | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 99b8a84cc50346b6788a67eadfe0ebe17545724a
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Fri Aug 14 10:14:14 2020 +0430
+
+    [docs] Reorder TESTING.md sections
+    
+    And use --reconfigure where makes sense
+
+ TESTING.md | 42 ++++++++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
+
+commit 1e48225ca312a955cc7f4a4b7683492e83d77117
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Thu Aug 13 23:22:14 2020 +0430
+
+    [ENOMEM] Check whether serialize context isn't in error
+
+ src/hb-ot-shape-complex-arabic-fallback.hh                 |   4 ++--
+ ...uzz-testcase-minimized-hb-shape-fuzzer-5138182937772032 | Bin 0 -> 68 bytes
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 05ef75c55340400d4b318bd24d742653bbf825d9
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 13 20:52:03 2020 +0430
+
+    2.7.1
+
+ NEWS             | 8 ++++++++
+ configure.ac     | 2 +-
+ meson.build      | 2 +-
+ src/hb-version.h | 4 ++--
+ 4 files changed, 12 insertions(+), 4 deletions(-)
+
+commit 0a02f1e760db5c0568dc6e15c00fa394aa43ccbb
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 13 15:33:39 2020 +0430
+
+    [meson] Abort if GDI/Uniscribe headers couldn't be found
+
+ meson.build | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 253a8f7a510ddfb8e2eb90de95db9763f2f42282
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 13 09:23:29 2020 +0430
+
+    [meson] Another approach to skip tests incompatible with MSVC
+
+ src/meson.build | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit 24b42002434d3e8dc8d164f02dda7a9c3e5386b5
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 13 09:06:39 2020 +0430
+
+    [meson] Avoid using has_headers as that has added in 0.50.0
+
+ meson.build | 55 +++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 29 insertions(+), 26 deletions(-)
+
+commit 411b426c692f611dbcdec7a6516781aa4375d07e
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 13 01:23:46 2020 +0430
+
+    [meson] minor
+
+ src/meson.build | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
+
+commit 6e32145dc91e866132a3a3911870441e98737b16
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 13 00:13:06 2020 +0430
+
+    [meson] Make compatbile with 0.47.0
+
+ .circleci/config.yml     |  2 +-
+ docs/meson.build         |  4 ++--
+ meson.build              | 18 +++++++++++-------
+ perf/meson.build         |  2 +-
+ src/meson.build          | 21 ++++++++++-----------
+ test/fuzzing/meson.build |  6 +++---
+ test/shaping/meson.build | 12 ++++++------
+ test/subset/meson.build  |  4 ++--
+ 8 files changed, 36 insertions(+), 33 deletions(-)
+
+commit 58209c86a0d2d536ce3d35953ffe340762ad1f48
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Aug 12 23:04:26 2020 +0430
+
+    [meson] Make compatbile with 0.49.0
+    
+    Contains a just put together summary feature polyfill and workaround
+    to broken ternary operator.
+
+ .circleci/config.yml |   3 +-
+ meson.build          | 102 +++++++++++++++++++++++++++++++++------------------
+ perf/meson.build     |   8 +++-
+ src/meson.build      |  28 +++++++++++---
+ 4 files changed, 98 insertions(+), 43 deletions(-)
+
+commit 1e4fe10b98a291787ae561beca80cb70b481b108
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Aug 12 13:06:37 2020 -0700
+
+    [ENOMEM] check for error in visited map during closure features.
+
+ src/hb-ot-layout-gsubgpos.hh | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 9562239f0531c0e49e6ab7e157da578d454432c8
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Aug 12 13:01:22 2020 -0700
+
+    [ENOMEM] check for error in lookup visited set.
+
+ src/hb-ot-layout-gsubgpos.hh                           |   3 +++
+ ...estcase-minimized-hb-subset-fuzzer-5741735372914688 | Bin 0 -> 560294 bytes
+ 2 files changed, 3 insertions(+)
+
+commit eea9b59fc5c7ad5649ba598765f335383795778f
+Author: Tom Schoonjans <Tom.Schoonjans@rfi.ac.uk>
+Date:   Wed Aug 12 06:40:23 2020 +0200
+
+    [meson] fix generating introspection
+    
+    Only libharfbuzz_gobject is introspectable, not libharfbuzz. Therefore,
+    it makes no sense to target the latter for introspection: it should
+    instead be listed as a dependency.
+
+ src/meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 7bffb5d7baf4dc8b96fab1f8dbc83740a6817b1a
+Author: David Corbett <corbett.dav@northeastern.edu>
+Date:   Tue Aug 11 19:24:46 2020 -0400
+
+    Generate `has_arabic_joining`
+
+ src/Makefile.am                                |   1 +
+ src/Makefile.sources                           |   1 +
+ src/gen-arabic-joining-list.py                 | 104 +++++++++++++++++++++++++
+ src/hb-ot-shape-complex-arabic-joining-list.hh |  47 +++++++++++
+ src/hb-ot-shape-complex-use.cc                 |  35 +--------
+ src/meson.build                                |   1 +
+ src/update-unicode-tables.make                 |   3 +
+ 7 files changed, 158 insertions(+), 34 deletions(-)
+
+commit 6f754852c19ff26d693a1d78de55bab263281a72
+Author: Garret Rieger <grieger@google.com>
+Date:   Tue Aug 11 15:40:47 2020 -0700
+
+    [ENOMEM] skip asserts in to_bias if serializer is in an error state.
+
+ src/hb-serialize.hh                                     |   1 +
+ ...testcase-minimized-hb-subset-fuzzer-5927551890096128 | Bin 0 -> 73364 bytes
+ 2 files changed, 1 insertion(+)
+
+commit 057769b1a316c604cf84c343a4a85a10f46c057c
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Aug 12 02:30:33 2020 +0430
+
+    [fuzzer] minor
+
+ test/fuzzing/hb-draw-fuzzer.cc   |  2 +-
+ test/fuzzing/hb-fuzzer.hh        |  2 +-
+ test/fuzzing/hb-shape-fuzzer.cc  |  2 +-
+ test/fuzzing/hb-subset-fuzzer.cc | 18 ++++++++----------
+ 4 files changed, 11 insertions(+), 13 deletions(-)
+
+commit 04179380116d6e1efcf95a70f0d79b8e095b69c6
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Aug 12 02:19:06 2020 +0430
+
+    [fuzzer] Mark alloc_state as unused
+    
+    It is really unused when failing-alloc isn't on.
+
+ test/fuzzing/hb-fuzzer.hh | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+commit 2af58c351812603498f0b67e66f84f4a33a74455
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Aug 12 00:51:07 2020 +0430
+
+    Revert "Remove cmake build files"
+    
+    This reverts commit 4e572c940724cdae6f140df924c9ad7f4baea35e.
+
+ .circleci/config.yml       |   3 +-
+ CMakeLists.txt             | 768 +++++++++++++++++++++++++++++++++++++++++++++
+ Makefile.am                |   2 +
+ replace-enum-strings.cmake |  21 ++
+ 4 files changed, 793 insertions(+), 1 deletion(-)
+
+commit ef2e3803429efe0f5a1fcb2679ae332139297917
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Aug 12 00:50:33 2020 +0430
+
+    Revert "Remove cmake-config support of HarfBuzz"
+    
+    This reverts commit 75efa893433b6f352c28bda9d0a92683244900aa.
+
+ configure.ac                 |  1 +
+ meson.build                  |  1 +
+ src/Makefile.am              |  4 ++-
+ src/harfbuzz-config.cmake.in | 86 ++++++++++++++++++++++++++++++++++++++++++++
+ src/meson.build              | 10 ++++++
+ 5 files changed, 101 insertions(+), 1 deletion(-)
+
+commit 0ca35570481ee16c44577913263032726a0c0a51
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 9 16:10:06 2020 +0430
+
+    Turn -Wunused-but-set-variable to warning
+    
+    As #2555 turned out some glib headers are imposing that so let's turn it to warning
+
+ src/hb.hh | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 519335783224e2cbfd8a4a5b9071216fe2b139b5
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Aug 11 23:51:59 2020 +0430
+
+    Revert "Remove autotools build support"
+    
+    This reverts commit 01ac32aab2109681abc58bb2f96a4ef4a7f0c6df.
+
+ .circleci/config.yml                               |  15 +
+ Makefile.am                                        |  96 ++
+ README                                             |  15 +
+ RELEASING.md                                       |   2 +-
+ autogen.sh                                         |  48 +
+ configure.ac                                       | 540 +++++++++++
+ docs/Makefile.am                                   | 126 +++
+ git.mk                                             | 400 +++++++++
+ m4/ax_check_link_flag.m4                           |  74 ++
+ m4/ax_code_coverage.m4                             | 264 ++++++
+ m4/ax_cxx_compile_stdcxx.m4                        | 982 +++++++++++++++++++++
+ m4/ax_pthread.m4                                   | 485 ++++++++++
+ src/Makefile.am                                    | 476 ++++++++++
+ src/Makefile.sources                               | 284 ++++++
+ test/Makefile.am                                   |  15 +
+ test/api/Makefile.am                               | 222 +++++
+ test/fuzzing/Makefile.am                           |  86 ++
+ test/shaping/Makefile.am                           |  39 +
+ test/shaping/data/Makefile.am                      |  14 +
+ test/shaping/data/aots/Makefile.am                 |  27 +
+ test/shaping/data/aots/Makefile.sources            | 126 +++
+ test/shaping/data/in-house/Makefile.am             |  26 +
+ test/shaping/data/in-house/Makefile.sources        |  66 ++
+ test/shaping/data/text-rendering-tests/Makefile.am |  32 +
+ .../data/text-rendering-tests/Makefile.sources     |  95 ++
+ test/subset/Makefile.am                            |  23 +
+ test/subset/data/Makefile.am                       |  45 +
+ test/subset/data/Makefile.sources                  |  31 +
+ util/Makefile.am                                   |  78 ++
+ util/Makefile.sources                              |  38 +
+ 30 files changed, 4769 insertions(+), 1 deletion(-)
+
+commit 9748ae7299330f0245e97f7b1f18cd1207043e62
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Aug 11 17:52:48 2020 +0430
+
+    Revert "Reordering fails when GDEF table is absent #2140"
+    
+    This reverts commit f4cd99f28eefe695b86876736166fd119e22e04e.
+    
+    As requested in https://github.com/harfbuzz/harfbuzz/issues/2516#issuecomment-670969185
+
+ src/hb-ot-layout-gsubgpos.hh | 37 +++++++++++++++++--------------------
+ src/hb-ot-layout.hh          |  8 ++++----
+ 2 files changed, 21 insertions(+), 24 deletions(-)
+
+commit d03eecb4d63e1cdac77a08d081179c28440b2d18
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Tue Aug 11 16:40:40 2020 +0430
+
+    [glyf] minor
+    
+    style improvement
+
+ src/hb-ot-glyf-table.hh | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+commit 732a9164d9c778a3d4315b189922d5b9c4a51495
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Tue Aug 11 16:37:55 2020 +0430
+
+    [gvar] minor
+
+ src/hb-ot-var-gvar-table.hh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit c0107c1e6ecf627d7dba344529fb5f054344f498
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Mon Aug 10 14:30:34 2020 +0430
+
+    [ci] test experimental APIs in Arch Linux and sanitizers
+
+ .circleci/config.yml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 0c1561894ac4899cd09ebef4b3d33a095e35c981
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Mon Aug 10 08:52:01 2020 +0430
+
+    [glyf] minor
+
+ src/hb-ot-glyf-table.hh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit f06d7331e8b1643680df7f0126b2d89254563dcb
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Aug 10 08:35:06 2020 +0430
+
+    [glyf] minor
+
+ src/hb-ot-glyf-table.hh | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit db96c7f67aac93ea025cf992c20acdf2364d93bc
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Aug 10 08:23:21 2020 +0430
+
+    [glyf] protect CompositeGlyph fields
+    
+    Introduce methods instead
+
+ src/hb-ot-glyf-table.hh | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
+
+commit e5fe363aa5d06a4dfe665b97a22971f12c3f84f4
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Mon Aug 10 07:39:36 2020 +0430
+
+    [glyf] Minor, don't pass accelerator_t to points_aggregator_t
+    
+    No need to pass it to aggregator itself
+
+ src/hb-ot-glyf-table.hh | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+commit 2b9927f7e16c7b25194b8aae36146bf23c73f131
+Author: ebraminio <ebrahim@gnu.org>
+Date:   Mon Aug 10 06:26:21 2020 +0430
+
+    [glyf] minor
+    
+    No need to pass glyph_for_gid as a lambda now that we are passing the accelerator itself
+
+ src/hb-ot-glyf-table.hh | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+commit fce64a407d381372c92fcb5f0e551c17185ea735
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Sat Aug 8 14:04:54 2020 -0600
+
+    Minor
+
+ src/hb-ot-layout-gpos-table.hh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ffe06c8f0498d7f5fe53c76e9d6fba9127997258
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Aug 8 13:17:34 2020 +0430
+
+    [glyf] Guard all the public APIs against null pool runs
+    
+    Fixes https://crbug.com/oss-fuzz/24575 and https://crbug.com/oss-fuzz/24737
+
+ src/hb-ot-glyf-table.hh                                |  17 ++++++++++++-----
+ ...-testcase-minimized-hb-draw-fuzzer-5103082208493568 | Bin 0 -> 1069 bytes
+ ...-testcase-minimized-hb-draw-fuzzer-5641612227772416 | Bin 0 -> 1069 bytes
+ 3 files changed, 12 insertions(+), 5 deletions(-)
+
+commit 01ac32aab2109681abc58bb2f96a4ef4a7f0c6df
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 11:35:55 2020 +0430
+
+    Remove autotools build support
+
+ .circleci/config.yml                               |  15 -
+ Makefile.am                                        |  96 --
+ README                                             |  15 -
+ RELEASING.md                                       |   2 +-
+ autogen.sh                                         |  48 -
+ configure.ac                                       | 540 -----------
+ docs/Makefile.am                                   | 126 ---
+ git.mk                                             | 400 ---------
+ m4/ax_check_link_flag.m4                           |  74 --
+ m4/ax_code_coverage.m4                             | 264 ------
+ m4/ax_cxx_compile_stdcxx.m4                        | 982 ---------------------
+ m4/ax_pthread.m4                                   | 485 ----------
+ src/Makefile.am                                    | 476 ----------
+ src/Makefile.sources                               | 284 ------
+ test/Makefile.am                                   |  15 -
+ test/api/Makefile.am                               | 222 -----
+ test/fuzzing/Makefile.am                           |  86 --
+ test/shaping/Makefile.am                           |  39 -
+ test/shaping/data/Makefile.am                      |  14 -
+ test/shaping/data/aots/Makefile.am                 |  27 -
+ test/shaping/data/aots/Makefile.sources            | 126 ---
+ test/shaping/data/in-house/Makefile.am             |  26 -
+ test/shaping/data/in-house/Makefile.sources        |  66 --
+ test/shaping/data/text-rendering-tests/Makefile.am |  32 -
+ .../data/text-rendering-tests/Makefile.sources     |  95 --
+ test/subset/Makefile.am                            |  23 -
+ test/subset/data/Makefile.am                       |  45 -
+ test/subset/data/Makefile.sources                  |  31 -
+ util/Makefile.am                                   |  78 --
+ util/Makefile.sources                              |  38 -
+ 30 files changed, 1 insertion(+), 4769 deletions(-)
+
+commit 3d164d5883ceb5698a98ca025b5f75ce465e1f51
+Author: Ryan Schmidt <git@ryandesign.com>
+Date:   Thu Aug 6 20:45:44 2020 -0500
+
+    Use printf instead of echo -n in autogen.sh
+    
+    "echo -n" is not portable and on some POSIX systems it literally prints "-n".
+
+ autogen.sh | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit 1f519c25670e8dfe694a7b3fa71c5bc7263b1b1f
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Aug 7 01:21:19 2020 +0430
+
+    [glyf] Optimize retrieval of hmtx/vmtx/gvar
+    
+    This should make glyf/gvar faster as makes it to invoke less table wrapper atomic operations and things.
+    
+    $ meson build -Dexperimental_api=true --buildtype=release && ninja -Cbuild && build/perf/perf "--benchmark_filter=glyf.*- ot -"
+    
+    Before:
+    extents/glyf - ot - SourceSerifVariable         46091 ns      46036 ns      16173
+    extents/glyf/vf - ot - SourceSerifVariable    4160142 ns    4154913 ns        174
+    extents/glyf - ot - Comfortaa                   25754 ns      25726 ns      27030
+    extents/glyf/vf - ot - Comfortaa              2627804 ns    2624596 ns        265
+    extents/glyf - ot - Roboto                      33556 ns      33540 ns      18513
+    draw/glyf - ot - SourceSerifVariable          2716848 ns    2715438 ns        256
+    draw/glyf/vf - ot - SourceSerifVariable       4602379 ns    4598907 ns        151
+    draw/glyf - ot - Comfortaa                    1659364 ns    1658142 ns        417
+    draw/glyf/vf - ot - Comfortaa                 2845100 ns    2842549 ns        246
+    draw/glyf - ot - Roboto                       1571509 ns    1570060 ns        442
+    
+    After:
+    extents/glyf - ot - SourceSerifVariable         34738 ns      34713 ns      21332
+    extents/glyf/vf - ot - SourceSerifVariable    3700510 ns    3698104 ns        187
+    extents/glyf - ot - Comfortaa                   21604 ns      21595 ns      31907
+    extents/glyf/vf - ot - Comfortaa              2324787 ns    2323440 ns        296
+    extents/glyf - ot - Roboto                      31259 ns      31246 ns      21814
+    draw/glyf - ot - SourceSerifVariable          2689230 ns    2687589 ns        260
+    draw/glyf/vf - ot - SourceSerifVariable       4625135 ns    4622036 ns        131
+    draw/glyf - ot - Comfortaa                    1690336 ns    1689454 ns        402
+    draw/glyf/vf - ot - Comfortaa                 2898748 ns    2897074 ns        241
+    draw/glyf - ot - Roboto                       1570911 ns    1570138 ns        440
+
+ src/hb-ot-glyf-table.hh | 70 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 43 insertions(+), 27 deletions(-)
+
+commit 0907c10214c9b989c76a34b260042e88c707f9bd
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Aug 7 00:15:32 2020 +0430
+
+    [gvar] minor
+
+ src/hb-ot-var-gvar-table.hh | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+commit 679fac87dfbdef3192184b2d2374fda334205b41
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 15:29:43 2020 +0430
+
+    Skip hb_shape if buffer object is immutable
+
+ src/hb-shape.cc                 | 2 ++
+ test/fuzzing/hb-shape-fuzzer.cc | 6 ++----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 55c41f219f539464335c16dc8392787fd0ac1b46
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 6 23:37:43 2020 +0430
+
+    [glyf] Clamp advance value result
+    
+    Fixes a sanitizer complain https://circleci.com/gh/harfbuzz/harfbuzz/150247 revealed by 02d1ec1
+
+ src/hb-ot-glyf-table.hh | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit 02d1ec16585738d5e55354224bcfcc552b079a76
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 6 22:18:35 2020 +0430
+
+    [gvar] Don't fail on imprefect gvar
+    
+    No need to fail even if gvar doesn't have that much glyphs
+
+ src/hb-ot-var-gvar-table.hh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ec17b6245755a7527c7f5d5242868ce0886327c9
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 6 20:16:11 2020 +0430
+
+    [var] Apply variations on empty glyphs
+    
+    It was ignoring empty glyphs for no good reason, this fixes it.
+    
+    Fixes #2618
+
+ src/hb-ot-glyf-table.hh                                  |   6 ++++--
+ src/hb-ot-var-gvar-table.hh                              |   2 ++
+ test/shaping/data/in-house/Makefile.sources              |   1 +
+ .../fonts/ab40c89624a6104e5d0a2308e448a989302f515b.ttf   | Bin 0 -> 7440 bytes
+ test/shaping/data/in-house/meson.build                   |   1 +
+ test/shaping/data/in-house/tests/variations-space.tests  |   2 ++
+ 6 files changed, 10 insertions(+), 2 deletions(-)
+
+commit 5cab55ca90a64da281ef2c55e892bb0d6ebb3019
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Aug 6 18:54:58 2020 +0430
+
+    [gvar] minor
+
+ src/hb-ot-var-gvar-table.hh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 20e42a212849554687b808b316f077a023126a95
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Aug 4 16:49:27 2020 +0430
+
+    [docs] minor on TESTING.md
+
+ TESTING.md | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+commit 5a2d216f309fa91faf76a1ebebbcf8a36e21f592
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Aug 4 15:25:48 2020 +0430
+
+    [docs] meson related updates on install
+
+ docs/usermanual-install-harfbuzz.xml | 83 +++++++++++++-----------------------
+ 1 file changed, 29 insertions(+), 54 deletions(-)
+
+commit 34a05320921629f430ed36c30e24494c9841079c
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Aug 4 15:14:59 2020 +0430
+
+    [meson] minor note
+
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit cac483bf1563381a6081b06592a96f7055427e10
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Aug 3 18:41:49 2020 +0430
+
+    [docs] Update README.python.md with meson
+
+ README.python.md | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+commit 75efa893433b6f352c28bda9d0a92683244900aa
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 01:17:42 2020 +0430
+
+    Remove cmake-config support of HarfBuzz
+    
+    Reverts d38f37b2 as discussed in #2316
+
+ configure.ac                 |  1 -
+ meson.build                  |  1 -
+ src/Makefile.am              |  4 +--
+ src/harfbuzz-config.cmake.in | 86 --------------------------------------------
+ src/meson.build              | 10 ------
+ 5 files changed, 1 insertion(+), 101 deletions(-)
+
+commit 97079a7c8f7d52ff381b2b3d6e0c430358d1b340
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 12:34:21 2020 +0430
+
+    [meson] Pass cpp_eh=none and cpp_rtti=false as default options
+    
+    If we want to support a build with exception handling and RTTI
+    We should reflect that on library(..., link_language: 'c') also so for
+    now it is ok to just set it here to get MSVC support also and we
+    can remove hard coded flags later upon request.
+    
+    One other concern over just relying on it is on when harfbuzz is used
+    as a subproject and the parent project hasn't provided the same options,
+    that should be resolved first I think.
+    
+    Closes #2584
+
+ meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 749e2754c83583e51034da09d3581af0f8d9e1a3
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 12:21:51 2020 +0430
+
+    [meson] remove useless note about -fvisibility-inlines-hidden
+    
+    It was put there as current situation of autotools but msys2 is ok
+    with the flag, if something like is needed for other it can handled
+    as a local patch.
+
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 903d6a1f1418a20094af53200a9da45214c1b6af
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 11:40:47 2020 +0430
+
+    [perf] Enable ttf-parser build just with experimental_api
+    
+    ttf-parser API is subject to breaking change and we are interested on its
+    hb-draw like API so let's hide it more.
+
+ perf/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit cdb7d2b9bc0d5928ae4f6ba16fe905f603583688
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 11:26:29 2020 +0430
+
+    [docs] Update README.python.md with meson
+
+ README.python.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9fd48de6f0316fe6f1879879b96992b0471af88b
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 11:22:09 2020 +0430
+
+    [docs] Adopt CONFIG.md with meson
+
+ CONFIG.md | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+commit b0a4860d3429e9effc3e642d6ef57b92332d796b
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 11:15:15 2020 +0430
+
+    [docs] Remove packagers related part
+    
+    Covered by https://github.com/harfbuzz/harfbuzz/wiki/Notes-on-migration-to-meson
+
+ BUILD.md | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
+
+commit 50151567c13b8a3a2a838cbe1714b3cc1fd94bd6
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 10:43:25 2020 +0430
+
+    [ci] Disable Travis CI
+
+ .ci/build-freetype.sh | 17 -----------------
+ .ci/fail.sh           | 18 ------------------
+ .ci/run-coveralls.sh  | 14 --------------
+ .circleci/config.yml  |  2 +-
+ .travis.yml           | 43 -------------------------------------------
+ README.md             |  2 +-
+ 6 files changed, 2 insertions(+), 94 deletions(-)
+
+commit 11bb8aa83e57b288241b9156706e6f8d25eaf383
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Aug 2 00:47:21 2020 +0430
+
+    [meson] limit check-libstdc++ check to 0.55
+    
+    library(..., link_language: 'c') is introduced in 0.55 but we were relying on this anyway
+    assuming b_asneeded being true on meson.
+    
+    #2614
+
+ src/meson.build | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit 9d3fbe0588f8f4d5883e425680fc37778660b284
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 14:54:00 2020 +0430
+
+    [meson] Add darwin versions to library()
+    
+    We now have,
+    
+    $ otool -L src/libharfbuzz.dylib
+    src/libharfbuzz.dylib:
+            @rpath/libharfbuzz.0.dylib (compatibility version 0.0.0, current version 0.0.0)
+    
+    And with the change should we get
+    
+    $ otool -L src/libharfbuzz.dylib
+    src/libharfbuzz.dylib:
+            @rpath/libharfbuzz.0.dylib (compatibility version 20700.0.0, current version 20700.0.0)
+
+ src/meson.build | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 18ab8029d5aab6ac20c240515ad1795bd31dca1e
+Author: Garret Rieger <grieger@google.com>
+Date:   Fri Jul 31 14:40:49 2020 -0700
+
+    [ENOMEM] check vector status in cmap subsetting.
+
+ src/hb-ot-cmap-table.hh                                  |   3 +++
+ ...-testcase-minimized-hb-subset-fuzzer-6316256152780800 | Bin 0 -> 1335 bytes
+ 2 files changed, 3 insertions(+)
+
+commit 06dbb6acbbd322b3123820c73ed4371560efc558
+Author: Garret Rieger <grieger@google.com>
+Date:   Fri Jul 31 15:56:14 2020 -0700
+
+    [ENOMEM] in GSUB ChainContext subsetting check maps for allocation errors.
+
+ src/hb-ot-layout-gsubgpos.hh                            |   6 ++++++
+ ...testcase-minimized-hb-subset-fuzzer-4880059756969984 | Bin 0 -> 45902 bytes
+ 2 files changed, 6 insertions(+)
+
+commit fb1477795cb950b25472efa8d47febe81340a45b
+Author: Garret Rieger <grieger@google.com>
+Date:   Fri Jul 31 14:00:38 2020 -0700
+
+    [ENOMEM] Check result of vector resize in CBDT subsetting.
+
+ src/hb-ot-color-cbdt-table.hh                            |   6 +++++-
+ ...-testcase-minimized-hb-subset-fuzzer-6241118484955136 | Bin 0 -> 7345 bytes
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+commit 8586bad2bdadccecd830fb0a1c973423115240fb
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Jul 31 09:28:51 2020 +0430
+
+    [ci] don't install rustc on linux-ci
+    
+    https://github.com/harfbuzz/harfbuzz/pull/2610/checks?check_run_id=930572217
+
+ .github/workflows/linux-ci.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit efd716de3f4c7616aedd5c449bf8d27d565d4ab6
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Jul 31 08:58:53 2020 +0430
+
+    [cff] Check for scalars array resize result
+    
+    Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24504
+
+ src/hb-cff2-interp-cs.hh                                 |   8 +++++---
+ ...zz-testcase-minimized-hb-draw-fuzzer-6231698648596480 | Bin 0 -> 2707 bytes
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+commit 040ed094ef3cf032d84c4d65bd81f40c26f6f9e0
+Author: Garret Rieger <grieger@google.com>
+Date:   Thu Jul 30 15:14:02 2020 -0700
+
+    [ENOMEM] popragate packed/packed_map errors to the serializer.
+    Will disable further modifications based on a bad state.
+
+ src/hb-serialize.hh                                       |   3 +++
+ ...z-testcase-minimized-hb-subset-fuzzer-5661567174311936 | Bin 0 -> 473 bytes
+ 2 files changed, 3 insertions(+)
+
+commit 7f358a55f4b3c0eb6654be9e8c31ece29965b4d6
+Author: Garret Rieger <grieger@google.com>
+Date:   Thu Jul 30 13:57:30 2020 -0700
+
+    [ENOMEM] unchecked resize in CFF2.
+
+ src/hb-ot-cff2-table.hh                                  |   3 ++-
+ ...-testcase-minimized-hb-subset-fuzzer-5181909018345472 | Bin 0 -> 2559 bytes
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 32f052b033f12fbeb8741c9616860743b1f567c4
+Author: Garret Rieger <grieger@google.com>
+Date:   Thu Jul 30 13:45:04 2020 -0700
+
+    [ENOMEM] Fix several instances of not checking resize in CFF.
+
+ src/hb-subset-cff-common.hh                        |  27 ++++++++++++++++++---
+ src/hb-subset-cff1.cc                              |  14 +++++++++--
+ src/hb-subset-plan.hh                              |   6 +++++
+ ...ase-minimized-hb-subset-fuzzer-5707809174585344 | Bin 0 -> 107592 bytes
+ ...ase-minimized-hb-subset-fuzzer-5708623339323392 | Bin 0 -> 151 bytes
+ 5 files changed, 41 insertions(+), 6 deletions(-)
+
+commit 4cbc7d61bc5e7f0658fc58d807f94f3b7c335f0d
+Author: Garret Rieger <grieger@google.com>
+Date:   Thu Jul 30 12:20:31 2020 -0700
+
+    [ENOMEM] check for unset current in serializer->length().
+
+ src/hb-serialize.hh | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 0d22fb38b97afb6082fb4e5791e6fdd0166fa4a9
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 23:18:57 2020 +0430
+
+    Copy parts of README.md to README
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2591
+
+ README | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+commit cac30711834d343d36b0bea1138562beeb22340f
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 16:25:42 2020 +0430
+
+    [meson] minor, use null_dep one more place
+
+ perf/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 4e572c940724cdae6f140df924c9ad7f4baea35e
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 16:19:15 2020 +0430
+
+    Remove cmake build files
+    
+    As discussed in https://github.com/harfbuzz/harfbuzz/pull/2252
+
+ .circleci/config.yml       |   3 +-
+ CMakeLists.txt             | 768 ---------------------------------------------
+ Makefile.am                |   2 -
+ replace-enum-strings.cmake |  21 --
+ 4 files changed, 1 insertion(+), 793 deletions(-)
+
+commit 5f9ff04fb0002351f130f13cdb8719d81d1683e0
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jun 18 02:33:05 2020 +0430
+
+    Add comparison against ttf-parser
+
+ .github/workflows/linux-ci.yml |   2 +-
+ perf/meson.build               |  14 +++++-
+ perf/perf-draw.hh              | 112 +++++++++++++++++++++++++++++------------
+ perf/perf-extents.hh           |  81 ++++++++++++++++++++---------
+ perf/perf.cc                   |   1 +
+ subprojects/ttf-parser.wrap    |   5 ++
+ 6 files changed, 157 insertions(+), 58 deletions(-)
+
+commit 87f4aada9964d4eff92de50fa2cd3708c81b5066
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 15:20:17 2020 +0430
+
+    [docs] Update TESTING.md with meson
+
+ TESTING.md | 67 ++++++++++++++++++--------------------------------------------
+ 1 file changed, 19 insertions(+), 48 deletions(-)
+
+commit 15644ee60ecebb65fc4d8e6a5b999a3f1629c241
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Jul 29 16:37:39 2020 -0700
+
+    [ENOMEM] fix memory leak if allocation fails during pop_pack().
+
+ src/hb-serialize.hh                                        |   6 +++++-
+ ...zz-testcase-minimized-hb-subset-fuzzer-5684542900535296 | Bin 0 -> 70 bytes
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+commit 42237adffcfd951616efc2f8fba2cd195eb002ea
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Jul 29 15:18:25 2020 -0700
+
+    [ENOMEM] make serializer modification operations no-ops if it's in an error state.
+
+ src/hb-serialize.hh                                       |  14 ++++++++++++++
+ ...z-testcase-minimized-hb-subset-fuzzer-6231212713312256 | Bin 0 -> 76 bytes
+ 2 files changed, 14 insertions(+)
+
+commit d1f13014906d2540ea3f3e6f2aa2781e1314a869
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 02:01:43 2020 +0430
+
+    [icu] Remove support for versions older than 49
+    
+    It just doesn't make sense anymore, https://github.com/harfbuzz/harfbuzz/commit/c9e5da8ded390b816613839214fe96137ca0a0a2#r41018112
+
+ src/hb-icu.cc | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit 0b74aaece71a3546c8ed4f60866c67b98e3659c0
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 01:47:30 2020 +0430
+
+    [icu] Remove useless HB_UNUSED tags
+    
+    As https://github.com/harfbuzz/harfbuzz/commit/c9e5da8ded390b816613839214fe96137ca0a0a2#r41018040
+
+ src/hb-icu.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit c9e5da8ded390b816613839214fe96137ca0a0a2
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 30 00:53:40 2020 +0430
+
+    [icu] Remove support of ICU versions before 42
+    
+    ICU 42 is released in 2012, see also https://github.com/harfbuzz/harfbuzz/commit/44a3136ae6a28222922da13582bd2dfd3eb823c7#commitcomment-41016353
+
+ src/hb-icu.cc | 145 ++++++++++------------------------------------------------
+ 1 file changed, 23 insertions(+), 122 deletions(-)
+
+commit 4ba8e3c6fd34cf0ab5f97e607bac708a978fa9b3
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Jul 29 12:33:42 2020 -0700
+
+    [ENOMEM] Fix failure to check calloc return.
+    Fixes https://oss-fuzz.com/testcase-detail/6246465148813312.
+
+ src/hb-ot-name-table.hh                                 |   2 ++
+ ...testcase-minimized-hb-subset-fuzzer-6246465148813312 | Bin 0 -> 24246 bytes
+ 2 files changed, 2 insertions(+)
+
+commit d307c24abf37b2702706cf9df0fab571a99e2a70
+Author: Garret Rieger <grieger@google.com>
+Date:   Wed Jul 29 12:23:37 2020 -0700
+
+    [ENOMEM] check resize() return.
+    Fixes https://oss-fuzz.com/testcase-detail/5641892164009984.
+
+ src/hb-ot-cff1-table.hh                                |   3 ++-
+ ...estcase-minimized-hb-subset-fuzzer-5641892164009984 | Bin 0 -> 124518 bytes
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 8b63de110921f139ffb74cf159e2b042b0cd73d8
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 29 17:25:00 2020 +0430
+
+    [docs] Use untouched result of rsvg-convert for HarfBuzz.svg render
+    
+    See also https://github.com/harfbuzz/harfbuzz/commit/1ec77522d838dd751733d3927e3d9589bf298853?short_path=1bb7b85
+
+ docs/HarfBuzz.png | Bin 4740 -> 6254 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 7bab6087bf1b7809ce05a9fb07a40d5708e4ff5d
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 29 08:49:01 2020 +0430
+
+    [ci] Install meson's master
+    
+    As https://github.com/mesonbuild/meson/issues/7437
+
+ .github/workflows/linux-ci.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 58a5961ca1f1d7c8ed89acf07620242208d33edf
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 29 08:44:23 2020 +0430
+
+    minor spacing tweak
+
+ src/hb-subset-plan.cc | 4 ++--
+ util/hb-fc-list.c     | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 07c43b8cf6c89c79eb3e23550c6a843eaade166b
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 29 08:42:52 2020 +0430
+
+    minor spacing tweak
+
+ src/hb-subset-plan.cc  |  2 +-
+ util/options-subset.cc | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+commit 5a7cc7fd8b6f7381c40be993faffb81b9608e9bf
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 29 08:33:32 2020 +0430
+
+    minor spacing tweak
+
+ perf/perf-draw.hh              |   2 +-
+ src/hb-ot-cmap-table.hh        | 154 ++++++++++++++++++++---------------------
+ src/hb-ot-layout-common.hh     |   8 +--
+ src/hb-ot-layout-gdef-table.hh |  18 ++---
+ src/hb-ot-layout-gpos-table.hh |  82 +++++++++++-----------
+ src/hb-ot-layout-gsub-table.hh |   4 +-
+ src/hb-ot-layout-gsubgpos.hh   |  20 +++---
+ src/hb-subset-plan.cc          |   7 +-
+ src/hb-subset-plan.hh          |   5 +-
+ util/options-subset.cc         |   2 +-
+ 10 files changed, 149 insertions(+), 153 deletions(-)
+
+commit 48ad745996159337fb4733561e834a0ffbe3a1ae
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 29 08:09:08 2020 +0430
+
+    [ENOMEM] Fix buffer's content check logic
+    
+    So now rest of shape fuzzer also can be enabled.
+    
+    Fixes #2571
+
+ src/hb-buffer-serialize.cc      |  8 ++++----
+ src/hb-buffer.cc                | 12 ++++++------
+ test/fuzzing/hb-shape-fuzzer.cc | 14 ++++++--------
+ 3 files changed, 16 insertions(+), 18 deletions(-)
+
+commit c33e8006fdaec3b4acf8927c75e04129e0410a59
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jul 14 19:29:58 2020 +0430
+
+    [fuzz] Implement failing allocator
+
+ src/failing-alloc.c              | 57 ++++++++++++++++++++++++++++++++++++++++
+ src/meson.build                  |  8 ++++++
+ test/fuzzing/hb-draw-fuzzer.cc   |  2 ++
+ test/fuzzing/hb-fuzzer.hh        |  8 ++++++
+ test/fuzzing/hb-set-fuzzer.cc    |  2 ++
+ test/fuzzing/hb-shape-fuzzer.cc  |  6 +++++
+ test/fuzzing/hb-subset-fuzzer.cc |  2 ++
+ test/fuzzing/meson.build         |  4 ++-
+ 8 files changed, 88 insertions(+), 1 deletion(-)
+
+commit 44a3136ae6a28222922da13582bd2dfd3eb823c7
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 29 07:03:44 2020 +0430
+
+    [glib] Default to glib's script type handling
+    
+    2.29.14 is almost released a decade ago, no need to support archaic glib versions.
+
+ src/hb-glib.cc | 148 +--------------------------------------------------------
+ 1 file changed, 1 insertion(+), 147 deletions(-)
+
+commit dae32b4f12da5d90de32886b0fd16653e3853e25
+Author: Garret Rieger <grieger@google.com>
+Date:   Tue Jul 28 18:31:46 2020 -0700
+
+    [subset] bail out of subsetting if plan allocation fails.
+
+ src/hb-face.cc        | 3 +++
+ src/hb-subset-plan.cc | 6 +++++-
+ src/hb-subset-plan.hh | 6 ++++++
+ src/hb-subset.cc      | 3 +++
+ 4 files changed, 17 insertions(+), 1 deletion(-)
+
+commit d38d63319bcec35a5dccb5e6ab49eee123bd4c0e
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 27 09:19:29 2020 +0430
+
+    [tests] minor
+
+ test/subset/run-tests.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit 322426f8c8ef818a60ec9090670ff077647fdfa2
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 27 09:03:35 2020 +0430
+
+    [tests] Use TTFont of fonttools to avoid temp files
+
+ test/subset/run-tests.py | 56 +++++++++++++++++-------------------------------
+ 1 file changed, 20 insertions(+), 36 deletions(-)
+
+commit 08fef15818013e12ae49e44261f0bf8773124591
+Author: Hamidreza Bayat <hamidrezabayat76@gmail.com>
+Date:   Sun Jul 26 17:16:07 2020 +0430
+
+    Use fonttools's python package instead of cli
+
+ test/subset/run-tests.py | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit bec3db49bd1002b4fbe5baf3ca462bce85fb7da5
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 25 13:45:34 2020 +0430
+
+    [ci] meson-gcc-mingw to crossbuild-win32
+
+ .circleci/config.yml | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
+
+commit 24a6f046e467b875c71b8897078af1311dda11be
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 25 13:18:54 2020 +0430
+
+    [releasing] unbreak the build
+    
+    Use lower number of parallel jobs as https://circleci.com/gh/harfbuzz/harfbuzz/149413 apparent compiler OOM issue
+
+ .ci/build-win32.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit cddfe4ea275f869afedc9adfae65d6b1317552da
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 25 13:09:57 2020 +0430
+
+    [releasing] Use release buildtype
+    
+    guess will optimize speed and size of the output, non important things anyway for the test only win32 packs
+
+ .ci/build-win32.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a01c7a380b9a3351bc7056c816e1340b5374a6f8
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 25 12:27:31 2020 +0430
+
+    2.7.0
+
+ NEWS             | 21 +++++++++++++++++++++
+ configure.ac     |  9 +++------
+ meson.build      |  4 +---
+ src/hb-version.h |  6 +++---
+ 4 files changed, 28 insertions(+), 12 deletions(-)
+
+commit b32f2e8b490b3909c2ba6eb1b97506710efcbe5f
+Author: Evgeniy Reizner <razrfalcon@gmail.com>
+Date:   Thu Jul 23 11:48:19 2020 +0300
+
+    Remove unused code from the Khmer shaper.
+
+ src/hb-ot-shape-complex-khmer.cc | 4 ----
+ 1 file changed, 4 deletions(-)
+
+commit f9ac6ddbef0eba3ab172b1e2439ce776870b969f
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 22 17:53:04 2020 +0430
+
+    [meson] Rename 'gtk_doc' option to 'docs'
+
+ docs/meson.build  | 2 +-
+ meson.build       | 2 +-
+ meson_options.txt | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 11ae45f6ebbff8ef1d8706c384e3ee74889917a7
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 22 17:52:16 2020 +0430
+
+    [ci] Don't run cov-analyze
+    
+    https://stackoverflow.com/a/59353318
+
+ .github/workflows/coverity-scan.yml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 46ec6db9656537997b29581cabb6dba901565767
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 22 17:30:48 2020 +0430
+
+    minor
+
+ src/hb-aat-layout-kerx-table.hh | 4 +---
+ src/hb-ot-map.hh                | 4 ++--
+ src/hb-subset-cff1.cc           | 2 +-
+ 3 files changed, 4 insertions(+), 6 deletions(-)
+
+commit 5c46683ab8b3f390a8aa043be97d89674e24162d
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 22 17:23:22 2020 +0430
+
+    [fuzz] increase shape fuzzer timeout
+    
+    as https://circleci.com/gh/harfbuzz/harfbuzz/149203
+
+ test/fuzzing/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 83c44f69d3724acbb16b25c1c1dee564ca1c3604
+Author: insilications <boboniboni@gmail.com>
+Date:   Mon Jul 20 17:35:10 2020 -0300
+
+    [tests] fix PGO build testing
+    
+    Adds 'mangle_path' to IGNORED_SYMBOLS
+
+ src/check-symbols.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 024fc665da00be5b8615af88cd00ed1a0f7485e9
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 20 23:57:27 2020 +0430
+
+    [ci] disable clang nightly installation
+    
+    they don't like to work apparently for some reason https://circleci.com/gh/harfbuzz/harfbuzz/149164
+    
+    better to use oss-fuzz docker images, gcr.io/oss-fuzz-base/base-clang, but the fact it uses 16.04 is showstopper for us.
+
+ .circleci/config.yml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit d058e56cf1015f6b922642d2cd7ccef27efd9958
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Mon Jul 20 20:50:09 2020 +0200
+
+    [ci] Update to msys2/setup-msys2@v2
+    
+    This update introduces better error handling and package caching by default.
+
+ .github/workflows/msys2-ci.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ae8a71dfb8ad3b6f7cb48ff79dbc8a103f6d6fca
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 20 20:16:15 2020 +0430
+
+    [ci] minor, use --auto-features=enabled
+
+ .github/workflows/linux-ci.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9bb15ee2edf563797ab5cdded6bb3ea186cd2fd6
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jul 19 22:24:13 2020 +0430
+
+    [ci] remove irc notification
+    
+    is just a noise there, yet, done to see if is anyone really wants it let's see how I can bring it back in some other bot
+
+ .travis.yml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit f65a8a33b60d04548ee755d1e052fc01ff6f1248
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jul 19 18:13:48 2020 +0430
+
+    [ci] run cov-analyze
+    
+    apparently we have to run that also ourselves, let's see
+
+ .github/workflows/coverity-scan.yml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit ab1079b04621311b9e5b776adf77ab6038fefa66
+Merge: 05ed1ee0 93aea76a
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 18 23:05:50 2020 +0430
+
+    Merge pull request #2577 from lazka/gha-msvc
+    
+    Use GitHub Actions for msvc bots
+
+commit 05ed1ee0c41088481baf8aafddd8d6976db0bdac
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 18 23:05:26 2020 +0430
+
+    [ci] Remove appveyor ci badge
+    
+    As https://github.com/harfbuzz/harfbuzz/pull/2577
+
+ README.md | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 93aea76a25640d923168272f001db43e776c8bdb
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Sat Jul 18 19:32:19 2020 +0200
+
+    Fix the GHA msvc build
+    
+    Use the 'ilammy/msvc-dev-cmd' action for setting up the msvc env,
+    so we can use powershell everywhere.
+    
+    Remove a directory from PATH which was interfering with the meson build
+    by providing an unrelated pkg-config.exe.
+
+ .github/workflows/msvc-ci.yml | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
+
+commit d0e2addd43dad705d9f54134b97ae81757f5e25e
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 18 22:14:52 2020 +0430
+
+    minor
+
+ src/hb-aat-layout-bsln-table.hh |  2 +-
+ src/hb-aat-layout-kerx-table.hh |  8 +++-----
+ src/hb-aat-layout-morx-table.hh |  2 +-
+ src/hb-buffer.cc                |  4 ++--
+ src/hb-buffer.hh                |  2 +-
+ src/hb-cff2-interp-cs.hh        |  2 +-
+ src/hb-font.hh                  |  2 +-
+ src/hb-ot-cmap-table.hh         | 30 +++++++++++++--------------
+ src/hb-ot-layout-common.hh      | 14 ++++++-------
+ src/hb-ot-layout-gdef-table.hh  |  8 ++++----
+ src/hb-ot-layout-gpos-table.hh  | 45 ++++++++++++++++++++++++-----------------
+ src/hb-ot-layout-gsub-table.hh  |  4 ++--
+ src/hb-ot-layout-gsubgpos.hh    |  8 ++++----
+ src/hb-ot-math-table.hh         | 16 +++++++--------
+ src/hb-ot-shape.cc              |  4 ++--
+ src/hb-ot-var-gvar-table.hh     |  2 +-
+ src/hb-subset-cff2.cc           | 14 ++++++-------
+ 17 files changed, 87 insertions(+), 80 deletions(-)
+
+commit 3a46ae51273ce086aaec8ccf14420bbf5a36dffb
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 15 12:46:34 2020 +0430
+
+    Use GitHub Actions for msvc bots
+
+ .github/workflows/msvc-ci.yml | 38 ++++++++++++++++++++++++++++++++++++++
+ appveyor.yml                  | 37 -------------------------------------
+ 2 files changed, 38 insertions(+), 37 deletions(-)
+
+commit 7e3edfa4541189cc3f9f477192629ad1a197b727
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 18 19:03:36 2020 +0430
+
+    minor
+
+ src/hb-open-type.hh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 8e5bc535d10fb166f721520db6977cc4e949f1c5
+Author: Qunxin Liu <qxliu@google.com>
+Date:   Wed Jul 15 18:54:52 2020 -0700
+
+    [subset] call collect_mapping only when --gids option is used.
+    
+    collect_mapping is time consuming as it iterates all codepoints in all
+    cmap subtables, only trigger it when necessary
+
+ src/hb-ot-cmap-table.hh | 11 +++++++----
+ src/hb-ot-os2-table.hh  | 39 ++++++++++++++++++++++-----------------
+ 2 files changed, 29 insertions(+), 21 deletions(-)
+
+commit 1ebe5bad1a0b54b73ef0ab7cd1f67030120b3482
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 16 01:45:38 2020 +0430
+
+    [ci] minor fix
+
+ appveyor.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e9b71c296b45f1dc254f015caaa82b5b5f0792a4
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 16 01:40:48 2020 +0430
+
+    [ci] cleanup
+
+ appveyor.yml | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
+
+commit 8cbdb6fa41b7364f59bb03295a307dd903908eef
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 15 13:32:57 2020 +0430
+
+    [meson] Don't enable benchmark under the conditions ever
+    
+    As we don't want to make headache for packagers as we don't want to
+    enable it when --auto-features=enabled is used.
+
+ .github/workflows/msys2-ci.yml | 3 +--
+ meson.build                    | 8 ++++----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
+
+commit dc981fe951f10e88723452d3eeab8be2ed7d1c55
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 15 13:15:27 2020 +0430
+
+    [meson] Merge gdi and uniscribe
+    
+    They are the same thing obviously
+
+ meson.build | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit 8e7a9b6eebfa2fbdfe90b80189d4428a1fb3b14e
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Jul 15 09:01:53 2020 +0200
+
+    msys2-ci: clean up
+
+ .github/workflows/msys2-ci.yml | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
+
+commit 9a4d590eeeda7f24e80c272aa4906f5446c07c1d
+Author: Christoph Reiter <reiter.christoph@gmail.com>
+Date:   Wed Jul 15 07:38:20 2020 +0200
+
+    CI: Port MSYS2 jobs from appveyor to github actions
+
+ .github/workflows/msys2-ci.yml | 66 ++++++++++++++++++++++++++++++++++++++++++
+ appveyor.yml                   | 18 ------------
+ 2 files changed, 66 insertions(+), 18 deletions(-)
+
+commit 945bcd7230277e648734b7d8a82e868d1f13257f
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 15 09:54:32 2020 +0430
+
+    minor
+
+ test/fuzzing/hb-subset-fuzzer.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit fa0436ddd16e463dfd4600822b90f8943ff7baf5
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 15 09:52:40 2020 +0430
+
+    [ENOMEM][fuzzer/subset] early return if the result is null
+    
+    I don't see _or_fail APIs idiomatic for the project but since it is there, let's have this
+
+ test/fuzzing/hb-subset-fuzzer.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 7c433ffde2d566d849cd54a881abddad4d7e2f51
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 15 09:38:12 2020 +0430
+
+    Add HB_CUSTOM_MALLOC definition
+    
+    So one can use just HB_CUSTOM_MALLOC instead need for define each of hb_*alloc_impl
+
+ src/hb.hh | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+commit 60959b08e532c0c61d0c5c89507a983595079df1
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jul 14 20:28:06 2020 +0430
+
+    [meson] execute find_program('gen-ragel-artifacts.py') only once
+    
+    should rename the script also
+
+ src/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 5c8e1bd2370e6b78de8d2b6ef6968c0429b37633
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jul 14 17:47:10 2020 +0430
+
+    [meson] Don't allow introspection on static library
+
+ src/meson.build | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+commit 9566904cb3eee5c33c166641debf1567d9ca301b
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jul 14 15:17:17 2020 +0430
+
+    [morx] minor, mark with unlikely
+    
+    at least just to show this is the unusual path
+
+ src/hb-aat-layout-morx-table.hh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 11d583a9eaf5089418d0091a01e8e10be37485e1
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jul 14 06:23:06 2020 +0430
+
+    [aat] Consume glyph insertion from buffer's max_ops (#2223)
+    
+    Glyph insertion is an expensive operation and we like to have it limited
+    based on buffer's input size which is handled by buffer's max_ops.
+    
+    clusterfuzz-testcase-minimized-harfbuzz_fuzzer-5754958982021120:
+    
+    Before the change: 0.67s user 0.00s system 99% cpu 0.674 total
+     After the change: 0.02s user 0.00s system 98% cpu 0.024 total
+    
+    Which takes much longer on valgrind and tsan bots.
+
+ src/hb-aat-layout-morx-table.hh                           |   2 ++
+ ...zz-testcase-minimized-harfbuzz_fuzzer-5754958982021120 | Bin 0 -> 319 bytes
+ 2 files changed, 2 insertions(+)
+
+commit 6937092a66aefa7602a38827a52b4241d3f96168
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 13 21:32:15 2020 +0430
+
+    [py] apply lgtm.com python suggestions
+
+ src/gen-indic-table.py | 5 ++---
+ src/gen-use-table.py   | 5 ++---
+ 2 files changed, 4 insertions(+), 6 deletions(-)
+
+commit 2a182128b9c1ffd825f5c0b1f94cbff8b28a8934
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 13 20:41:13 2020 +0430
+
+    [py] minor, comment buffer_add_utf8 call
+    
+    mainly to apply lgtm suggestion, looks better also however,
+    some minor spacing is also applied.
+
+ src/sample.py | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
+
+commit 2c1d699409cd43af4b86649143f533418b03cf29
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 13 20:26:57 2020 +0430
+
+    [ci] use clang for cov-build
+    
+    to be honest this is done as a let's see what
+    happens move but the background is coverity
+    reveals more things for Firefox project and there
+    should be an interesting reason for it.
+
+ .github/workflows/coverity-scan.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit cdf18e8338325f4d6fdc307f3b2216b4c4a24e14
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 13 20:07:51 2020 +0430
+
+    [py] minor, remove unnecessary pass
+    
+    discovered by lgtm
+
+ src/gen-arabic-table.py | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 45d9e8d76c128fff73e6cf9291df60cfd8d1b25b
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 13 19:25:53 2020 +0430
+
+    [py] minor, remove unused import
+
+ src/gen-ragel-artifacts.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9ab7525a0623048ac924467745683231488bc399
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 13 01:15:36 2020 +0430
+
+    [ci] use a fixed version of meson in gh actions bot
+    
+    a patch is uploaded to fix the issue with b_coverage in meson upstream thus let's revive our bot at least for now
+
+ .github/workflows/linux-ci.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 3236db625b77337a048b9f3ab04fc28f4f6dcb0c
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 13 01:06:24 2020 +0430
+
+    [ci] install a fixed version of meson in msys2 bots
+    
+    for some reason apparently msys2 installation here has 0.51 version, which, is weird, lets use a fixed version anyway
+
+ appveyor.yml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 51a8eb1c028ba430986bbe4b1e6afaf0063a6f76
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jul 12 23:40:50 2020 +0430
+
+    [ci] use meson package from msys2
+    
+    as https://github.com/harfbuzz/harfbuzz/issues/2561#issuecomment-657261692
+
+ appveyor.yml | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
+
+commit 3163e9fedb1029439f381c1192f0e057870437ea
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jul 12 23:11:45 2020 +0430
+
+    [ci] Remove HB_TEST_SUBSET_FUZZER_TIMEOUT
+    
+    meson is passing it itself
+    
+    Fortunately oss-fuzz has its own timeout value, I just like to be conservative here
+    and not involve outsiders with flakiness of tests specially as meson which runs
+    them concurrently so consuming more time is expected on meson.
+
+ .circleci/config.yml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit cd6f62d9608c7fabd75028c2146a7e034bcc6a85
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jul 12 23:05:11 2020 +0430
+
+    [meson] Raise timeout value of subset fuzzer testcases
+    
+    happens when tsan is enabled
+
+ test/fuzzing/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 1dfa33854f065d5bee104e880f138b994448f44f
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Sun Jul 12 09:24:03 2020 -0700
+
+    [arabic] Remove stale comment
+
+ src/hb-ot-shape-complex-arabic.cc | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit f8d345ee06596f90f0588d97e012dd3f62245897
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 9 10:57:51 2020 +0430
+
+    [ci] Remove ambiguous-reversed-operator warning from whitelist
+    
+    Should be fixed by 6a45df0
+
+ .circleci/config.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6a45df0a543a74d6d19e249f043c9b223aae1935
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Wed Jul 8 18:17:40 2020 -0500
+
+    Fix -Wambiguous-reversed-operator warning
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2554
+
+ src/hb-map.hh    | 2 +-
+ src/hb-object.hh | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 5ea11cb817efbad0daae1a6ca5b60edf55c19d79
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 8 19:29:47 2020 +0430
+
+    [ci] don't use harfbuzz.cc with -Weverything
+    
+    Causes
+    
+    In file included from src/harfbuzz.cc:13:
+    src/hb-ot-cff1-table.cc:36:17: error: using namespace directive in global context in header [-Werror,-Wheader-hygiene]
+    using namespace CFF;
+                    ^
+    In file included from src/harfbuzz.cc:14:
+    src/hb-ot-cff2-table.cc:35:17: error: using namespace directive in global context in header [-Werror,-Wheader-hygiene]
+    using namespace CFF;
+                    ^
+    2 errors generated.
+
+ .circleci/config.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e4f9969108f7a01d7c37c856e6833b400d0278de
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 8 15:10:25 2020 +0430
+
+    [ci] migrate to meson
+    
+    two bots, one bot here (distcheck) and one in travis still run autotools and
+    won't be removed till we decide about autotools
+
+ .circleci/config.yml                    | 210 ++++++++------------------------
+ test/fuzzing/run-draw-fuzzer-tests.py   |   6 +-
+ test/fuzzing/run-shape-fuzzer-tests.py  |   6 +-
+ test/fuzzing/run-subset-fuzzer-tests.py |   6 +-
+ 4 files changed, 55 insertions(+), 173 deletions(-)
+
+commit f62f4e388b1a904ea4b2863ec62bb7b4db153fe2
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 8 00:26:40 2020 +0430
+
+    [meson] minor on gdi, dwrite and icu
+
+ meson.build | 49 ++++++++++++++++++++++---------------------------
+ 1 file changed, 22 insertions(+), 27 deletions(-)
+
+commit 69a1e07acb721cc2345e731f4b85a786a1d95323
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 8 03:12:09 2020 +0430
+
+    [meson] don't enable benchmark if is in nodownload wrap mode
+    
+    Fixes #2551
+
+ meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit e04050e3b856d275779a2d010fc59ff230a8c4d8
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 8 01:06:30 2020 +0430
+
+    [meson] split fuzzer_ldflags before use
+
+ test/fuzzing/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 747f65f9ef28c552b53d4afa95cd7706acf78e44
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jul 7 11:37:16 2020 +0430
+
+    [meson] Remove HAVE_OT and HAVE_FALLBACK
+    
+    No need as 1e8fdd2 and 23768a9
+
+ meson.build | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit c5def347300b37368d3b342fc0f6e7a5fbd76ff4
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 23:29:56 2020 +0430
+
+    [meson] don't underscorify fuzzers names
+
+ test/fuzzing/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d608f2ac85c5f7b5b98ffd8e9be76567af3aefb0
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 22:40:51 2020 +0430
+
+    [meson] Add fuzzer_ldflags
+    
+    As ots, https://github.com/khaledhosny/ots/commit/4d37b9b
+
+ meson_options.txt        |  2 ++
+ test/fuzzing/meson.build | 12 +++++++++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+commit e1c35ca581886a0fe761ea95fdda2cfc3f720403
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 22:29:11 2020 +0430
+
+    [meson] rename the section
+    
+    As Behdad's comment
+
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ddb103ea1a729893a8a0dde24881f13534727207
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 22:27:39 2020 +0430
+
+    [meson] minor
+
+ meson.build | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+commit 13d78b50f2b8a3941e495bc47f0a019a1f6b5fa5
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 22:22:42 2020 +0430
+
+    [doc] minor
+
+ BUILD.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e5dd7d3ef94d68c3f28763962aa3855baf3488b8
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 21:40:19 2020 +0430
+
+    [doc] more on build
+
+ BUILD.md | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
+
+commit 471ae786ce1544e03181ff06d33f5e5a8a71aff4
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 18:29:23 2020 +0430
+
+    [ci] Install a newer meson version
+
+ .circleci/config.yml | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+commit 694a0c6bbc7c7f8dae9617bb3e1718bba940ce6a
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 18:28:31 2020 +0430
+
+    [meson] Always add icu deps
+
+ .circleci/config.yml |  4 ++--
+ test/api/meson.build | 15 +++++++--------
+ 2 files changed, 9 insertions(+), 10 deletions(-)
+
+commit 28554cb831f60876c0c844b5016118ce11145fcd
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 17:04:54 2020 +0430
+
+    [doc] add a note for packagers
+
+ BUILD.md | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+commit 0fc52d3b2d918e0123d2083a005799b30cb9733b
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 16:47:50 2020 +0430
+
+    [doc] Simplify and extend build instructions
+
+ BUILD.md | 44 ++++++++------------------------------------
+ 1 file changed, 8 insertions(+), 36 deletions(-)
+
+commit 3a8d137c2c0c06dd672894ed1b2dcd97f6bab27e
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 16:31:32 2020 +0430
+
+    [ci] migrate macOS bots to meson
+
+ .circleci/config.yml | 33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
+
+commit a2b52cbb77e37b5287608b457f483e1b7712e1b2
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Mon Jul 6 17:01:23 2020 +0200
+
+    [ci] Use --wrap-mode=default for MSVC builds
+
+ appveyor.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit dc684103d4aededf91e92ead21a8c42ac2acef87
+Author: Khaled Hosny <khaledhosny@eglug.org>
+Date:   Mon Jul 6 14:48:37 2020 +0200
+
+    [meson] Set the default wrap mode to nofallback
+    
+    This, I believe, will prevent any automatic use of subprojects be
+    default and will only look for dependencies on the system.
+    https://mesonbuild.com/Subprojects.html#commandline-options
+
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 52199349aa898ae64ec83896d2a0edf6284a0715
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 16:30:59 2020 +0430
+
+    [meson] mark meson as tested
+    
+    tested in a CI bot that in a `-Dcoretext=enabled` build, `build/util/hb-shape --shaper=ot` works fine.
+
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ba810ce83d392daeaa0c69af5549d020436a5ac7
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Apr 5 22:51:58 2020 +0430
+
+    [tests] Replace space with colon in batch mode
+
+ test/shaping/run-tests.py | 17 ++++++-----------
+ util/hb-shape.cc          |  7 +++++--
+ 2 files changed, 11 insertions(+), 13 deletions(-)
+
+commit 2013babcbffbd94e9fc0649d2862527a635d4e12
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 11:57:45 2020 +0430
+
+    [tests] Use HAVE_FREETYPE itself instead NO_FT_FUNCS
+
+ test/shaping/data/aots/Makefile.am                 | 5 +++++
+ test/shaping/data/in-house/Makefile.am             | 5 +++++
+ test/shaping/data/text-rendering-tests/Makefile.am | 5 +++++
+ test/shaping/meson.build                           | 2 +-
+ test/shaping/run-tests.py                          | 6 +++---
+ 5 files changed, 19 insertions(+), 4 deletions(-)
+
+commit d5238c18337e88e6ad3bb071296531d7a3354fb2
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 01:53:27 2020 +0430
+
+    [RELEASE] Rely to GitHub's tarball generation
+
+ RELEASING.md | 36 +++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 23 deletions(-)
+
+commit a08ba46d86b1f6ba1a303fbb55ceebccd91f2fe2
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 00:31:42 2020 +0430
+
+    [meson] move meson version so can be referenced easier
+
+ RELEASING.md | 2 +-
+ meson.build  | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 6d3d0ebba3103ec63737383385ed51d65f4e0eae
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 00:26:07 2020 +0430
+
+    Remove .tarball-revision generation from meson dist
+    
+    Toward making release tarball identical to git checkout now that we are moving to meson.
+
+ Makefile.am               |  1 -
+ meson.build               |  4 ----
+ write-tarball-revision.py | 13 -------------
+ 3 files changed, 18 deletions(-)
+
+commit 1e6027e29cd5d900337b23a20886b2a8d81bb2de
+Author: jfkthame <jfkthame@gmail.com>
+Date:   Sun Jul 5 22:44:10 2020 +0100
+
+    [aat] Correct array indexing when looking up actions in KerxSubTableFormat4 (#2539)
+    
+    * [aat] Correct array indexing when looking up actions in KerxSubTableFormat4.
+    
+    - For action_type 0 and 1, there are 2 values per action record; for action_type 2, there are 4. So we need to account for these factors when indexing into the ankrData array.
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2531.
+
+ src/hb-aat-layout-kerx-table.hh              | 20 +++++++++++++-------
+ test/shaping/data/in-house/tests/macos.tests |  1 +
+ 2 files changed, 14 insertions(+), 7 deletions(-)
+
+commit aa732e454a69ce48bf9a878a43b1bb3c364dca4d
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 00:10:16 2020 +0430
+
+    [tests] minor, ligcarets is fetched from gdef not gsub
+
+ test/api/test-ot-ligature-carets.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 122a2897e4782c5e0a39ec7bb0eedb2e7d568913
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jul 5 22:45:11 2020 +0430
+
+    [aat] Remove lcar support
+    
+    Very low use, only two distinct font files, Apple Chancery.ttf and Hoefler Text.ttc
+    have it so it really doesn't worth the size addition and so, but one may argue that
+    whole ligature caret is low use but guess we better to encourage GDEF one anyway.
+
+ src/Makefile.sources               |   1 -
+ src/hb-aat-layout-lcar-table.hh    | 174 -------------------------------------
+ src/hb-ot-face-table-list.hh       |   1 -
+ src/hb-ot-layout.cc                |  18 +---
+ src/meson.build                    |   1 -
+ test/api/fonts/lcar.ttf            | Bin 808 -> 0 bytes
+ test/api/test-ot-ligature-carets.c |  75 ----------------
+ 7 files changed, 1 insertion(+), 269 deletions(-)
+
+commit a3b9b94b63ba5b99803f9ed62ad5f951d19b61d2
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jul 6 00:05:21 2020 +0430
+
+    [style] Remove fdsc support (#2541)
+    
+    It isn't exposed yet and low use between Apple fonts,
+    32 fdsc table vs 767 OS/2 tables, even Apple doesn't
+    support it anymore per Ned.
+
+ src/Makefile.sources         |   1 -
+ src/hb-aat-fdsc-table.hh     | 126 -------------------------------------------
+ src/hb-aat-layout.cc         |   1 -
+ src/hb-ot-face-table-list.hh |   1 -
+ src/hb-style.cc              |  14 -----
+ src/meson.build              |   1 -
+ test/api/fonts/aat-fdsc.ttf  | Bin 556 -> 0 bytes
+ test/api/test-style.c        |  20 -------
+ 8 files changed, 164 deletions(-)
+
+commit 6a50aa4e54d3c1f678c589c7bbe0d53958bd5d60
+Author: Dirk Lemstra <dirk@lemstra.org>
+Date:   Sun Jul 5 18:46:29 2020 +0200
+
+    Corrected the link to the releases.
+
+ docs/usermanual-install-harfbuzz.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a6fb8ce98a6ee7b62fe42e233c946a427587bbd7
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 23:43:21 2020 +0430
+
+    Minor, fix -Wrange-loop-analysis warnings
+    
+    Fixing these complains raised by newer versions of clang,
+    
+    ./hb-ot-layout-common.hh:1720:53: error: loop variable 'gid_klass_pair' is always a copy because the range of type 'hb_map_iter_t<hb_sorted_array_t<OT::HBGlyphID>, (lambda at ./hb-ot-layout-common.hh:1672:29), hb_function_sortedness_t::RETAINS_SORTING, nullptr>' does not return a reference [-Werror,-Wrange-loop-analysis]
+        for (const hb_pair_t<hb_codepoint_t, unsigned>& gid_klass_pair : + it)
+    
+    And
+    
+    ./hb-ot-color-colr-table.hh:177:44: error: loop variable '_' is always a copy because the range of type 'hb_map_iter_t<hb_filter_iter_t<hb_map_iter_t<hb_range_iter_t<unsigned int, unsigned int>, (lambda at ./hb-ot-color-colr-table.hh:209:31), hb_function_sortedness_t::RETAINS_SORTING, nullptr>, (anonymous struct at ./hb-algs.hh:331:1) &, (anonymous struct at ./hb-algs.hh:51:1) &, nullptr>, (anonymous struct at ./hb-algs.hh:338:1) &, hb_function_sortedness_t::RETAINS_SORTING, nullptr>' does not return a reference [-Werror,-Wrange-loop-analysis]
+        for (const hb_item_type<BaseIterator>& _ : + base_it.iter ())
+
+ src/hb-ot-color-colr-table.hh | 2 +-
+ src/hb-ot-layout-common.hh    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit a470b0b20545229a51209e470692f1ad607bd17e
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 23:56:10 2020 +0430
+
+    Minor, disable strict-aliasing warning in set fuzzer
+    
+    ../test/fuzzing/hb-set-fuzzer.cc: In function ‘int LLVMFuzzerTestOneInput(const uint8_t*, size_t)’:
+    ../test/fuzzing/hb-set-fuzzer.cc:38:82: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+       38 |   const instructions_t &instructions = reinterpret_cast<const instructions_t &> (data);
+          |
+    
+    And it is already disabled at project level so let's disable it here also.
+
+ test/fuzzing/hb-set-fuzzer.cc | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 44444822979615b284f679564c48b59ea6927ad8
+Author: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+Date:   Thu Jul 2 17:46:56 2020 +0000
+
+    meson: Pin harfbuzz in .pc files to the built version
+    
+    This ensures that we link -subset, -icu and -gobject with a matching
+    version of the main library.
+
+ src/meson.build | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 3adcf398a02f3b647d149b65e4dfd4506b4cc73e
+Author: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+Date:   Thu Jul 2 16:41:22 2020 +0000
+
+    meson: Make Requires in .pc files match autotools
+    
+    Libreoffice tries to use only harfbuzz-icu.pc and assumes this includes
+    -lharfbuzz.
+
+ src/meson.build | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 4db1b4f1a266b4b26ad0c445691abcc634a23ab8
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 15:02:19 2020 +0430
+
+    [tests] rename no_ft_funcs to NO_FT_FUNCS
+
+ test/shaping/meson.build  | 4 +---
+ test/shaping/run-tests.py | 2 +-
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+commit 6a2b0ba78a88c92b8fe2fcb2c4dd73289fce236f
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 14:45:15 2020 +0430
+
+    [py] minor, replace exit with sys.exit
+
+ src/gen-harfbuzzcc.py      | 2 +-
+ src/gen-ragel-artifacts.py | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit a07672d353a943d7133bc545bb4b9f0189e9d4d8
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 14:12:55 2020 +0430
+
+    [py] minor, replace os.environ.get with os.getenv
+
+ src/check-c-linkage-decls.py                     |  6 +++---
+ src/check-externs.py                             |  4 ++--
+ src/check-header-guards.py                       |  6 +++---
+ src/check-includes.py                            |  6 +++---
+ src/check-libstdc++.py                           |  4 ++--
+ src/check-static-inits.py                        |  4 ++--
+ src/check-symbols.py                             |  4 ++--
+ src/gen-def.py                                   |  2 +-
+ test/fuzzing/run-draw-fuzzer-tests.py            | 12 ++++++------
+ test/fuzzing/run-shape-fuzzer-tests.py           | 12 ++++++------
+ test/fuzzing/run-subset-fuzzer-tests.py          | 12 ++++++------
+ test/shaping/data/aots/update.py                 |  2 +-
+ test/shaping/data/text-rendering-tests/update.py |  2 +-
+ write-tarball-revision.py                        |  4 ++--
+ 14 files changed, 40 insertions(+), 40 deletions(-)
+
+commit 43e3ab019c6b6ab8e429b3dd3aa13a7b9e8316e6
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 2 17:34:24 2020 +0430
+
+    [tests] make tests work when ft isn't present
+
+ test/shaping/meson.build  |  8 ++++++++
+ test/shaping/run-tests.py | 31 ++++++++++++++++++-------------
+ 2 files changed, 26 insertions(+), 13 deletions(-)
+
+commit c4b6bad73ae71c6372c97b9a2bb443138e1461b4
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 2 18:07:01 2020 +0430
+
+    [tests] revert da95a8c and use the shared hb-shape process
+
+ test/shaping/run-tests.py | 40 +++++++++++++---------------------------
+ 1 file changed, 13 insertions(+), 27 deletions(-)
+
+commit 359dbc97ae610a78759fb9dbad1b89ee2540cdf0
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 12:28:06 2020 +0430
+
+    [meson] Use the recommended way to generate harfbuzz.cc
+    
+    As https://github.com/harfbuzz/harfbuzz/pull/2532
+
+ src/gen-harfbuzzcc.py | 24 ++++++++++--------------
+ src/meson.build       | 14 +++++++-------
+ 2 files changed, 17 insertions(+), 21 deletions(-)
+
+commit a7e82e4ffdc377a2c18001beca36b5ebf0f08daa
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 12:04:41 2020 +0430
+
+    [meson] use the recommended way to generate hb-version.h
+    
+    As https://github.com/harfbuzz/harfbuzz/pull/2532
+
+ src/gen-hb-version.py      | 40 ++++++++++++++++++----------------------
+ src/gen-ragel-artifacts.py |  4 +++-
+ src/meson.build            |  3 ++-
+ 3 files changed, 23 insertions(+), 24 deletions(-)
+
+commit 404ecc252c7f8af6bc071e7b0823c7d406be6e3b
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 03:13:32 2020 +0430
+
+    [meson] use basename in check scripts now that meson passes dir also
+
+ src/check-c-linkage-decls.py | 4 ++--
+ src/check-externs.py         | 2 +-
+ src/check-header-guards.py   | 4 ++--
+ src/check-includes.py        | 4 ++--
+ src/meson.build              | 4 ++--
+ 5 files changed, 9 insertions(+), 9 deletions(-)
+
+commit 785a9a8f8ae9c8f88d7dc38d1ed1dae4d5896877
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 02:08:30 2020 +0430
+
+    [meson] use the recommended way to generate ragel headers
+    
+    As described in https://github.com/mesonbuild/meson/issues/7156#issuecomment-629622827
+
+ src/gen-harfbuzzcc.py      |  2 +-
+ src/gen-ragel-artifacts.py | 45 ++++++++----------------
+ src/meson.build            | 87 +++++++++++++++++++++++++++-------------------
+ 3 files changed, 66 insertions(+), 68 deletions(-)
+
+commit 5c07c291c74050bfa74a661c1e3a9a753b1f221c
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 04:33:46 2020 +0430
+
+    [make] use sed the way autotools used to generate hb-version.h
+    
+    Left from 1853f84 and now exactly is like 4fc6189a329c
+
+ src/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 63322513e42193ee27f3f50c90f9e6e0781fea78
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sat Jul 4 03:34:58 2020 +0430
+
+    [make] Revert the way harfbuzz.cc and hb-version.h are generated
+    
+    Partially reverts 4fc6189
+
+ src/Makefile.am | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+commit 1853f84abc64ed9dee6ef913760b0295c36a4ef5
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Jul 3 15:14:10 2020 +0430
+
+    [py] overwrite harfbuzz.cc only when there is a needed change
+
+ src/gen-harfbuzzcc.py | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+commit 82c6ddb986b2fe5333a92cb27526d7639972f905
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Jul 3 15:09:10 2020 +0430
+
+    [py] remove not needed imports
+
+ src/gen-emoji-table.py       | 1 -
+ src/gen-harfbuzzcc.py        | 2 +-
+ src/gen-hb-version.py        | 2 +-
+ src/gen-indic-table.py       | 1 -
+ src/gen-ragel-artifacts.py   | 2 +-
+ src/gen-ucd-table.py         | 2 +-
+ src/gen-use-table.py         | 1 -
+ src/gen-vowel-constraints.py | 2 --
+ 8 files changed, 4 insertions(+), 9 deletions(-)
+
+commit 38fa924904d9d9bb08a4371c5ee48fd3833c3ed7
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Jul 3 11:44:44 2020 +0430
+
+    [meson] revert 020b182 as meson fails when there is cyclic dependency
+
+ meson.build | 6 ------
+ 1 file changed, 6 deletions(-)
+
+commit 42d039cc995f8b895dc3294e8888a45863e35c10
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Jul 3 04:32:32 2020 +0430
+
+    [meson] minor
+
+ meson.build     | 13 ++++---------
+ src/meson.build |  6 ++----
+ 2 files changed, 6 insertions(+), 13 deletions(-)
+
+commit f2a80ab2c2ee2631ac4d12f10e2dd591e6cfb8c9
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Fri Jul 3 04:28:08 2020 +0430
+
+    [meson] use null_dep idiom
+
+ meson.build     | 15 ++++++++-------
+ src/meson.build |  4 ++--
+ 2 files changed, 10 insertions(+), 9 deletions(-)
+
+commit 05ab073d9b252e39a3fc4bf60c86827045d3000f
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 2 23:54:09 2020 +0430
+
+    [meson] Improve the way cairo-ft availability is checked
+
+ meson.build | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+commit d5439232946333b60f655d9ed37ec7dadf439287
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jul 2 01:30:24 2020 +0430
+
+    [fvar] minor
+
+ src/hb-ot-var-fvar-table.hh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit aadcd3ed8af0ca8eac77a4aacd746be703d55a15
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 1 14:31:33 2020 +0430
+
+    [meson] use dependency's has_headers to make pulled cairo has ft support
+
+ meson.build | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
+
+commit 020b182c790ec7f401236b5cc595e3f186942d96
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 1 14:22:46 2020 +0430
+
+    [meson] try freetype without harfbuzz just as a last resort
+
+ meson.build | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+commit 01fa55e88fc03374214a961b9ced089d6812358f
+Author: Xavier Claessens <xavier.claessens@collabora.com>
+Date:   Wed Jun 24 15:56:09 2020 -0400
+
+    meson: Allow freetype and cairo subprojects to fail
+    
+    If their respective option is set to 'auto' configuration of the
+    fallback subproject should be allowed to fail for any reason.
+
+ meson.build | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 00c652adab5e1be9a3c35a0cc60f1684ca6bb81b
+Author: Xavier Claessens <xavier.claessens@collabora.com>
+Date:   Wed Jun 24 14:11:32 2020 -0400
+
+    meson: Fallback to cairo subproject when option is 'auto'
+
+ meson.build | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 571365df335f03f9fe0c9593f60db8226bd6d2ef
+Author: Xavier Claessens <xavier.claessens@collabora.com>
+Date:   Wed Jun 24 14:11:07 2020 -0400
+
+    meson: Simplify check for cairo library and headers
+
+ meson.build | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+commit c4bbe89b53570025f00d2302e56e1396229716ad
+Author: Xavier Claessens <xavier.claessens@collabora.com>
+Date:   Wed Jun 24 13:40:55 2020 -0400
+
+    meson: Fallback to freetype2 subproject when option is 'auto'
+    
+    But disable harfbuzz support when configuring freetype2 subproject to
+    avoid dependency cycle.
+
+ meson.build | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+commit 33252ce5761a997c23da2b05bc95e7e5b0be6e35
+Author: Xavier Claessens <xavier.claessens@collabora.com>
+Date:   Wed Jun 24 13:40:32 2020 -0400
+
+    meson: Simplify check for freetype2 library and headers
+
+ meson.build | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+commit 40ec187dec07e97ed4004b9831e7be844e6e7948
+Author: Hugo Beauzée-Luyssen <hugo@beauzee.fr>
+Date:   Fri Apr 24 14:01:07 2020 +0200
+
+    win32: Cleanup PARTITION handling
+    
+    Use the WINAPI_PARTITION macro to filter desktop/app flavors.
+    We use a negated desktop check because the default (for mingw-w64 at
+    least) is to allow all API by combining desktop + app partitions.
+    This causes build failures if we were to filter using
+    WINAPI_PARTITION(WINAPI_FAMILY_APP) because it would always be true, but
+    those API also require Windows 8 or later, while we only require Vista
+    
+    Fixes warnings like
+    ../src/hb-blob.cc:572:47: warning: 'WINAPI_FAMILY_PC_APP' is not defined, evaluates to 0 [-Wundef]
+     #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY==WINAPI_FAMILY_PC_APP || WINAPI_FAMILY==WINAPI_FAMILY_PHONE_APP)
+                                                  ^
+    ../src/hb-blob.cc:572:86: warning: 'WINAPI_FAMILY_PHONE_APP' is not defined, evaluates to 0 [-Wundef]
+     #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY==WINAPI_FAMILY_PC_APP || WINAPI_FAMILY==WINAPI_FAMILY_PHONE_APP)
+
+ src/hb-blob.cc  |  6 +++---
+ src/hb-mutex.hh |  3 +--
+ src/hb.hh       | 10 +++++++---
+ 3 files changed, 11 insertions(+), 8 deletions(-)
+
+commit f3f9205fac1580085d0d0a0f76cdb258e6536a78
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 1 03:01:25 2020 +0430
+
+    [meson] Assume cairo_ft always available when cairo isn't from pkgconfig
+
+ meson.build | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+commit aa8bade97eb9280f53ef0f235b930ed883c4fd5e
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Wed Jul 1 01:30:13 2020 +0430
+
+    [meson] enable cairo as subproject
+
+ .ci/build-win32.sh             |  2 +-
+ subprojects/.gitignore         |  5 ++++-
+ subprojects/cairo.wrap         |  5 +++++
+ subprojects/libpng.wrap        | 10 ++++++++++
+ subprojects/pixman.wrap        |  6 ++++++
+ subprojects/proxy-libintl.wrap |  2 +-
+ 6 files changed, 27 insertions(+), 3 deletions(-)
+
+commit ea8e784146664f807dc19a6273dc7651627a06ff
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jun 30 12:54:29 2020 +0430
+
+    [fvar] Improve naming
+
+ src/hb-ot-var-fvar-table.hh | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+commit 5de07b8acd226d2e3152d9890afb2117002c3716
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jun 30 11:08:42 2020 +0430
+
+    [fvar] Move normalize logic where it is actually filled
+
+ src/hb-ot-var-fvar-table.hh | 62 ++++++++++++++++++++++++---------------------
+ 1 file changed, 33 insertions(+), 29 deletions(-)
+
+commit 0f8dda2cf2c73e9f0feec8375bac4c434c62b205
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jun 30 10:53:12 2020 +0430
+
+    [fvar] Move shared axis filling values into a new method
+
+ src/hb-ot-var-fvar-table.hh | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+commit 98c42b3bc72079a335937e5cee84fb5d6e8677da
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jun 30 10:48:36 2020 +0430
+
+    [fvar] Make AxisRecord fields protected
+
+ src/hb-ot-var-fvar-table.hh | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 5f870dfadb6ce3f85e5289131c4291cda31706c6
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jun 29 02:22:02 2020 +0430
+
+    [meson] Make benchmark buildable also in dists
+
+ Makefile.am | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+commit 702847aadd6f46a37a79b66b088b1ccaba401010
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jun 29 00:39:43 2020 +0430
+
+    [meson] Turn benchmark to a feature
+
+ .circleci/config.yml           | 2 +-
+ .github/workflows/linux-ci.yml | 2 +-
+ meson.build                    | 5 ++++-
+ meson_options.txt              | 2 +-
+ 4 files changed, 7 insertions(+), 4 deletions(-)
+
+commit 7ee3194f9825e988716d760c0c765b7af2a10639
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Sun Jun 28 15:41:44 2020 -0700
+
+    [meta] Remove wrong comment
+
+ src/hb-meta.hh | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 26b9670d996465161964bf1a0a7c4ecf2bf2212e
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Sun Jun 28 14:52:15 2020 -0700
+
+    [ft] Better handle allocation failures
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2513
+
+ src/hb-ft.cc | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
+
+commit 26111a11ad1a648f8075b5289c05c48126cc2d3f
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Sun Jun 28 02:59:47 2020 -0700
+
+    [dagger] Minor cleanup using hb_enumerate
+
+ src/hb-ot-layout-gsubgpos.hh | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+commit fd8b0a44c4768be62d162fee0a681ab9a8be7970
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jun 29 00:19:38 2020 +0430
+
+    [ci] Limit number of processes ninja uses
+    
+    Our CricleCI bots run with 32 cores last time I check which makes random compile issues
+    like this https://circleci.com/gh/harfbuzz/harfbuzz/146030 to happen. Guess that has
+    something to do with the way virtualization is done in Circle CI so let's limit number of processes.
+
+ .circleci/config.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 831b09000120ce5b9c448d156e6f099011bfd10d
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jun 28 14:31:21 2020 +0430
+
+    rebase draw test as recent roundf changes
+
+ test/api/test-draw.c | 145 ++++++++++++++++++++++++++-------------------------
+ 1 file changed, 73 insertions(+), 72 deletions(-)
+
+commit cb7fb3cf4a018d6d8eafd2584c7f6934e1413324
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jun 28 13:41:33 2020 +0430
+
+    Add test for a783840789c93add42e4d70fdb407eb4ad6e062e
+
+ test/shaping/data/in-house/Makefile.sources              |   1 +
+ test/shaping/data/in-house/fonts/HBTest-VF.ttf           | Bin 0 -> 1128 bytes
+ test/shaping/data/in-house/meson.build                   |   1 +
+ .../data/in-house/tests/variations-rounding.tests        |   2 ++
+ 4 files changed, 4 insertions(+)
+
+commit 1536271f6b4940eb0a4f28e406bfc96f00d1293d
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jun 28 13:35:13 2020 +0430
+
+    Don't check roundf availability in cmake and meson
+
+ CMakeLists.txt | 2 +-
+ meson.build    | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+
+commit 08d57d9eca94c3695a495be504e9e63b6ad1aa59
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jun 28 13:13:25 2020 +0430
+
+    Add hb_array_t::lfind
+
+ src/hb-array.hh             | 25 ++++++++++++++++---------
+ src/hb-open-type.hh         |  6 ++++++
+ src/hb-ot-stat-table.hh     | 17 ++---------------
+ src/hb-ot-var-fvar-table.hh | 26 ++++++++------------------
+ src/hb-vector.hh            |  3 +++
+ 5 files changed, 35 insertions(+), 42 deletions(-)
+
+commit a783840789c93add42e4d70fdb407eb4ad6e062e
+Author: Behdad Esfahbod <behdad@behdad.org>
+Date:   Sat Jun 27 22:23:59 2020 -0700
+
+    Always round up
+    
+    Fixes https://github.com/harfbuzz/harfbuzz/issues/2496
+
+ configure.ac | 2 +-
+ src/hb.hh    | 9 ++-------
+ 2 files changed, 3 insertions(+), 8 deletions(-)
+
+commit ca8202208a09376d061f50a8b400f5e276d8da06
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Sun Jun 28 11:34:01 2020 +0430
+
+    [ci] retire psvita and djgpp bots
+    
+    till update and overhaul
+
+ .circleci/config.yml | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
+
+commit 2267da4ee0d7cafe8f00d94e7a4d48179e3d28b5
+Author: Sebastian Rasmussen <sebras@gmail.com>
+Date:   Sun Jun 28 11:18:16 2020 +0800
+
+    [ft] Do not deference ft_font if it is nullptr (#2502)
+
+ src/hb-ft.cc | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit a373e16131ecc79be47edaaddc528efc6b411752
+Author: Sebastian Rasmussen <sebras@gmail.com>
+Date:   Sun Jun 28 11:09:45 2020 +0800
+
+    [ot-shape] Free shape plan maps upon error creating data (#2497)
+
+ src/hb-ot-shape.cc | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit dbf9896e7aded3693a6e2080fa51b142a682a1f3
+Author: Sebastian Rasmussen <sebras@gmail.com>
+Date:   Sun Jun 28 10:57:34 2020 +0800
+
+    [ft] Handle nullptr when destroying freetype font (#2494)
+
+ src/hb-ft.cc | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 20d1fa3671134de585df993ab1ec9fc46a74634d
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Thu Jun 25 12:50:46 2020 +0430
+
+    [perf] fix the build
+
+ perf/perf-draw.hh | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 76ba619daa2a3e01a37528270774f9011ea42d53
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jun 23 20:49:43 2020 +0430
+
+    Fix autotools's harfbuzz.cc build
+    
+    How this works? gen-harfbuzzcc.py operates at its own source path (see its 7th line)
+    and that is reliable when used both on meson and autotools.
+    
+    Just like 19ecabed, weirdly this didn't come up sooner, guess it has something
+    to do with timestamps. Fortunately whole harfbuzz.cc just doesn't matter for
+    packagers but we can tag a release only for this if needed.
+
+ src/Makefile.am | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit 95b1081be432e18642b889c8d3960ddac8ae643b
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Tue Jun 9 17:37:36 2020 +0430
+
+    Add performance benchmark for shaping, get extents and draw
+
+ .circleci/config.yml              |   4 +-
+ .github/workflows/linux-ci.yml    |  19 +++++-
+ meson.build                       |   4 ++
+ meson_options.txt                 |   2 +
+ perf/meson.build                  |   9 +++
+ perf/perf-draw.hh                 | 128 ++++++++++++++++++++++++++++++++++++++
+ perf/perf-extents.hh              |  65 +++++++++++++++++++
+ perf/perf-shaping.hh              |  65 +++++++++++++++++++
+ perf/perf.cc                      |  15 +++++
+ subprojects/.gitignore            |   1 +
+ subprojects/google-benchmark.wrap |   8 +++
+ 11 files changed, 318 insertions(+), 2 deletions(-)
+
+commit 12a9d572925a324be376440a1a26758eff832bcf
+Author: Sebastian Rasmussen <sebras@gmail.com>
+Date:   Wed Jun 24 03:25:43 2020 +0800
+
+    [face] Destroy blob if face closure can not be created (#2490)
+    
+    This fixes issue #2489.
+
+ src/hb-face.cc | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit 53b0a183c7a40cd208b893ffd02fb4ba54137fc1
+Author: Ebrahim Byagowi <ebrahim@gnu.org>
+Date:   Mon Jun 22 18:04:01 2020 +0430
+
+    Remove concept of stable/unstable from build tools
+    
+    We never practiced the concept of stable and unstable releases, let's
+    remove the code and always use the stable scheme.
+
+ configure.ac    | 11 +----------
+ meson.build     |  9 +--------
+ src/meson.build |  2 +-
+ 3 files changed, 3 insertions(+), 19 deletions(-)
+
 commit e4203c14699cc0903a2b4611167a7b99532cfdb0
 Author: Ebrahim Byagowi <ebrahim@gnu.org>
 Date:   Mon Jun 22 05:03:27 2020 +0430

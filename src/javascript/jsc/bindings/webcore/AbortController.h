@@ -25,13 +25,20 @@
 
 #pragma once
 
+#include "root.h"
+
+#include "ZigGlobalObject.h"
+
 #include "ScriptWrappable.h"
 #include <wtf/Ref.h>
 #include <wtf/RefCounted.h>
-#include "ZigGlobalObject.h"
 
 namespace JSC {
 class JSValue;
+}
+
+namespace Zig {
+class GlobalObject;
 }
 
 namespace WebCore {
@@ -48,7 +55,7 @@ public:
     ~AbortController();
 
     AbortSignal& signal();
-    void abort(JSDOMGlobalObject&, JSC::JSValue reason);
+    void abort(Zig::GlobalObject&, JSC::JSValue reason);
 
 private:
     explicit AbortController(ScriptExecutionContext&);

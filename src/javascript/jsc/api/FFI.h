@@ -106,6 +106,8 @@ EncodedJSValue ValueTrue = { TagValueTrue };
 
 typedef void* JSContext;
 
+#define LOAD_ARGUMENTS_FROM_CALL_FRAME EncodedJSValue* args = (EncodedJSValue*)((size_t*)callFrame + Bun_FFI_PointerOffsetToArgumentsList);
+
 
 #ifdef IS_CALLBACK
 extern int64_t bun_call(JSContext, void* func,  void* thisValue, size_t len, const EncodedJSValue args[], void* exception);
@@ -179,6 +181,12 @@ static float JSVALUE_TO_FLOAT(EncodedJSValue val) {
 static bool JSVALUE_TO_BOOL(EncodedJSValue val) {
   return val.asInt64 == TagValueTrue;
 }
+
+#define arg(i) ((EncodedJSValue*)args)[i]
+void* JSFunctionCall(void* globalObject, void* callFrame);
+// int64_t JSFunctionCall(void* globalObject, void* callFrame) {
+//   EncodedJSValue* args = (EncodedJSValue*)((unsigned char*)callFrame + Bun_FFI_PointerOffsetToArgumentsList);
+// }
 
 
 

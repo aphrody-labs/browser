@@ -38,6 +38,7 @@
 #include "ImportMetaObjectBuiltins.cpp"
 #include "JSBufferConstructorBuiltins.cpp"
 #include "JSBufferPrototypeBuiltins.cpp"
+#include "ProcessObjectBuiltins.cpp"
 #include "ReadableByteStreamControllerBuiltins.cpp"
 #include "ReadableByteStreamInternalsBuiltins.cpp"
 #include "ReadableStreamBYOBReaderBuiltins.cpp"

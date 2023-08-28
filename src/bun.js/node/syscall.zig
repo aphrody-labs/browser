@@ -135,7 +135,7 @@ pub fn getcwd(buf: *[bun.MAX_PATH_BYTES]u8) Maybe([]const u8) {
         Result.errnoSys(0, .getcwd).?;
 }
 
-pub fn fchmod(fd_: bun.FileDescriptor, mode: JSC.Node.Mode) Maybe(void) {
+pub fn fchmod(fd_: bun.FileDescriptor, mode: bun.Mode) Maybe(void) {
     const fd = bun.fdcast(fd_);
     return Maybe(void).errnoSys(C.fchmod(fd, mode), .fchmod) orelse
         Maybe(void).success;
@@ -223,7 +223,7 @@ pub fn fstat(fd: bun.FileDescriptor) Maybe(bun.Stat) {
     return Maybe(bun.Stat){ .result = stat_ };
 }
 
-pub fn mkdir(file_path: [:0]const u8, flags: JSC.Node.Mode) Maybe(void) {
+pub fn mkdir(file_path: [:0]const u8, flags: bun.Mode) Maybe(void) {
     if (comptime Environment.isMac) {
         return Maybe(void).errnoSysP(system.mkdir(file_path, flags), .mkdir, file_path) orelse Maybe(void).success;
     }
@@ -299,7 +299,7 @@ pub fn getErrno(rc: anytype) bun.C.E {
 const O = std.os.O;
 const w = std.os.windows;
 
-pub fn openatWindows(dirfD: bun.FileDescriptor, path: []const u16, flags: JSC.Node.Mode) Maybe(bun.FileDescriptor) {
+pub fn openatWindows(dirfD: bun.FileDescriptor, path: []const u16, flags: bun.Mode) Maybe(bun.FileDescriptor) {
     const nonblock = flags & O.NONBLOCK != 0;
 
     var access_mask: w.ULONG = w.READ_CONTROL | w.FILE_WRITE_ATTRIBUTES | w.SYNCHRONIZE;
@@ -395,7 +395,7 @@ pub fn openatWindows(dirfD: bun.FileDescriptor, path: []const u16, flags: JSC.No
     }
 }
 
-pub fn openatOSPath(dirfd: bun.FileDescriptor, file_path: bun.OSPathSlice, flags: JSC.Node.Mode, perm: JSC.Node.Mode) Maybe(bun.FileDescriptor) {
+pub fn openatOSPath(dirfd: bun.FileDescriptor, file_path: bun.OSPathSlice, flags: bun.Mode, perm: bun.Mode) Maybe(bun.FileDescriptor) {
     if (comptime Environment.isMac) {
         // https://opensource.apple.com/source/xnu/xnu-7195.81.3/libsyscall/wrappers/open-base.c
         const rc = bun.AsyncIO.darwin.@"openat$NOCANCEL"(dirfd, file_path.ptr, @as(c_uint, @intCast(flags)), @as(c_int, @intCast(perm)));
@@ -436,7 +436,7 @@ pub fn openatOSPath(dirfd: bun.FileDescriptor, file_path: bun.OSPathSlice, flags
     unreachable;
 }
 
-pub fn openat(dirfd: bun.FileDescriptor, file_path: [:0]const u8, flags: JSC.Node.Mode, perm: JSC.Node.Mode) Maybe(bun.FileDescriptor) {
+pub fn openat(dirfd: bun.FileDescriptor, file_path: [:0]const u8, flags: bun.Mode, perm: bun.Mode) Maybe(bun.FileDescriptor) {
     if (comptime Environment.isWindows) {
         var wbuf: bun.MAX_WPATH = undefined;
         return openatWindows(dirfd, bun.strings.toWPath(&wbuf, file_path), flags);
@@ -445,7 +445,7 @@ pub fn openat(dirfd: bun.FileDescriptor, file_path: [:0]const u8, flags: JSC.Nod
     return openatOSPath(dirfd, file_path, flags, perm);
 }
 
-pub fn open(file_path: [:0]const u8, flags: JSC.Node.Mode, perm: JSC.Node.Mode) Maybe(bun.FileDescriptor) {
+pub fn open(file_path: [:0]const u8, flags: bun.Mode, perm: bun.Mode) Maybe(bun.FileDescriptor) {
     // this is what open() does anyway.
     return openat(bun.toFD((std.fs.cwd().fd)), file_path, flags, perm);
 }

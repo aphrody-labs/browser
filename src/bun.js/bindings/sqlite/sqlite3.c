@@ -22,7 +22,7 @@
 #define SQLITE_CORE 1
 #define SQLITE_AMALGAMATION 1
 #ifndef SQLITE_PRIVATE
-# define SQLITE_PRIVATE static
+#define SQLITE_PRIVATE static
 #endif
 /************** Begin file sqliteInt.h ***************************************/
 /*

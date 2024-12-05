@@ -5,7 +5,7 @@
 ```js
 'use strict';
 
-const { HTMLRewriter } = require('lol-html');
+const { HTMLRewriter } = require('lol-html'); // path/to/lol-html.js
 
 const chunks = [];
 const rewriter = new HTMLRewriter('utf8', (chunk) => {
@@ -33,4 +33,13 @@ rewriter.end();
 
 const output = Buffer.concat(chunks).toString('utf8');
 console.log(output);
+```
+
+## Building
+
+```bash
+rustup update # https://rustup.rs
+cargo install wasm-pack
+
+wasm-pack build --target nodejs --release
 ```

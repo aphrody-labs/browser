@@ -113,6 +113,7 @@ ${c('yellow', 'Options:')}
   --session <name>    Isolated session (or VEB_SESSION env)
   --json              JSON output
   --full, -f          Full page screenshot
+  --headed            Show browser window (not headless)
   --debug             Debug output
 
 ${c('yellow', 'Examples:')}
@@ -574,6 +575,7 @@ interface Flags {
   full: boolean;
   text: boolean;
   debug: boolean;
+  headed: boolean;
   session: string;
   selector?: string;
   name?: string;
@@ -589,6 +591,7 @@ function parseFlags(args: string[]): { flags: Flags; cleanArgs: string[] } {
     full: false,
     text: false,
     debug: false,
+    headed: false,
     session: process.env.VEB_SESSION || 'default',
     exact: false,
   };
@@ -607,6 +610,8 @@ function parseFlags(args: string[]): { flags: Flags; cleanArgs: string[] } {
       flags.text = true;
     } else if (arg === '--debug') {
       flags.debug = true;
+    } else if (arg === '--headed' || arg === '--head') {
+      flags.headed = true;
     } else if (arg === '--exact') {
       flags.exact = true;
     } else if (arg === '--session' && args[i + 1]) {
@@ -659,6 +664,10 @@ async function main(): Promise<void> {
     case 'navigate': {
       if (!args[0]) err('URL required');
       const url = args[0].startsWith('http') ? args[0] : `https://${args[0]}`;
+      // If --headed, launch with headless=false first
+      if (flags.headed) {
+        await send({ id: genId(), action: 'launch', headless: false });
+      }
       cmd = { id, action: 'navigate', url };
       break;
     }

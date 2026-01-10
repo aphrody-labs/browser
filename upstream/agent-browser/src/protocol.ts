@@ -286,6 +286,165 @@ const boundingBoxSchema = baseCommandSchema.extend({
   selector: z.string().min(1),
 });
 
+const videoStartSchema = baseCommandSchema.extend({
+  action: z.literal('video_start'),
+  path: z.string().min(1),
+});
+
+const videoStopSchema = baseCommandSchema.extend({
+  action: z.literal('video_stop'),
+});
+
+const traceStartSchema = baseCommandSchema.extend({
+  action: z.literal('trace_start'),
+  screenshots: z.boolean().optional(),
+  snapshots: z.boolean().optional(),
+});
+
+const traceStopSchema = baseCommandSchema.extend({
+  action: z.literal('trace_stop'),
+  path: z.string().min(1),
+});
+
+const harStartSchema = baseCommandSchema.extend({
+  action: z.literal('har_start'),
+});
+
+const harStopSchema = baseCommandSchema.extend({
+  action: z.literal('har_stop'),
+  path: z.string().min(1),
+});
+
+const stateSaveSchema = baseCommandSchema.extend({
+  action: z.literal('state_save'),
+  path: z.string().min(1),
+});
+
+const stateLoadSchema = baseCommandSchema.extend({
+  action: z.literal('state_load'),
+  path: z.string().min(1),
+});
+
+const consoleSchema = baseCommandSchema.extend({
+  action: z.literal('console'),
+  clear: z.boolean().optional(),
+});
+
+const errorsSchema = baseCommandSchema.extend({
+  action: z.literal('errors'),
+  clear: z.boolean().optional(),
+});
+
+const keyboardSchema = baseCommandSchema.extend({
+  action: z.literal('keyboard'),
+  keys: z.string().min(1),
+});
+
+const wheelSchema = baseCommandSchema.extend({
+  action: z.literal('wheel'),
+  deltaX: z.number().optional(),
+  deltaY: z.number().optional(),
+  selector: z.string().optional(),
+});
+
+const tapSchema = baseCommandSchema.extend({
+  action: z.literal('tap'),
+  selector: z.string().min(1),
+});
+
+const clipboardSchema = baseCommandSchema.extend({
+  action: z.literal('clipboard'),
+  operation: z.enum(['copy', 'paste', 'read']),
+  text: z.string().optional(),
+});
+
+const highlightSchema = baseCommandSchema.extend({
+  action: z.literal('highlight'),
+  selector: z.string().min(1),
+});
+
+const clearSchema = baseCommandSchema.extend({
+  action: z.literal('clear'),
+  selector: z.string().min(1),
+});
+
+const selectAllSchema = baseCommandSchema.extend({
+  action: z.literal('selectall'),
+  selector: z.string().min(1),
+});
+
+const innerTextSchema = baseCommandSchema.extend({
+  action: z.literal('innertext'),
+  selector: z.string().min(1),
+});
+
+const innerHtmlSchema = baseCommandSchema.extend({
+  action: z.literal('innerhtml'),
+  selector: z.string().min(1),
+});
+
+const inputValueSchema = baseCommandSchema.extend({
+  action: z.literal('inputvalue'),
+  selector: z.string().min(1),
+});
+
+const setValueSchema = baseCommandSchema.extend({
+  action: z.literal('setvalue'),
+  selector: z.string().min(1),
+  value: z.string(),
+});
+
+const dispatchSchema = baseCommandSchema.extend({
+  action: z.literal('dispatch'),
+  selector: z.string().min(1),
+  event: z.string().min(1),
+  eventInit: z.record(z.unknown()).optional(),
+});
+
+const evalHandleSchema = baseCommandSchema.extend({
+  action: z.literal('evalhandle'),
+  script: z.string().min(1),
+});
+
+const exposeSchema = baseCommandSchema.extend({
+  action: z.literal('expose'),
+  name: z.string().min(1),
+});
+
+const addScriptSchema = baseCommandSchema.extend({
+  action: z.literal('addscript'),
+  content: z.string().optional(),
+  url: z.string().optional(),
+});
+
+const addStyleSchema = baseCommandSchema.extend({
+  action: z.literal('addstyle'),
+  content: z.string().optional(),
+  url: z.string().optional(),
+});
+
+const emulateMediaSchema = baseCommandSchema.extend({
+  action: z.literal('emulatemedia'),
+  media: z.enum(['screen', 'print']).nullable().optional(),
+  colorScheme: z.enum(['light', 'dark', 'no-preference']).nullable().optional(),
+  reducedMotion: z.enum(['reduce', 'no-preference']).nullable().optional(),
+  forcedColors: z.enum(['active', 'none']).nullable().optional(),
+});
+
+const offlineSchema = baseCommandSchema.extend({
+  action: z.literal('offline'),
+  offline: z.boolean(),
+});
+
+const headersSchema = baseCommandSchema.extend({
+  action: z.literal('headers'),
+  headers: z.record(z.string()),
+});
+
+const pauseSchema = baseCommandSchema.extend({
+  action: z.literal('pause'),
+});
+
 const pressSchema = baseCommandSchema.extend({
   action: z.literal('press'),
   key: z.string().min(1),
@@ -437,6 +596,36 @@ const commandSchema = z.discriminatedUnion('action', [
   isCheckedSchema,
   countSchema,
   boundingBoxSchema,
+  videoStartSchema,
+  videoStopSchema,
+  traceStartSchema,
+  traceStopSchema,
+  harStartSchema,
+  harStopSchema,
+  stateSaveSchema,
+  stateLoadSchema,
+  consoleSchema,
+  errorsSchema,
+  keyboardSchema,
+  wheelSchema,
+  tapSchema,
+  clipboardSchema,
+  highlightSchema,
+  clearSchema,
+  selectAllSchema,
+  innerTextSchema,
+  innerHtmlSchema,
+  inputValueSchema,
+  setValueSchema,
+  dispatchSchema,
+  evalHandleSchema,
+  exposeSchema,
+  addScriptSchema,
+  addStyleSchema,
+  emulateMediaSchema,
+  offlineSchema,
+  headersSchema,
+  pauseSchema,
 ]);
 
 // Parse result type

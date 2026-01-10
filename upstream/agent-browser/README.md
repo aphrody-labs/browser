@@ -26,6 +26,7 @@ veb title                        # Get page title
 # Clicking
 veb click "#submit-btn"
 veb dblclick "#item"
+veb tap "#mobile-btn"            # Touch tap
 
 # Form input
 veb type "#search" "query"           # Type character by character
@@ -33,15 +34,27 @@ veb fill "#email" "test@example.com" # Clear and fill (faster)
 veb check "#agree"                   # Check checkbox/radio
 veb uncheck "#newsletter"            # Uncheck checkbox
 veb select "#country" "US"           # Select dropdown
+veb clear-input "#field"             # Clear input field
+veb setvalue "#hidden" "val"         # Set value directly
 
 # Keyboard
 veb press Enter
 veb press Tab
+veb press "Control+a"                # Keyboard shortcuts
+veb press "Shift+Tab"
 
 # Mouse
 veb hover "#menu"
 veb focus "#input"
 veb drag "#source" "#target"
+veb wheel 300                        # Scroll wheel (deltaY)
+veb wheel 0 100                      # Scroll wheel (deltaX, deltaY)
+
+# Text operations
+veb selectall "#input"               # Select all text
+veb clipboard copy                   # Copy to clipboard
+veb clipboard paste                  # Paste from clipboard
+veb clipboard read                   # Read clipboard content
 
 # File upload
 veb upload "#file-input" ./document.pdf
@@ -65,6 +78,9 @@ veb pdf report.pdf
 veb snapshot                     # Accessibility tree (best for agents)
 veb extract "#main"              # Get HTML
 veb eval "document.title"        # Run JavaScript
+veb innertext "#message"         # Get inner text
+veb innerhtml "#container"       # Get inner HTML
+veb inputvalue "#field"          # Get input value
 
 # Element info
 veb gettext "#message"           # Get text content
@@ -74,6 +90,7 @@ veb isenabled "#submit"          # Check if enabled
 veb ischecked "#checkbox"        # Check if checked
 veb count ".items"               # Count matching elements
 veb boundingbox "#element"       # Get position/size
+veb highlight "#element"         # Highlight element (debugging)
 
 # Scrolling
 veb scroll down 500
@@ -104,6 +121,13 @@ veb viewport 1920 1080           # Set viewport size
 veb device "iPhone 14"           # Emulate device
 veb geolocation 37.7749 -122.4194  # Set location (SF)
 veb permissions grant geolocation notifications
+veb media --dark                 # Dark mode
+veb media --light                # Light mode
+veb media --print                # Print media type
+veb media --reduced-motion       # Reduced motion
+veb offline                      # Enable offline mode
+veb offline off                  # Disable offline mode
+veb headers '{"X-Custom":"value"}'  # Set extra headers
 
 # Cookies
 veb cookies                      # Get all cookies
@@ -121,6 +145,28 @@ veb storage session              # sessionStorage (same commands)
 veb dialog accept                # Accept next dialog
 veb dialog accept "input text"   # Accept prompt with text
 veb dialog dismiss               # Dismiss next dialog
+
+# Debugging & Tracing
+veb trace start                  # Start recording trace
+veb trace start --screenshots    # With screenshots
+veb trace stop ./trace.zip       # Stop and save trace
+veb state save ./auth.json       # Save cookies/storage
+veb state load ./auth.json       # Load saved state
+veb console                      # View console messages
+veb console --clear              # Clear console
+veb errors                       # View page errors
+veb errors --clear               # Clear errors
+veb pause                        # Pause (opens inspector)
+
+# Inject scripts/styles
+veb addscript "console.log('hi')"
+veb addscript https://example.com/lib.js
+veb addstyle "body { background: red; }"
+veb addstyle https://example.com/styles.css
+
+# Custom events
+veb dispatch "#btn" "click"
+veb dispatch "#input" "focus"
 
 # Tabs
 veb tab new
@@ -168,6 +214,7 @@ veb isvisible "#modal" --json
 |---------|-------------|
 | `click <selector>` | Click element |
 | `dblclick <selector>` | Double-click |
+| `tap <selector>` | Touch tap |
 | `type <selector> <text>` | Type text |
 | `fill <selector> <value>` | Clear & fill |
 | `press <key>` | Press key |
@@ -177,20 +224,29 @@ veb isvisible "#modal" --json
 | `hover <selector>` | Hover |
 | `focus <selector>` | Focus |
 | `drag <src> <target>` | Drag & drop |
+| `wheel [deltaY] [deltaX]` | Mouse wheel |
+| `clear-input <selector>` | Clear input |
+| `setvalue <selector> <val>` | Set value |
+| `selectall <selector>` | Select all text |
 | `upload <selector> <files>` | Upload files |
 | `download <selector> <path>` | Download file |
 | `scroll <dir> [amount]` | Scroll |
+| `clipboard copy\|paste\|read` | Clipboard ops |
 
 ### Element Info
 | Command | Description |
 |---------|-------------|
 | `gettext <selector>` | Get text content |
+| `innertext <selector>` | Get inner text |
+| `innerhtml <selector>` | Get inner HTML |
+| `inputvalue <selector>` | Get input value |
 | `getattr <selector> <attr>` | Get attribute |
 | `isvisible <selector>` | Check visibility |
 | `isenabled <selector>` | Check enabled |
 | `ischecked <selector>` | Check checked |
 | `count <selector>` | Count elements |
 | `boundingbox <selector>` | Get bounds |
+| `highlight <selector>` | Highlight element |
 
 ### Semantic Locators
 | Command | Description |
@@ -224,6 +280,9 @@ veb isvisible "#modal" --json
 | `device <name>` | Emulate device |
 | `geolocation <lat> <lng>` | Set location |
 | `permissions grant\|deny` | Set permissions |
+| `media [options]` | Emulate media |
+| `offline [on\|off]` | Offline mode |
+| `headers <json>` | Extra HTTP headers |
 
 ### Browser State
 | Command | Description |
@@ -234,6 +293,27 @@ veb isvisible "#modal" --json
 | `storage local [key]` | localStorage |
 | `storage session [key]` | sessionStorage |
 | `dialog accept\|dismiss` | Handle dialogs |
+| `state save <path>` | Save auth state |
+| `state load <path>` | Load auth state |
+
+### Debugging & Tracing
+| Command | Description |
+|---------|-------------|
+| `trace start` | Start trace recording |
+| `trace stop <path>` | Stop & save trace |
+| `console` | View console messages |
+| `console --clear` | Clear console |
+| `errors` | View page errors |
+| `errors --clear` | Clear errors |
+| `pause` | Open inspector |
+| `highlight <sel>` | Highlight element |
+
+### Script Injection
+| Command | Description |
+|---------|-------------|
+| `addscript <url\|code>` | Add script |
+| `addstyle <url\|code>` | Add stylesheet |
+| `dispatch <sel> <event>` | Dispatch event |
 
 ### Frames & Tabs
 | Command | Description |
@@ -267,6 +347,12 @@ veb isvisible "#modal" --json
 | `--abort` | Abort route |
 | `--body` | Route response body |
 | `--filter` | Filter requests |
+| `--clear` | Clear console/errors |
+| `--screenshots` | Include screenshots in trace |
+| `--dark` | Dark color scheme |
+| `--light` | Light color scheme |
+| `--print` | Print media type |
+| `--reduced-motion` | Reduced motion |
 | `--debug` | Debug output |
 
 ## Device Emulation

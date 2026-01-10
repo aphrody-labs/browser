@@ -294,6 +294,189 @@ export interface BoundingBoxCommand extends BaseCommand {
   selector: string;
 }
 
+// Video recording
+export interface VideoStartCommand extends BaseCommand {
+  action: 'video_start';
+  path: string;
+}
+
+export interface VideoStopCommand extends BaseCommand {
+  action: 'video_stop';
+}
+
+// Tracing
+export interface TraceStartCommand extends BaseCommand {
+  action: 'trace_start';
+  screenshots?: boolean;
+  snapshots?: boolean;
+}
+
+export interface TraceStopCommand extends BaseCommand {
+  action: 'trace_stop';
+  path: string;
+}
+
+// HAR recording
+export interface HarStartCommand extends BaseCommand {
+  action: 'har_start';
+}
+
+export interface HarStopCommand extends BaseCommand {
+  action: 'har_stop';
+  path: string;
+}
+
+// Storage state (auth persistence)
+export interface StorageStateSaveCommand extends BaseCommand {
+  action: 'state_save';
+  path: string;
+}
+
+export interface StorageStateLoadCommand extends BaseCommand {
+  action: 'state_load';
+  path: string;
+}
+
+// Console logs
+export interface ConsoleCommand extends BaseCommand {
+  action: 'console';
+  clear?: boolean;
+}
+
+// Page errors
+export interface ErrorsCommand extends BaseCommand {
+  action: 'errors';
+  clear?: boolean;
+}
+
+// Keyboard shortcuts
+export interface KeyboardCommand extends BaseCommand {
+  action: 'keyboard';
+  keys: string; // e.g., "Control+a", "Shift+Tab"
+}
+
+// Mouse wheel
+export interface WheelCommand extends BaseCommand {
+  action: 'wheel';
+  deltaX?: number;
+  deltaY?: number;
+  selector?: string;
+}
+
+// Touch events
+export interface TapCommand extends BaseCommand {
+  action: 'tap';
+  selector: string;
+}
+
+// Clipboard
+export interface ClipboardCommand extends BaseCommand {
+  action: 'clipboard';
+  operation: 'copy' | 'paste' | 'read';
+  text?: string;
+}
+
+// Highlight element (for debugging)
+export interface HighlightCommand extends BaseCommand {
+  action: 'highlight';
+  selector: string;
+}
+
+// Clear input
+export interface ClearCommand extends BaseCommand {
+  action: 'clear';
+  selector: string;
+}
+
+// Select all text
+export interface SelectAllCommand extends BaseCommand {
+  action: 'selectall';
+  selector: string;
+}
+
+// Inner text vs text content
+export interface InnerTextCommand extends BaseCommand {
+  action: 'innertext';
+  selector: string;
+}
+
+export interface InnerHtmlCommand extends BaseCommand {
+  action: 'innerhtml';
+  selector: string;
+}
+
+// Input value
+export interface InputValueCommand extends BaseCommand {
+  action: 'inputvalue';
+  selector: string;
+}
+
+// Set input value directly (without events)
+export interface SetValueCommand extends BaseCommand {
+  action: 'setvalue';
+  selector: string;
+  value: string;
+}
+
+// Dispatch event
+export interface DispatchEventCommand extends BaseCommand {
+  action: 'dispatch';
+  selector: string;
+  event: string;
+  eventInit?: Record<string, unknown>;
+}
+
+// Evaluate handle (for complex JS)
+export interface EvaluateHandleCommand extends BaseCommand {
+  action: 'evalhandle';
+  script: string;
+}
+
+// Expose function
+export interface ExposeFunctionCommand extends BaseCommand {
+  action: 'expose';
+  name: string;
+}
+
+// Add script/style tag
+export interface AddScriptCommand extends BaseCommand {
+  action: 'addscript';
+  content?: string;
+  url?: string;
+}
+
+export interface AddStyleCommand extends BaseCommand {
+  action: 'addstyle';
+  content?: string;
+  url?: string;
+}
+
+// Emulate media
+export interface EmulateMediaCommand extends BaseCommand {
+  action: 'emulatemedia';
+  media?: 'screen' | 'print' | null;
+  colorScheme?: 'light' | 'dark' | 'no-preference' | null;
+  reducedMotion?: 'reduce' | 'no-preference' | null;
+  forcedColors?: 'active' | 'none' | null;
+}
+
+// Set offline mode
+export interface OfflineCommand extends BaseCommand {
+  action: 'offline';
+  offline: boolean;
+}
+
+// Set extra HTTP headers
+export interface HeadersCommand extends BaseCommand {
+  action: 'headers';
+  headers: Record<string, string>;
+}
+
+// Pause execution (for debugging)
+export interface PauseCommand extends BaseCommand {
+  action: 'pause';
+}
+
 export interface PressCommand extends BaseCommand {
   action: 'press';
   key: string;
@@ -441,7 +624,37 @@ export type Command =
   | IsEnabledCommand
   | IsCheckedCommand
   | CountCommand
-  | BoundingBoxCommand;
+  | BoundingBoxCommand
+  | VideoStartCommand
+  | VideoStopCommand
+  | TraceStartCommand
+  | TraceStopCommand
+  | HarStartCommand
+  | HarStopCommand
+  | StorageStateSaveCommand
+  | StorageStateLoadCommand
+  | ConsoleCommand
+  | ErrorsCommand
+  | KeyboardCommand
+  | WheelCommand
+  | TapCommand
+  | ClipboardCommand
+  | HighlightCommand
+  | ClearCommand
+  | SelectAllCommand
+  | InnerTextCommand
+  | InnerHtmlCommand
+  | InputValueCommand
+  | SetValueCommand
+  | DispatchEventCommand
+  | EvaluateHandleCommand
+  | ExposeFunctionCommand
+  | AddScriptCommand
+  | AddStyleCommand
+  | EmulateMediaCommand
+  | OfflineCommand
+  | HeadersCommand
+  | PauseCommand;
 
 // Response types
 export interface SuccessResponse<T = unknown> {

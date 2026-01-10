@@ -9,6 +9,17 @@ interface TrackedRequest {
   resourceType: string;
 }
 
+interface ConsoleMessage {
+  type: string;
+  text: string;
+  timestamp: number;
+}
+
+interface PageError {
+  message: string;
+  timestamp: number;
+}
+
 /**
  * Manages the Playwright browser lifecycle with multiple tabs/windows
  */
@@ -21,6 +32,9 @@ export class BrowserManager {
   private dialogHandler: ((dialog: Dialog) => Promise<void>) | null = null;
   private trackedRequests: TrackedRequest[] = [];
   private routes: Map<string, (route: Route) => Promise<void>> = new Map();
+  private consoleMessages: ConsoleMessage[] = [];
+  private pageErrors: PageError[] = [];
+  private isRecordingHar: boolean = false;
 
   /**
    * Check if browser is launched
@@ -249,6 +263,129 @@ export class BrowserManager {
    */
   listDevices(): string[] {
     return Object.keys(devices);
+  }
+
+  /**
+   * Start console message tracking
+   */
+  startConsoleTracking(): void {
+    const page = this.getPage();
+    page.on('console', (msg) => {
+      this.consoleMessages.push({
+        type: msg.type(),
+        text: msg.text(),
+        timestamp: Date.now(),
+      });
+    });
+  }
+
+  /**
+   * Get console messages
+   */
+  getConsoleMessages(): ConsoleMessage[] {
+    return this.consoleMessages;
+  }
+
+  /**
+   * Clear console messages
+   */
+  clearConsoleMessages(): void {
+    this.consoleMessages = [];
+  }
+
+  /**
+   * Start error tracking
+   */
+  startErrorTracking(): void {
+    const page = this.getPage();
+    page.on('pageerror', (error) => {
+      this.pageErrors.push({
+        message: error.message,
+        timestamp: Date.now(),
+      });
+    });
+  }
+
+  /**
+   * Get page errors
+   */
+  getPageErrors(): PageError[] {
+    return this.pageErrors;
+  }
+
+  /**
+   * Clear page errors
+   */
+  clearPageErrors(): void {
+    this.pageErrors = [];
+  }
+
+  /**
+   * Start HAR recording
+   */
+  async startHarRecording(): Promise<void> {
+    // HAR is started at context level, flag for tracking
+    this.isRecordingHar = true;
+  }
+
+  /**
+   * Check if HAR recording
+   */
+  isHarRecording(): boolean {
+    return this.isRecordingHar;
+  }
+
+  /**
+   * Set offline mode
+   */
+  async setOffline(offline: boolean): Promise<void> {
+    const context = this.contexts[0];
+    if (context) {
+      await context.setOffline(offline);
+    }
+  }
+
+  /**
+   * Set extra HTTP headers
+   */
+  async setExtraHeaders(headers: Record<string, string>): Promise<void> {
+    const context = this.contexts[0];
+    if (context) {
+      await context.setExtraHTTPHeaders(headers);
+    }
+  }
+
+  /**
+   * Start tracing
+   */
+  async startTracing(options: { screenshots?: boolean; snapshots?: boolean }): Promise<void> {
+    const context = this.contexts[0];
+    if (context) {
+      await context.tracing.start({
+        screenshots: options.screenshots ?? true,
+        snapshots: options.snapshots ?? true,
+      });
+    }
+  }
+
+  /**
+   * Stop tracing and save
+   */
+  async stopTracing(path: string): Promise<void> {
+    const context = this.contexts[0];
+    if (context) {
+      await context.tracing.stop({ path });
+    }
+  }
+
+  /**
+   * Save storage state (cookies, localStorage, etc.)
+   */
+  async saveStorageState(path: string): Promise<void> {
+    const context = this.contexts[0];
+    if (context) {
+      await context.storageState({ path });
+    }
   }
 
   /**

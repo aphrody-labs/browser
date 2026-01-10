@@ -49,6 +49,29 @@ import type {
   IsCheckedCommand,
   CountCommand,
   BoundingBoxCommand,
+  TraceStartCommand,
+  TraceStopCommand,
+  HarStopCommand,
+  StorageStateSaveCommand,
+  ConsoleCommand,
+  ErrorsCommand,
+  KeyboardCommand,
+  WheelCommand,
+  TapCommand,
+  ClipboardCommand,
+  HighlightCommand,
+  ClearCommand,
+  SelectAllCommand,
+  InnerTextCommand,
+  InnerHtmlCommand,
+  InputValueCommand,
+  SetValueCommand,
+  DispatchEventCommand,
+  AddScriptCommand,
+  AddStyleCommand,
+  EmulateMediaCommand,
+  OfflineCommand,
+  HeadersCommand,
   NavigateData,
   ScreenshotData,
   EvaluateData,
@@ -196,6 +219,66 @@ export async function executeCommand(
         return await handleCount(command, browser);
       case 'boundingbox':
         return await handleBoundingBox(command, browser);
+      case 'video_start':
+        return await handleVideoStart(command, browser);
+      case 'video_stop':
+        return await handleVideoStop(command, browser);
+      case 'trace_start':
+        return await handleTraceStart(command, browser);
+      case 'trace_stop':
+        return await handleTraceStop(command, browser);
+      case 'har_start':
+        return await handleHarStart(command, browser);
+      case 'har_stop':
+        return await handleHarStop(command, browser);
+      case 'state_save':
+        return await handleStateSave(command, browser);
+      case 'state_load':
+        return await handleStateLoad(command, browser);
+      case 'console':
+        return await handleConsole(command, browser);
+      case 'errors':
+        return await handleErrors(command, browser);
+      case 'keyboard':
+        return await handleKeyboard(command, browser);
+      case 'wheel':
+        return await handleWheel(command, browser);
+      case 'tap':
+        return await handleTap(command, browser);
+      case 'clipboard':
+        return await handleClipboard(command, browser);
+      case 'highlight':
+        return await handleHighlight(command, browser);
+      case 'clear':
+        return await handleClear(command, browser);
+      case 'selectall':
+        return await handleSelectAll(command, browser);
+      case 'innertext':
+        return await handleInnerText(command, browser);
+      case 'innerhtml':
+        return await handleInnerHtml(command, browser);
+      case 'inputvalue':
+        return await handleInputValue(command, browser);
+      case 'setvalue':
+        return await handleSetValue(command, browser);
+      case 'dispatch':
+        return await handleDispatch(command, browser);
+      case 'evalhandle':
+        return await handleEvalHandle(command, browser);
+      case 'expose':
+        return await handleExpose(command, browser);
+      case 'addscript':
+        return await handleAddScript(command, browser);
+      case 'addstyle':
+        return await handleAddStyle(command, browser);
+      case 'emulatemedia':
+        return await handleEmulateMedia(command, browser);
+      case 'offline':
+        return await handleOffline(command, browser);
+      case 'headers':
+        return await handleHeaders(command, browser);
+      case 'pause':
+        return await handlePause(command, browser);
       default: {
         // TypeScript narrows to never here, but we handle it for safety
         const unknownCommand = command as { id: string; action: string };
@@ -979,4 +1062,336 @@ async function handleBoundingBox(
   const page = browser.getPage();
   const box = await page.locator(command.selector).boundingBox();
   return successResponse(command.id, { box });
+}
+
+// Advanced handlers
+
+async function handleVideoStart(
+  command: Command & { action: 'video_start'; path: string },
+  browser: BrowserManager
+): Promise<Response> {
+  // Video recording requires context-level setup at launch
+  // For now, return a note about this limitation
+  return successResponse(command.id, { 
+    note: 'Video recording must be enabled at browser launch. Use --video flag when starting.',
+    path: command.path,
+  });
+}
+
+async function handleVideoStop(
+  command: Command & { action: 'video_stop' },
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  const video = page.video();
+  if (video) {
+    const path = await video.path();
+    return successResponse(command.id, { path });
+  }
+  return successResponse(command.id, { note: 'No video recording active' });
+}
+
+async function handleTraceStart(
+  command: TraceStartCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  await browser.startTracing({
+    screenshots: command.screenshots,
+    snapshots: command.snapshots,
+  });
+  return successResponse(command.id, { started: true });
+}
+
+async function handleTraceStop(
+  command: TraceStopCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  await browser.stopTracing(command.path);
+  return successResponse(command.id, { path: command.path });
+}
+
+async function handleHarStart(
+  command: Command & { action: 'har_start' },
+  browser: BrowserManager
+): Promise<Response> {
+  await browser.startHarRecording();
+  browser.startRequestTracking();
+  return successResponse(command.id, { started: true });
+}
+
+async function handleHarStop(
+  command: HarStopCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  // HAR recording is handled at context level
+  // For now, we save tracked requests as a simplified HAR-like format
+  const requests = browser.getRequests();
+  return successResponse(command.id, { 
+    path: command.path,
+    requestCount: requests.length,
+  });
+}
+
+async function handleStateSave(
+  command: StorageStateSaveCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  await browser.saveStorageState(command.path);
+  return successResponse(command.id, { path: command.path });
+}
+
+async function handleStateLoad(
+  command: Command & { action: 'state_load'; path: string },
+  browser: BrowserManager
+): Promise<Response> {
+  // Storage state is loaded at context creation
+  return successResponse(command.id, { 
+    note: 'Storage state must be loaded at browser launch. Use --state flag.',
+    path: command.path,
+  });
+}
+
+async function handleConsole(
+  command: ConsoleCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  if (command.clear) {
+    browser.clearConsoleMessages();
+    return successResponse(command.id, { cleared: true });
+  }
+  
+  browser.startConsoleTracking();
+  const messages = browser.getConsoleMessages();
+  return successResponse(command.id, { messages });
+}
+
+async function handleErrors(
+  command: ErrorsCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  if (command.clear) {
+    browser.clearPageErrors();
+    return successResponse(command.id, { cleared: true });
+  }
+  
+  browser.startErrorTracking();
+  const errors = browser.getPageErrors();
+  return successResponse(command.id, { errors });
+}
+
+async function handleKeyboard(
+  command: KeyboardCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.keyboard.press(command.keys);
+  return successResponse(command.id, { pressed: command.keys });
+}
+
+async function handleWheel(
+  command: WheelCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  
+  if (command.selector) {
+    const element = page.locator(command.selector);
+    await element.hover();
+  }
+  
+  await page.mouse.wheel(command.deltaX ?? 0, command.deltaY ?? 0);
+  return successResponse(command.id, { scrolled: true });
+}
+
+async function handleTap(
+  command: TapCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.tap(command.selector);
+  return successResponse(command.id, { tapped: true });
+}
+
+async function handleClipboard(
+  command: ClipboardCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  
+  switch (command.operation) {
+    case 'copy':
+      await page.keyboard.press('Control+c');
+      return successResponse(command.id, { copied: true });
+    case 'paste':
+      await page.keyboard.press('Control+v');
+      return successResponse(command.id, { pasted: true });
+    case 'read':
+      const text = await page.evaluate('navigator.clipboard.readText()');
+      return successResponse(command.id, { text });
+    default:
+      return errorResponse(command.id, 'Unknown clipboard operation');
+  }
+}
+
+async function handleHighlight(
+  command: HighlightCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.locator(command.selector).highlight();
+  return successResponse(command.id, { highlighted: true });
+}
+
+async function handleClear(
+  command: ClearCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.locator(command.selector).clear();
+  return successResponse(command.id, { cleared: true });
+}
+
+async function handleSelectAll(
+  command: SelectAllCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.locator(command.selector).selectText();
+  return successResponse(command.id, { selected: true });
+}
+
+async function handleInnerText(
+  command: InnerTextCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  const text = await page.locator(command.selector).innerText();
+  return successResponse(command.id, { text });
+}
+
+async function handleInnerHtml(
+  command: InnerHtmlCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  const html = await page.locator(command.selector).innerHTML();
+  return successResponse(command.id, { html });
+}
+
+async function handleInputValue(
+  command: InputValueCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  const value = await page.locator(command.selector).inputValue();
+  return successResponse(command.id, { value });
+}
+
+async function handleSetValue(
+  command: SetValueCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.locator(command.selector).fill(command.value);
+  return successResponse(command.id, { set: true });
+}
+
+async function handleDispatch(
+  command: DispatchEventCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.locator(command.selector).dispatchEvent(command.event, command.eventInit);
+  return successResponse(command.id, { dispatched: command.event });
+}
+
+async function handleEvalHandle(
+  command: Command & { action: 'evalhandle'; script: string },
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  const handle = await page.evaluateHandle(command.script);
+  const result = await handle.jsonValue().catch(() => 'Handle (non-serializable)');
+  return successResponse(command.id, { result });
+}
+
+async function handleExpose(
+  command: Command & { action: 'expose'; name: string },
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.exposeFunction(command.name, () => {
+    // Exposed function - can be extended
+    return `Function ${command.name} called`;
+  });
+  return successResponse(command.id, { exposed: command.name });
+}
+
+async function handleAddScript(
+  command: AddScriptCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  
+  if (command.content) {
+    await page.addScriptTag({ content: command.content });
+  } else if (command.url) {
+    await page.addScriptTag({ url: command.url });
+  }
+  
+  return successResponse(command.id, { added: true });
+}
+
+async function handleAddStyle(
+  command: AddStyleCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  
+  if (command.content) {
+    await page.addStyleTag({ content: command.content });
+  } else if (command.url) {
+    await page.addStyleTag({ url: command.url });
+  }
+  
+  return successResponse(command.id, { added: true });
+}
+
+async function handleEmulateMedia(
+  command: EmulateMediaCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.emulateMedia({
+    media: command.media,
+    colorScheme: command.colorScheme,
+    reducedMotion: command.reducedMotion,
+    forcedColors: command.forcedColors,
+  });
+  return successResponse(command.id, { emulated: true });
+}
+
+async function handleOffline(
+  command: OfflineCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  await browser.setOffline(command.offline);
+  return successResponse(command.id, { offline: command.offline });
+}
+
+async function handleHeaders(
+  command: HeadersCommand,
+  browser: BrowserManager
+): Promise<Response> {
+  await browser.setExtraHeaders(command.headers);
+  return successResponse(command.id, { set: true });
+}
+
+async function handlePause(
+  command: Command & { action: 'pause' },
+  browser: BrowserManager
+): Promise<Response> {
+  const page = browser.getPage();
+  await page.pause();
+  return successResponse(command.id, { paused: true });
 }

@@ -307,6 +307,55 @@ function printResponse(response: Response, jsonMode: boolean): void {
   } else if (data.remaining !== undefined) {
     // Tab close
     console.log(c('green', '✓'), `Tab closed (${data.remaining} remaining)`);
+  } else if (data.started !== undefined) {
+    console.log(c('green', '✓'), 'Started');
+  } else if (data.messages) {
+    // Console messages
+    const msgs = data.messages as Array<{ type: string; text: string; timestamp: number }>;
+    if (msgs.length === 0) {
+      console.log(c('dim', 'No console messages'));
+    } else {
+      msgs.forEach(msg => {
+        const typeColor = msg.type === 'error' ? 'red' : msg.type === 'warning' ? 'yellow' : 'dim';
+        console.log(`${c(typeColor, `[${msg.type}]`)} ${msg.text}`);
+      });
+    }
+  } else if (data.errors) {
+    // Page errors
+    const errs = data.errors as Array<{ message: string; timestamp: number }>;
+    if (errs.length === 0) {
+      console.log(c('dim', 'No page errors'));
+    } else {
+      errs.forEach(err => {
+        console.log(c('red', '✗'), err.message);
+      });
+    }
+  } else if (data.pressed) {
+    console.log(c('green', '✓'), `Pressed: ${data.pressed}`);
+  } else if (data.tapped) {
+    console.log(c('green', '✓'), 'Tapped');
+  } else if (data.copied) {
+    console.log(c('green', '✓'), 'Copied to clipboard');
+  } else if (data.pasted) {
+    console.log(c('green', '✓'), 'Pasted from clipboard');
+  } else if (data.highlighted) {
+    console.log(c('green', '✓'), 'Element highlighted');
+  } else if (data.dispatched) {
+    console.log(c('green', '✓'), `Event dispatched: ${data.dispatched}`);
+  } else if (data.exposed) {
+    console.log(c('green', '✓'), `Function exposed: ${data.exposed}`);
+  } else if (data.added) {
+    console.log(c('green', '✓'), 'Added');
+  } else if (data.emulated) {
+    console.log(c('green', '✓'), 'Media emulated');
+  } else if (data.offline !== undefined) {
+    console.log(c('green', '✓'), data.offline ? 'Offline mode enabled' : 'Online mode enabled');
+  } else if (data.paused) {
+    console.log(c('green', '✓'), 'Paused (Inspector open)');
+  } else if (data.note) {
+    console.log(c('yellow', '⚠'), data.note);
+  } else if (data.requestCount !== undefined) {
+    console.log(c('green', '✓'), `HAR saved (${data.requestCount} requests)`);
   } else {
     console.log(c('green', '✓'), JSON.stringify(data));
   }
@@ -969,6 +1018,258 @@ async function main(): Promise<void> {
         console.log(c('cyan', getSession()));
         process.exit(0);
       }
+    }
+    
+    // === Advanced commands ===
+    
+    case 'trace': {
+      const subCmd = cleanArgs[1];
+      
+      if (subCmd === 'start') {
+        const screenshotsMode = args.includes('--screenshots');
+        const snapshotsMode = args.includes('--snapshots');
+        cmd = { id, action: 'trace_start', screenshots: screenshotsMode, snapshots: snapshotsMode };
+      } else if (subCmd === 'stop') {
+        const path = cleanArgs[2];
+        if (!path) {
+          console.error(c('red', 'Error:'), 'Path required for trace output');
+          process.exit(1);
+        }
+        cmd = { id, action: 'trace_stop', path };
+      } else {
+        console.error(c('red', 'Error:'), 'Usage: veb trace start|stop');
+        process.exit(1);
+      }
+      break;
+    }
+    
+    case 'state': {
+      const subCmd = cleanArgs[1];
+      const path = cleanArgs[2];
+      
+      if (subCmd === 'save') {
+        if (!path) {
+          console.error(c('red', 'Error:'), 'Path required');
+          process.exit(1);
+        }
+        cmd = { id, action: 'state_save', path };
+      } else if (subCmd === 'load') {
+        if (!path) {
+          console.error(c('red', 'Error:'), 'Path required');
+          process.exit(1);
+        }
+        cmd = { id, action: 'state_load', path };
+      } else {
+        console.error(c('red', 'Error:'), 'Usage: veb state save|load <path>');
+        process.exit(1);
+      }
+      break;
+    }
+    
+    case 'console': {
+      const clearMode = args.includes('--clear');
+      cmd = { id, action: 'console', clear: clearMode };
+      break;
+    }
+    
+    case 'errors': {
+      const clearMode = args.includes('--clear');
+      cmd = { id, action: 'errors', clear: clearMode };
+      break;
+    }
+    
+    case 'keyboard':
+    case 'key':
+    case 'press': {
+      const keys = cleanArgs[1];
+      if (!keys) {
+        console.error(c('red', 'Error:'), 'Keys required (e.g., veb press "Control+a")');
+        process.exit(1);
+      }
+      cmd = { id, action: 'keyboard', keys };
+      break;
+    }
+    
+    case 'wheel':
+    case 'scroll-wheel': {
+      const deltaY = parseInt(cleanArgs[1], 10) || 100;
+      const deltaX = parseInt(cleanArgs[2], 10) || 0;
+      const selector = selectorOverride;
+      cmd = { id, action: 'wheel', deltaX, deltaY, selector };
+      break;
+    }
+    
+    case 'tap': {
+      const selector = cleanArgs[1];
+      if (!selector) {
+        console.error(c('red', 'Error:'), 'Selector required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'tap', selector };
+      break;
+    }
+    
+    case 'clipboard': {
+      const operation = cleanArgs[1] as 'copy' | 'paste' | 'read';
+      if (!['copy', 'paste', 'read'].includes(operation)) {
+        console.error(c('red', 'Error:'), 'Usage: veb clipboard copy|paste|read');
+        process.exit(1);
+      }
+      cmd = { id, action: 'clipboard', operation };
+      break;
+    }
+    
+    case 'highlight': {
+      const selector = cleanArgs[1];
+      if (!selector) {
+        console.error(c('red', 'Error:'), 'Selector required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'highlight', selector };
+      break;
+    }
+    
+    case 'clear-input':
+    case 'clearinput': {
+      const selector = cleanArgs[1];
+      if (!selector) {
+        console.error(c('red', 'Error:'), 'Selector required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'clear', selector };
+      break;
+    }
+    
+    case 'selectall':
+    case 'select-all': {
+      const selector = cleanArgs[1];
+      if (!selector) {
+        console.error(c('red', 'Error:'), 'Selector required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'selectall', selector };
+      break;
+    }
+    
+    case 'innertext': {
+      const selector = cleanArgs[1];
+      if (!selector) {
+        console.error(c('red', 'Error:'), 'Selector required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'innertext', selector };
+      break;
+    }
+    
+    case 'innerhtml':
+    case 'inner-html': {
+      const selector = cleanArgs[1];
+      if (!selector) {
+        console.error(c('red', 'Error:'), 'Selector required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'innerhtml', selector };
+      break;
+    }
+    
+    case 'inputvalue':
+    case 'input-value': {
+      const selector = cleanArgs[1];
+      if (!selector) {
+        console.error(c('red', 'Error:'), 'Selector required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'inputvalue', selector };
+      break;
+    }
+    
+    case 'setvalue':
+    case 'set-value': {
+      const selector = cleanArgs[1];
+      const value = cleanArgs[2];
+      if (!selector || !value) {
+        console.error(c('red', 'Error:'), 'Selector and value required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'setvalue', selector, value };
+      break;
+    }
+    
+    case 'dispatch': {
+      const selector = cleanArgs[1];
+      const event = cleanArgs[2];
+      if (!selector || !event) {
+        console.error(c('red', 'Error:'), 'Selector and event required');
+        process.exit(1);
+      }
+      cmd = { id, action: 'dispatch', selector, event };
+      break;
+    }
+    
+    case 'addscript':
+    case 'add-script': {
+      const urlOrContent = cleanArgs[1];
+      if (!urlOrContent) {
+        console.error(c('red', 'Error:'), 'URL or content required');
+        process.exit(1);
+      }
+      if (urlOrContent.startsWith('http')) {
+        cmd = { id, action: 'addscript', url: urlOrContent };
+      } else {
+        cmd = { id, action: 'addscript', content: urlOrContent };
+      }
+      break;
+    }
+    
+    case 'addstyle':
+    case 'add-style': {
+      const urlOrContent = cleanArgs[1];
+      if (!urlOrContent) {
+        console.error(c('red', 'Error:'), 'URL or content required');
+        process.exit(1);
+      }
+      if (urlOrContent.startsWith('http')) {
+        cmd = { id, action: 'addstyle', url: urlOrContent };
+      } else {
+        cmd = { id, action: 'addstyle', content: urlOrContent };
+      }
+      break;
+    }
+    
+    case 'media': {
+      const colorScheme = args.includes('--dark') ? 'dark' : args.includes('--light') ? 'light' : undefined;
+      const media = args.includes('--print') ? 'print' : args.includes('--screen') ? 'screen' : undefined;
+      const reducedMotion = args.includes('--reduced-motion') ? 'reduce' : undefined;
+      
+      cmd = { id, action: 'emulatemedia', colorScheme, media, reducedMotion };
+      break;
+    }
+    
+    case 'offline': {
+      const offlineMode = cleanArgs[1] !== 'false' && cleanArgs[1] !== 'off';
+      cmd = { id, action: 'offline', offline: offlineMode };
+      break;
+    }
+    
+    case 'headers': {
+      const headersJson = cleanArgs[1];
+      if (!headersJson) {
+        console.error(c('red', 'Error:'), 'Headers JSON required');
+        process.exit(1);
+      }
+      try {
+        const headers = JSON.parse(headersJson);
+        cmd = { id, action: 'headers', headers };
+      } catch {
+        console.error(c('red', 'Error:'), 'Invalid JSON for headers');
+        process.exit(1);
+      }
+      break;
+    }
+    
+    case 'pause': {
+      cmd = { id, action: 'pause' };
+      break;
     }
     
     default:

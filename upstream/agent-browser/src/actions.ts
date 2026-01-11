@@ -1,4 +1,4 @@
-import type { Page, Frame } from 'playwright';
+import type { Page, Frame } from 'playwright-core';
 import type { BrowserManager } from './browser.js';
 import type {
   Command,

@@ -2,6 +2,7 @@
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+import { execSync } from 'child_process';
 import { send, setDebug, setSession, getSession } from './client.js';
 import type { Response } from './types.js';
 
@@ -108,6 +109,9 @@ ${c('yellow', 'Debug:')}
   ${c('cyan', 'trace')} start|stop <path>    Record trace
   ${c('cyan', 'console')}                    View console logs
   ${c('cyan', 'errors')}                     View page errors
+
+${c('yellow', 'Setup:')}
+  ${c('cyan', 'install')}                    Install browser binaries
 
 ${c('yellow', 'Options:')}
   --session <name>    Isolated session (or AGENT_BROWSER_SESSION env)
@@ -945,6 +949,18 @@ async function main(): Promise<void> {
         console.log(c('cyan', getSession()));
         process.exit(0);
       }
+
+    case 'install': {
+      console.log(c('cyan', 'Installing Playwright browsers...'));
+      try {
+        execSync('npx playwright install', { stdio: 'inherit' });
+        console.log(c('green', '✓'), 'Browsers installed successfully');
+        process.exit(0);
+      } catch (error) {
+        console.error(c('red', '✗'), 'Failed to install browsers');
+        process.exit(1);
+      }
+    }
 
     // === Legacy aliases for backwards compatibility ===
     case 'url':

@@ -10,7 +10,7 @@ import {
   type Dialog,
   type Request,
   type Route,
-} from 'playwright';
+} from 'playwright-core';
 import type { LaunchCommand } from './types.js';
 
 interface TrackedRequest {

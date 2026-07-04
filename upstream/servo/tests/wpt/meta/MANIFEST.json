@@ -13562,6 +13562,17 @@
       ]
      }
     },
+    "linking": {
+     "scripted": {
+      "use-iframe-crash.html": [
+       "01546401adbe0091eedd20b28d900b961c2455a8",
+       [
+        null,
+        {}
+       ]
+      ]
+     }
+    },
     "painting": {
      "marker-with-mask-cycle-crash.html": [
       "ec514044bad03438b574230ce54deef772835c70",

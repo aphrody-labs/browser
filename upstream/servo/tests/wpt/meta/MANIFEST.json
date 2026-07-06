@@ -3776,6 +3776,13 @@
        null,
        {}
       ]
+     ],
+     "element-replacement-gradient-scale-root-crash.html": [
+      "f527ed168efd9de7a44e05d4b8c9635c213664be",
+      [
+       null,
+       {}
+      ]
      ]
     },
     "css-display": {
@@ -1140814,6 +1140821,13 @@
      ],
      "content-no-interpolation.html": [
       "89ca47afca80e03de702f805fa8a4212b347f810",
+      [
+       null,
+       {}
+      ]
+     ],
+     "element-replacement-dynamic-002.html": [
+      "2c3d0d70e6029a96e34ece1e9f37099bf1222137",
       [
        null,
        {}

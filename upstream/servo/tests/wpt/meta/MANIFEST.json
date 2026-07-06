@@ -10985,6 +10985,15 @@
        ]
       },
       "media-elements": {
+       "crashtests": {
+        "no-blocking-loads-gc-crash.html": [
+         "1d79292008a4fb87099c979c13d045e5964855c5",
+         [
+          null,
+          {}
+         ]
+        ]
+       },
        "track": {
         "track-element": {
          "crashtests": {
@@ -553192,7 +553201,7 @@
     }
    },
    "lint.ignore": [
-    "6c9ed01f8c514848677ce07900663c8864df7ec7",
+    "cf26d71b43ec92cf95041e8966600475e00eef7e",
     []
    ],
    "loading": {

@@ -6331,6 +6331,13 @@
     },
     "css-position": {
      "crashtests": {
+      "dynamic-fixed-in-nested-absolutes-crash.html": [
+       "e99347620c1888b527ccfda847897e3479b74bb1",
+       [
+        null,
+        {}
+       ]
+      ],
       "inline-containing-block-crash.html": [
        "db385e38d18bc5478ce58f46ab016c812e4d7fc8",
        [

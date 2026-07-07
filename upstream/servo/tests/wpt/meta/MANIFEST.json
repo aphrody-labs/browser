@@ -11686,6 +11686,17 @@
        ]
       ]
      },
+     "links": {
+      "links-created-by-a-and-area-elements": {
+       "area-without-href-activation-crash.html": [
+        "1c38d21f9c6c072c364b21863ff4174dbeae70e6",
+        [
+         null,
+         {}
+        ]
+       ]
+      }
+     },
      "obsolete": {
       "crashtests": {
        "marquee-inside-template-tag.html": [

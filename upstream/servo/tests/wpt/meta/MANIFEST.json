@@ -8624,6 +8624,13 @@
        {}
       ]
      ],
+     "adoptedstylesheets-invalid-assignment-crash.html": [
+      "9827d48a0b463a9cfd0d8ca4c13d90349b400ae1",
+      [
+       null,
+       {}
+      ]
+     ],
      "change-rule-with-layers-crash.html": [
       "63e8ec5207e94e8cae555ee0e0db2d8d6d095a11",
       [

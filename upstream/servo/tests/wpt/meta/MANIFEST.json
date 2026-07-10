@@ -394603,6 +394603,32 @@
          {}
         ]
        ],
+       "select-setting-selected-option-from-js-updates-visible-state.html": [
+        "aa3c9a326cf5590df544d30d0ba4f4b309febe44",
+        [
+         null,
+         [
+          [
+           "/html/rendering/replaced-elements/the-select-element/select-setting-selected-option-from-js-updates-visible-state-ref.html",
+           "=="
+          ]
+         ],
+         {}
+        ]
+       ],
+       "select-setting-value-from-js-updates-visible-state.html": [
+        "c26c7efb8e05216ec0328b43cad734034606a459",
+        [
+         null,
+         [
+          [
+           "/html/rendering/replaced-elements/the-select-element/select-setting-value-from-js-updates-visible-state-ref.html",
+           "=="
+          ]
+         ],
+         {}
+        ]
+       ],
        "select-text-decoration.html": [
         "a697e0f7b0c3d3455b6595ee3064dbbe7baff22c",
         [
@@ -398868,19 +398894,6 @@
          [
           [
            "/html/semantics/forms/the-select-element/select-overflow-x-ref.tentative.html",
-           "=="
-          ]
-         ],
-         {}
-        ]
-       ],
-       "select-setting-value-from-js-updates-visible-state.html": [
-        "c26c7efb8e05216ec0328b43cad734034606a459",
-        [
-         null,
-         [
-          [
-           "/html/semantics/forms/the-select-element/select-setting-value-from-js-updates-visible-state-ref.html",
            "=="
           ]
          ],
@@ -541508,6 +541521,14 @@
         "cb66ddaaaf369479e59f6092d04633a2dc2baf6c",
         []
        ],
+       "select-setting-selected-option-from-js-updates-visible-state-ref.html": [
+        "5933b99355d7ed90135154cf2b7a7e4dfed8a5a9",
+        []
+       ],
+       "select-setting-value-from-js-updates-visible-state-ref.html": [
+        "3bbfe7f990c1a6a48e0292f9ce96ec8a32ad13ca",
+        []
+       ],
        "select-text-decoration-ref.html": [
         "41a039e988f17a0e8af5ad474f82828c4b8534ea",
         []
@@ -544230,10 +544251,6 @@
        ],
        "select-overflow-x-ref.tentative.html": [
         "5e9f554d9615476ac327ef0894b7b81e53994e82",
-        []
-       ],
-       "select-setting-value-from-js-updates-visible-state-ref.html": [
-        "3bbfe7f990c1a6a48e0292f9ce96ec8a32ad13ca",
         []
        ],
        "select-toggle-multiple-ref.html": [

@@ -60790,6 +60790,32 @@
         {}
        ]
       ],
+      "float-in-inline-001.html": [
+       "717aa859eb93239b853679fd9c484730de48f51b",
+       [
+        null,
+        [
+         [
+          "/css/reference/ref-filled-green-200px-square.html",
+          "=="
+         ]
+        ],
+        {}
+       ]
+      ],
+      "float-in-inline-002.html": [
+       "0288d609f45837512ff53b3bd0f109d6259e7ed0",
+       [
+        null,
+        [
+         [
+          "/css/reference/ref-filled-green-200px-square.html",
+          "=="
+         ]
+        ],
+        {}
+       ]
+      ],
       "float-in-inline-anonymous-block-with-overflow-hidden.html": [
        "ddb69f6631fd0934f815a6eb82bcc897be47d786",
        [

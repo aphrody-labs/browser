@@ -71524,6 +71524,19 @@
         {}
        ]
       ],
+      "split-inline-borders.html": [
+       "973c96f737a2480565f1fdfdf0d4b6cb1a88b556",
+       [
+        null,
+        [
+         [
+          "/css/CSS2/linebox/split-inline-borders-ref.html",
+          "=="
+         ]
+        ],
+        {}
+       ]
+      ],
       "vertical-align-004.xht": [
        "0c5240cc8d18ba3869efad4fad18ad5cb0045e39",
        [
@@ -150434,6 +150447,19 @@
        [
         [
          "/css/css-break/box-decoration-break-clone-inline-001-ref.html",
+         "=="
+        ]
+       ],
+       {}
+      ]
+     ],
+     "box-decoration-break-clone-split-inline.html": [
+      "bb1e246fe5fe23c5495d8cf3bc0b7cf32e1717b7",
+      [
+       null,
+       [
+        [
+         "/css/css-break/box-decoration-break-clone-split-inline-ref.html",
          "=="
         ]
        ],
@@ -457268,6 +457294,10 @@
        "c338a1b1152386dd4dd47d46183d000500fe6206",
        []
       ],
+      "split-inline-borders-ref.html": [
+       "bbac8e16f6df3a4903a41e1918ac9010d642242a",
+       []
+      ],
       "support": {
        "1x1-green.png": [
         "b98ca0ba0a03c580ac339e4a3653539cfa8edc71",
@@ -472209,6 +472239,10 @@
      ],
      "box-decoration-break-clone-inline-001-ref.html": [
       "68767bf4d7e29389e1a034b2073a7d1065d7481a",
+      []
+     ],
+     "box-decoration-break-clone-split-inline-ref.html": [
+      "360a04e912df36a4c0676ee2e2411335466915f2",
       []
      ],
      "box-shadow-001-ref.html": [

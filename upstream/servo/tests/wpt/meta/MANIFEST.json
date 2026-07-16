@@ -43635,6 +43635,19 @@
         {}
        ]
       ],
+      "static-inside-float-inside-inline.html": [
+       "bf582eda1fc9625a9ce2fd833be046f9f14573ef",
+       [
+        null,
+        [
+         [
+          "/css/reference/ref-filled-green-200px-square.html",
+          "=="
+         ]
+        ],
+        {}
+       ]
+      ],
       "static-inside-inline-001.html": [
        "0905c5621eae85a802161a1b291f3c118da2a7b8",
        [

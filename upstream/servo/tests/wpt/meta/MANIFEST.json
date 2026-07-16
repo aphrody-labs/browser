@@ -14196,6 +14196,15 @@
       ]
      ]
     },
+    "embedded": {
+     "svg-zero-size-crash.html": [
+      "97b22a00158a20d0fabd8b8fcbeba32229684e69",
+      [
+       null,
+       {}
+      ]
+     ]
+    },
     "extensibility": {
      "foreignObject": {
       "foreign-object-circular-filter-reference-crash.html": [

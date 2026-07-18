@@ -542968,6 +542968,22 @@
            "a8817954a6029c942744f5ac180115b4a430fe73",
            []
           ],
+          "header-empty-after.vtt": [
+           "af1827ddf91d25a380a2c0d8bf8a4cc12f09fd31",
+           []
+          ],
+          "header-invalid-equal.vtt": [
+           "ae3a9643c22fe0d907304ed1a1576c57b1eea27a",
+           []
+          ],
+          "header-newlines-after.vtt": [
+           "d67d477f882a13fb9beaff988fa67f8e7d10fa9d",
+           []
+          ],
+          "header-too-short.vtt": [
+           "fa13c60890a9e906438da1fc56805d0fc78098e0",
+           []
+          ],
           "interspersed-non-cue.vtt": [
            "c825ab32e2e9cedf06979a7db213cb1ad28da17e",
            []
@@ -1294987,6 +1295003,13 @@
          ],
          "track-webvtt-entities.html": [
           "a5295795ef0bc9f232c5b86f3e3db98c3d6381d0",
+          [
+           null,
+           {}
+          ]
+         ],
+         "track-webvtt-header-checks.html": [
+          "96277fb84ce9712916aa6ac9de1a552119308bfc",
           [
            null,
            {}

@@ -10883,6 +10883,15 @@
         ]
        ]
       }
+     },
+     "render-blocking": {
+      "render-blocking-during-update-the-rendering-crash.html": [
+       "640a24541aff1265e69259b948b9bd9ac5f6cbb3",
+       [
+        null,
+        {}
+       ]
+      ]
      }
     },
     "editing": {

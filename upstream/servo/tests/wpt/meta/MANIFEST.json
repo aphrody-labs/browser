@@ -198231,6 +198231,19 @@
        {}
       ]
      ],
+     "remove-loaded-font-face-rule.html": [
+      "23769adbc33e138a75357989bf6ef1a5e821c8ec",
+      [
+       null,
+       [
+        [
+         "/css/css-fonts/remove-loaded-font-face-rule-ref.html",
+         "=="
+        ]
+       ],
+       {}
+      ]
+     ],
      "rex-in-monospace.html": [
       "89fc9ff9cca2b28fdf3b549adcc7ed18474049fb",
       [
@@ -480127,6 +480140,10 @@
      ],
      "rem-in-monospace-ref.html": [
       "5acb0522019e342eff9a955ae6b15b8d4c235000",
+      []
+     ],
+     "remove-loaded-font-face-rule-ref.html": [
+      "3bfc4c774cdedb159b6a4de1e0e9500db44d84e9",
       []
      ],
      "resources": {

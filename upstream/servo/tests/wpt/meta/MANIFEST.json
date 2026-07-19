@@ -397175,6 +397175,45 @@
          {}
         ]
        ],
+       "centering-001.html": [
+        "0314f2270265e206c57c5fcd71e5105cfe496809",
+        [
+         null,
+         [
+          [
+           "/html/rendering/widgets/button-layout/centering-001-ref.html",
+           "=="
+          ]
+         ],
+         {}
+        ]
+       ],
+       "centering-002.html": [
+        "c4d93c6a7bc3690b3ca11f7e07a3bcf52d85a84d",
+        [
+         null,
+         [
+          [
+           "/html/rendering/widgets/button-layout/centering-001-ref.html",
+           "=="
+          ]
+         ],
+         {}
+        ]
+       ],
+       "centering-003.html": [
+        "5996564ce2ebc54804abce1ee79ff043fe6059ed",
+        [
+         null,
+         [
+          [
+           "/html/rendering/widgets/button-layout/centering-003-ref.html",
+           "=="
+          ]
+         ],
+         {}
+        ]
+       ],
        "display-none-or-contents.html": [
         "8f0ad3ab29c9d976bf18e2f180d4862d41aebb3e",
         [
@@ -544161,6 +544200,14 @@
        ],
        "button-dynamic-content-ref.html": [
         "732ee9185f630f444f8cdd70db8a1116067b513d",
+        []
+       ],
+       "centering-001-ref.html": [
+        "fbdd2b05c39fcf884608f7c108250d4699fbf9bd",
+        []
+       ],
+       "centering-003-ref.html": [
+        "78d7780bd98eae2ea14c3c4453136f1185a6b8cd",
         []
        ],
        "display-none-or-contents-ref.html": [

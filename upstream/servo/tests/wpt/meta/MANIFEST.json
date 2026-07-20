@@ -136187,6 +136187,19 @@
        {}
       ]
      ],
+     "background-color-body-propagation-010.html": [
+      "bb71c6607c85da46b880ce1b54a64338c6b274e0",
+      [
+       null,
+       [
+        [
+         "/css/css-backgrounds/background-color-no-body-propagation-ref.html",
+         "=="
+        ]
+       ],
+       {}
+      ]
+     ],
      "background-color-clip.html": [
       "961e161388d7f1962cfc4ecb22c18b47e60ad62e",
       [
@@ -136220,6 +136233,19 @@
        [
         [
          "/css/reference/blank.html",
+         "=="
+        ]
+       ],
+       {}
+      ]
+     ],
+     "background-color-root-propagation-003.html": [
+      "3f1edcec9df2164bc044271490755851555d2c31",
+      [
+       null,
+       [
+        [
+         "/css/css-backgrounds/background-color-no-body-propagation-ref.html",
          "=="
         ]
        ],
@@ -397214,6 +397240,19 @@
          {}
         ]
        ],
+       "centering-004.html": [
+        "ad9675715f55917c70285c18d7f35b2fef1ec7cc",
+        [
+         null,
+         [
+          [
+           "/html/rendering/widgets/button-layout/centering-004-ref.html",
+           "=="
+          ]
+         ],
+         {}
+        ]
+       ],
        "display-none-or-contents.html": [
         "8f0ad3ab29c9d976bf18e2f180d4862d41aebb3e",
         [
@@ -544208,6 +544247,10 @@
        ],
        "centering-003-ref.html": [
         "78d7780bd98eae2ea14c3c4453136f1185a6b8cd",
+        []
+       ],
+       "centering-004-ref.html": [
+        "b123c49d4d080c046e29fbcfdae6a8c365c64385",
         []
        ],
        "display-none-or-contents-ref.html": [

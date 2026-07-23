@@ -1877,6 +1877,13 @@
         {}
        ]
       ],
+      "update-delay-of-paused-animation.html": [
+       "2795a58f5a83f8d2f47948700677dece1a09dbe8",
+       [
+        null,
+        {}
+       ]
+      ],
       "webkit-filter-default-arg.html": [
        "f08af7ac21ce56e7c240f73db6cc8f6976943a78",
        [

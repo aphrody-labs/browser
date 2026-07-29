@@ -1377,6 +1377,15 @@
        ]
       }
      },
+     "mix-blend-mode": {
+      "mix-blend-mode-root-element-transform-crash.html": [
+       "7f435249f8563bb2f1b59063f7fe9f688030e978",
+       [
+        null,
+        {}
+       ]
+      ]
+     },
      "opacity-and-transform-animation-crash.html": [
       "294a823cd8ee0b7e5f289d2b623d59c7ceaa9f18",
       [

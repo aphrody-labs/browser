@@ -526684,7 +526684,7 @@
       []
      ],
      "attributes.js": [
-      "ef32bf6a67732c5820fc75f31e8eae5ba42c54cd",
+      "a90159803749d369f219edc128e5bfa285e3e39c",
       []
      ],
      "case.js": [
@@ -1192146,6 +1192146,20 @@
      ]
     },
     "nodes": {
+     "Attr-prefix-xhtml.xhtml": [
+      "04c046b72799a8c5b07a7edfe56373020fc6dd33",
+      [
+       null,
+       {}
+      ]
+     ],
+     "Attr-prefix.html": [
+      "fff77395a3cde3acff622afce80e9584cde4f1b3",
+      [
+       null,
+       {}
+      ]
+     ],
      "CharacterData-appendChild.html": [
       "eb4f36c68107264f9be71feb38b28501c38806a4",
       [

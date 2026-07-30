@@ -11567,6 +11567,15 @@
         ]
        ]
       },
+      "resetting-a-form": {
+       "form-attribute-detach-crash.html": [
+        "01eaab0b3769348d071f773d4b869840d7253e65",
+        [
+         null,
+         {}
+        ]
+       ]
+      },
       "textfieldselection": {
        "textarea-setRangeText-utf16-code-unit-crash.html": [
         "34afa68a20fbeb32ccee8f878ef144cb964835dd",

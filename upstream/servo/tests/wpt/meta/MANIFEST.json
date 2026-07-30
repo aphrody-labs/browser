@@ -1213304,6 +1213304,13 @@
     ]
    },
    "entries-api": {
+    "filesystementry-getParent.html": [
+     "f7fc5c810646f1e4d108e0246592a80946fc606d",
+     [
+      null,
+      {}
+     ]
+    ],
     "idlharness.window.js": [
      "32527be514ad92a1c9d606a18cfae0061c764710",
      [

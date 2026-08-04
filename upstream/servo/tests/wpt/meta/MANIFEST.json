@@ -1334597,6 +1334597,15 @@
        "testdriver": true
       }
      ]
+    ],
+    "touch-scroll-axis-lock-with-scroll-chain.html": [
+     "46c31b0558955849f15bef0864d3d8999ab3b4c3",
+     [
+      "pointerevents/touch-scroll-axis-lock-with-scroll-chain.html?touch",
+      {
+       "testdriver": true
+      }
+     ]
     ]
    },
    "pointerlock": {

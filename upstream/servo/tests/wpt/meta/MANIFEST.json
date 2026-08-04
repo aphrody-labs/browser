@@ -14007,6 +14007,13 @@
        {}
       ]
      ],
+     "modify-sibling-of-shadowroot-after-attach.html": [
+      "d7825631c1a8c3130fbcff8c11da32bc5cb2c980",
+      [
+       null,
+       {}
+      ]
+     ],
      "modify-style-element-in-disconnected-shadow-crash.html": [
       "3808642a97451eef40573214fbe1d1c6273c557f",
       [

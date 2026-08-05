@@ -304651,6 +304651,19 @@
         ],
         {}
        ]
+      ],
+      "text-transform-upperlower-108.html": [
+       "d925e826e3eb9bd8267938cd3e6c4626be78f6b0",
+       [
+        null,
+        [
+         [
+          "/css/css-text/text-transform/reference/text-transform-upperlower-108-ref.html",
+          "=="
+         ]
+        ],
+        {}
+       ]
       ]
      },
      "white-space": {
@@ -512582,6 +512595,10 @@
        ],
        "text-transform-upperlower-106-ref.html": [
         "cc3dad35de7e7ee170b620eb5b658fd915aa9bc6",
+        []
+       ],
+       "text-transform-upperlower-108-ref.html": [
+        "8b7489386696f301bdee4ad4a1f9d707d47b18bf",
         []
        ]
       },

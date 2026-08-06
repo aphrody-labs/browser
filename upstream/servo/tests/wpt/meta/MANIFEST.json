@@ -558269,6 +558269,10 @@
       "cd600254805570deab8447ea843657d7f268b7c5",
       []
      ],
+     "iframe-stores-image-entry.html": [
+      "58468d0bc89424d30f3a2f9e79f2e7f6a6444ff7",
+      []
+     ],
      "invisible-images.js": [
       "bad078e35f0cd124eb688fe5937ad2686d7c5bbe",
       []
@@ -1312769,6 +1312773,13 @@
       {}
      ]
     ],
+    "image-element-when-fully-active.html": [
+     "f157575b75e01613a2d1b0a59b3e28ba206f189e",
+     [
+      null,
+      {}
+     ]
+    ],
     "image-full-viewport.html": [
      "2f8e17fb3220729eb1ee8841efdb9d3bcc8256d0",
      [
@@ -1312785,6 +1312796,13 @@
     ],
     "image-not-fully-visible.html": [
      "d66dc4a520f92ab89276fcd49f276418ce3d5815",
+     [
+      null,
+      {}
+     ]
+    ],
+    "image-removed-after-paint.html": [
+     "1d4fd6d1d7bd203e40854d5888406d657987f4b6",
      [
       null,
       {}

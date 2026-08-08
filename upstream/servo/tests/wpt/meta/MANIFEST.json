@@ -416601,6 +416601,19 @@
       ]
      ]
     },
+    "selection-incremental-change-repaint.html": [
+     "7e57da1efb8ca12aba3adbd0bd0dc1cb2ca15bfa",
+     [
+      null,
+      [
+       [
+        "/selection/selection-incremental-change-repaint-ref.html",
+        "=="
+       ]
+      ],
+      {}
+     ]
+    ],
     "shadow-dom": {
      "cross-shadow-boundary-1.html": [
       "58d7e9f8e46add45e9c60a0701f316fe560ef54a",
@@ -567516,6 +567529,10 @@
     },
     "extend.js": [
      "d5d199068c5b0465f96ed643af8d7d20a889312e",
+     []
+    ],
+    "selection-incremental-change-repaint-ref.html": [
+     "230e3bbfb031ce04980aae15608c8be794573f9a",
      []
     ],
     "selection-test-utils.js": [

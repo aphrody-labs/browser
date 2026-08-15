@@ -13481,6 +13481,15 @@
      ]
     }
    },
+   "preload": {
+    "link-preload-empty-href-attribute-crash.html": [
+     "f39a9026bedbef472bb9ab4cabfa87c5ccbc36e4",
+     [
+      null,
+      {}
+     ]
+    ]
+   },
    "print": {
     "crashtests": {
      "reload-crash.html": [

@@ -245936,6 +245936,19 @@
         }
        ]
       ],
+      "clip-path-change.html": [
+       "65128fd6df6451b96675502d6e5aeb10a0a60ba0",
+       [
+        null,
+        [
+         [
+          "/css/css-masking/clip-path/clip-path-change-ref.html",
+          "=="
+         ]
+        ],
+        {}
+       ]
+      ],
       "clip-path-circle-001.html": [
        "60be8d1804e54b79ad960cadca5c94ebdc8a1a2a",
        [
@@ -501708,6 +501721,10 @@
       },
       "clip-path-blending-offset-ref.html": [
        "c2613ac0a69f48279a3f9b67013b9ff0322ee1f9",
+       []
+      ],
+      "clip-path-change-ref.html": [
+       "6aa0872416ca35f7710fea82a62b4c56493c3986",
        []
       ],
       "clip-path-filter-order-ref.html": [

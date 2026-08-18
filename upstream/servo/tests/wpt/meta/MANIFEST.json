@@ -1207245,6 +1207245,13 @@
        }
       ]
      ],
+     "insert-text-with-surrogate-pairs.html": [
+      "26a2f4320c8f43dfe1fa486bfa39d4f80e396e0e",
+      [
+       null,
+       {}
+      ]
+     ],
      "inserthtml-do-not-preserve-inline-styles.html": [
       "3483f8f995532ec64083d5aa5a718acfcab34284",
       [

@@ -10238,6 +10238,20 @@
        {}
       ]
      ],
+     "insert-rich-content-in-comment.html": [
+      "bc93c2645cf1f0b77b092d0370271c1ddfe7e9cc",
+      [
+       null,
+       {}
+      ]
+     ],
+     "insert-rich-content-in-processing-instruction.html": [
+      "dbe1f8f0b11c28c8f93b31df2b36ab4ac48caf01",
+      [
+       null,
+       {}
+      ]
+     ],
      "insertAdjacentElement-beforeBegin-first-br-in-video.html": [
       "25f4b811b243bdd2d990e18cad227fb864d41221",
       [

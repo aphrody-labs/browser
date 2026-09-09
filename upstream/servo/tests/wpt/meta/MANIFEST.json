@@ -550103,7 +550103,7 @@
         []
        ],
        "the-lang-attribute-011.html.headers": [
-        "827b4348f499f4f4b066c6811bff78233b22e212",
+        "3a9ecb43a55a91e3649426b996a221b069f77e58",
         []
        ]
       },
@@ -1293580,6 +1293580,13 @@
          {}
         ]
        ],
+       "the-lang-attribute-011.html": [
+        "da8c37bd599171f16e8436245796b97816c32806",
+        [
+         null,
+         {}
+        ]
+       ],
        "the-translate-attribute-007.html": [
         "abce2858a22f058ab16d61b621ba855d42b97b8d",
         [
@@ -1301188,6 +1301195,34 @@
         },
         "http-equiv-enumerated-ascii-case-insensitive.html": [
          "6d19be4149c8c6c2eddd0d50c467718fb10279d1",
+         [
+          null,
+          {}
+         ]
+        ],
+        "http-equiv-lang-removal.html": [
+         "cf1b2afd9879c2c112a05f54c5a50dec17eacb61",
+         [
+          null,
+          {}
+         ]
+        ],
+        "http-equiv-lang-whitespace-after-comma.html": [
+         "27e5c3eded316474f367c74c742742d8b7ae0756",
+         [
+          null,
+          {}
+         ]
+        ],
+        "http-equiv-lang-whitespace-end.html": [
+         "de097e05258e39ab94a55d1a2da727d54364b746",
+         [
+          null,
+          {}
+         ]
+        ],
+        "http-equiv-lang-whitespace-start.html": [
+         "5029b3dba80a28e65150c607a7c17c514b4f88f4",
          [
           null,
           {}

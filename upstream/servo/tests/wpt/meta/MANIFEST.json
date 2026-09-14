@@ -134377,6 +134377,19 @@
        {}
       ]
      ],
+     "animation-append-stylesheet-reverse.html": [
+      "5e055cf25a902d2b6fa6def7fc9292519f1ea0f5",
+      [
+       null,
+       [
+        [
+         "/css/css-animations/animation-append-stylesheet-reverse-ref.html",
+         "=="
+        ]
+       ],
+       {}
+      ]
+     ],
      "animation-delay-008.html": [
       "52883fa72ff5a4a57c6a8c2866805ceb5fa0a507",
       [
@@ -481349,6 +481362,10 @@
      ],
      "animate-with-background-color-oklch-001-ref.html": [
       "92b91077f3fe1cc66cca5b5202cd5d9a2d5f6b50",
+      []
+     ],
+     "animation-append-stylesheet-reverse-ref.html": [
+      "7fb04eb24f98bc64e0f2c61625721bf8a98255f9",
       []
      ],
      "animation-common-ref.html": [

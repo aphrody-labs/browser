@@ -1155137,6 +1155137,13 @@
         {}
        ]
       ],
+      "float-dynamic-formatting-context.html": [
+       "7b7f435e2b3042e96555f5608215b3a81f59fc1e",
+       [
+        null,
+        {}
+       ]
+      ],
       "float-in-self-painting-inline.html": [
        "6ff47d362639ea31dc73547c5c24ea7a8b053015",
        [
@@ -1182275,6 +1182282,13 @@
      ],
      "position-absolute-dynamic-containing-block.html": [
       "3968f685849663574ca213fcb90dc5fb3eaffaa3",
+      [
+       null,
+       {}
+      ]
+     ],
+     "position-absolute-dynamic-formatting-context.html": [
+      "f540de7b117e636244a5bc638ffc386b76b151eb",
       [
        null,
        {}

@@ -279385,6 +279385,19 @@
        {}
       ]
      ],
+     "first-letter-require-first-formatted-line.html": [
+      "52bc2711a1aa43099d0d137e0d07d006f4314789",
+      [
+       null,
+       [
+        [
+         "/css/reference/ref-filled-green-200px-square.html",
+         "=="
+        ]
+       ],
+       {}
+      ]
+     ],
      "first-letter-skip-empty-span-nested.html": [
       "e57700bbbd61246c93a5e2bae00659d87a4981dc",
       [

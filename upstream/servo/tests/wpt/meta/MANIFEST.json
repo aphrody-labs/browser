@@ -426963,6 +426963,19 @@
        {}
       ]
      ],
+     "viewBox-fractional-valid.html": [
+      "5c5f4f3f6d604b2ef9f1223c5cd04c2de9456ed1",
+      [
+       null,
+       [
+        [
+         "/svg/coordinate-systems/viewBox-fractional-valid-ref.html",
+         "=="
+        ]
+       ],
+       {}
+      ]
+     ],
      "viewBox-scaling-text-001.html": [
       "74402910f2bc993ad02ae938fd418af149e03081",
       [
@@ -585182,6 +585195,10 @@
        []
       ]
      },
+     "viewBox-fractional-valid-ref.html": [
+      "ad6d4856132321a214588bb456852124121eeef6",
+      []
+     ],
      "viewBox-synthesized-in-img-001-ref.html": [
       "33217ba3d5601a3a7b16d9ac4f664ac6ac33a6e7",
       []

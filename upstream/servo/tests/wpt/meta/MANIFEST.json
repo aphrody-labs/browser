@@ -145572,6 +145572,19 @@
       ]
      ],
      "box-shadow": {
+      "block-in-inline-fragmentation-001.html": [
+       "466d43146da3d3e97b7bf5336ab20a60b5b616e0",
+       [
+        null,
+        [
+         [
+          "/css/css-backgrounds/box-shadow/block-in-inline-fragmentation-001-ref.html",
+          "=="
+         ]
+        ],
+        {}
+       ]
+      ],
       "box-shadow-table-row-display.html": [
        "d0e810c399af37a2eb7f3e72327d47ee33b73d24",
        [
@@ -486846,6 +486859,10 @@
      "box-shadow": {
       "WEB_FEATURES.yml": [
        "9f8448d6abea21cfa35640ba5194c554ce621fd3",
+       []
+      ],
+      "block-in-inline-fragmentation-001-ref.html": [
+       "2c8375d75813cce0d7b2a50ee8cb5091a882a2a0",
        []
       ],
       "box-shadow-table-row-display-ref.html": [

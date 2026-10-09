@@ -188140,6 +188140,19 @@
        {}
       ]
      ],
+     "column-flex-child-center-with-indefinite-height.html": [
+      "d1f65f6c59d6c4fb183e62d42b48c7145233aa6f",
+      [
+       null,
+       [
+        [
+         "/css/css-flexbox/reference/column-flex-child-center-with-indefinite-height-ref.html",
+         "=="
+        ]
+       ],
+       {}
+      ]
+     ],
      "column-flex-child-with-max-width.html": [
       "b1a6a84ded65341c37d7048c07de2fb5ee9036a9",
       [
@@ -494963,6 +494976,10 @@
       ],
       "auto-margins-003-ref.html": [
        "4c8f69c8a738fd3736408be342d81aa318d33902",
+       []
+      ],
+      "column-flex-child-center-with-indefinite-height-ref.html": [
+       "9fac47f690b0fae642ff3f828c4e6c9c458e9b3e",
        []
       ],
       "content-height-with-scrollbars-ref.html": [

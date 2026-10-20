@@ -12691,6 +12691,58 @@ fn load_binding(session: &str, expect: &str) -> super::tab_binding::TabBinding {
 
 #[tokio::test]
 #[ignore]
+async fn e2e_cdp_attach_survives_follow_up_launch_without_a_target() {
+    let (guard, _dir) = binding_test_env();
+    let (mut host, ws_url) = launch_binding_host(&guard).await;
+    guard.set("AGENT_BROWSER_SESSION", "e2e-attach-sticky");
+    let mut state = DaemonState::new();
+    let attach = json!({ "id": "1", "action": "launch", "cdpUrl": ws_url });
+    assert_success(&execute_command(&attach, &mut state).await);
+    let page = "data:text/html,attached-page";
+    let navigate = json!({ "id": "2", "action": "navigate", "url": page });
+    assert_success(&execute_command(&navigate, &mut state).await);
+
+    let local =
+        json!({ "id": "3", "action": "launch", "headless": true, "args": ["--no-sandbox"] });
+    let resp = execute_command(&local, &mut state).await;
+    assert_eq!(get_data(&resp)["reused"], true, "got: {}", resp);
+    assert_eq!(get_data(&current_url(&mut state, "4").await)["url"], page);
+
+    let allowlist = json!({ "id": "5", "action": "launch", "allowedDomains": ["example.com"] });
+    let resp = execute_command(&allowlist, &mut state).await;
+    assert_eq!(resp["success"], false, "got: {}", resp);
+    assert!(state.domain_filter.read().await.is_none());
+
+    let _ = execute_command(&json!({ "id": "98", "action": "close" }), &mut state).await;
+    let _ = execute_command(&json!({ "id": "99", "action": "close" }), &mut host).await;
+}
+
+#[tokio::test]
+#[ignore]
+async fn e2e_cdp_attach_dead_browser_errors_instead_of_launching_locally() {
+    let (guard, _dir) = binding_test_env();
+    let (mut host, ws_url) = launch_binding_host(&guard).await;
+    guard.set("AGENT_BROWSER_SESSION", "e2e-attach-dead");
+    let mut state = DaemonState::new();
+    let attach = json!({ "id": "1", "action": "launch", "cdpUrl": ws_url });
+    assert_success(&execute_command(&attach, &mut state).await);
+    assert_success(&execute_command(&json!({ "id": "h", "action": "close" }), &mut host).await);
+    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+
+    let local =
+        json!({ "id": "2", "action": "launch", "headless": true, "args": ["--no-sandbox"] });
+    assert_eq!(execute_command(&local, &mut state).await["success"], false);
+    assert_eq!(current_url(&mut state, "3").await["success"], false);
+    assert!(
+        state.browser.is_none(),
+        "no local browser may replace the attach"
+    );
+
+    let _ = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+}
+
+#[tokio::test]
+#[ignore]
 async fn e2e_pin_tab_rebinds_after_daemon_restart() {
     let (guard, _dir) = binding_test_env();
     let (mut host, ws_url) = launch_binding_host(&guard).await;

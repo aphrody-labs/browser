@@ -5848,6 +5848,269 @@ async fn e2e_click_stale_ref_falls_back_to_role_name() {
     assert_success(&resp);
 }
 
+async fn ref_recovery_setup(state: &mut DaemonState, body: &str) -> String {
+    let resp = execute_command(
+        &json!({ "id": "1", "action": "launch", "headless": true }),
+        state,
+    )
+    .await;
+    assert_success(&resp);
+    let html = format!(
+        "data:text/html,<body><script>window.clicks = {{a: 0, b: 0}};</script>{}</body>",
+        body
+    );
+    let resp = execute_command(
+        &json!({ "id": "2", "action": "navigate", "url": html }),
+        state,
+    )
+    .await;
+    assert_success(&resp);
+    let resp = execute_command(&json!({ "id": "3", "action": "snapshot" }), state).await;
+    assert_success(&resp);
+    get_data(&resp)["snapshot"].as_str().unwrap().to_string()
+}
+
+fn ref_recovery_refs(snapshot: &str, name: &str) -> Vec<String> {
+    let needle = format!("\"{}\"", name);
+    snapshot
+        .lines()
+        .filter(|l| l.contains(&needle))
+        .filter_map(|l| {
+            let start = l.find("[ref=")? + 5;
+            let end = l[start..].find(']')? + start;
+            Some(l[start..end].to_string())
+        })
+        .collect()
+}
+
+async fn ref_recovery_eval(state: &mut DaemonState, script: &str) -> Value {
+    let resp = execute_command(
+        &json!({ "id": "ev", "action": "evaluate", "script": script }),
+        state,
+    )
+    .await;
+    assert_success(&resp);
+    get_data(&resp)["result"].clone()
+}
+
+async fn ref_recovery_click_expect_error(state: &mut DaemonState, selector: &str) {
+    let resp = execute_command(
+        &json!({ "id": "cl", "action": "click", "selector": selector }),
+        state,
+    )
+    .await;
+    assert_eq!(resp["success"], false, "{resp}");
+    let error = resp["error"].as_str().unwrap_or("");
+    assert!(error.contains("Run snapshot again"), "{error}");
+}
+
+const REF_RECOVERY_TWO_BUTTONS: &str = r#"<div id="c"><button id="a" onclick="window.clicks.a++">Approve</button><button id="b" onclick="window.clicks.b++">Approve</button></div>"#;
+
+const REF_RECOVERY_REPLACE_REORDERED: &str = r#"(function(){
+    var c = document.getElementById('c');
+    c.innerHTML = '';
+    var nb = document.createElement('button');
+    nb.textContent = 'Approve';
+    nb.onclick = function() { window.clicks.b++; };
+    var na = document.createElement('button');
+    na.textContent = 'Approve';
+    na.onclick = function() { window.clicks.a++; };
+    c.appendChild(nb);
+    c.appendChild(na);
+    return true;
+})()"#;
+
+#[tokio::test]
+#[ignore]
+async fn e2e_ref_recovery_duplicates_replaced_and_reordered_is_rejected() {
+    let mut state = DaemonState::new();
+    let snapshot = ref_recovery_setup(&mut state, REF_RECOVERY_TWO_BUTTONS).await;
+    let refs = ref_recovery_refs(&snapshot, "Approve");
+    assert_eq!(refs.len(), 2, "{snapshot}");
+
+    ref_recovery_eval(&mut state, REF_RECOVERY_REPLACE_REORDERED).await;
+    ref_recovery_click_expect_error(&mut state, &refs[0]).await;
+    ref_recovery_click_expect_error(&mut state, &refs[1]).await;
+
+    let clicks = ref_recovery_eval(&mut state, "window.clicks.a + ',' + window.clicks.b").await;
+    assert_eq!(clicks, "0,0");
+
+    let resp = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+    assert_success(&resp);
+}
+
+#[tokio::test]
+#[ignore]
+async fn e2e_ref_recovery_duplicate_with_single_survivor_is_rejected() {
+    let mut state = DaemonState::new();
+    let snapshot = ref_recovery_setup(&mut state, REF_RECOVERY_TWO_BUTTONS).await;
+    let refs = ref_recovery_refs(&snapshot, "Approve");
+    assert_eq!(refs.len(), 2, "{snapshot}");
+
+    ref_recovery_eval(&mut state, "document.getElementById('a').remove(); true").await;
+    ref_recovery_click_expect_error(&mut state, &refs[0]).await;
+
+    let clicks = ref_recovery_eval(&mut state, "window.clicks.a + ',' + window.clicks.b").await;
+    assert_eq!(clicks, "0,0");
+
+    let resp = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+    assert_success(&resp);
+}
+
+#[tokio::test]
+#[ignore]
+async fn e2e_ref_recovery_unique_ref_with_two_replacements_is_rejected() {
+    let mut state = DaemonState::new();
+    let snapshot = ref_recovery_setup(
+        &mut state,
+        r#"<div id="c"><button id="a" onclick="window.clicks.a++">Approve</button></div>"#,
+    )
+    .await;
+    let refs = ref_recovery_refs(&snapshot, "Approve");
+    assert_eq!(refs.len(), 1, "{snapshot}");
+
+    ref_recovery_eval(&mut state, REF_RECOVERY_REPLACE_REORDERED).await;
+    ref_recovery_click_expect_error(&mut state, &refs[0]).await;
+
+    let clicks = ref_recovery_eval(&mut state, "window.clicks.a + ',' + window.clicks.b").await;
+    assert_eq!(clicks, "0,0");
+
+    let resp = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+    assert_success(&resp);
+}
+
+#[tokio::test]
+#[ignore]
+async fn e2e_ref_recovery_moved_duplicates_keep_exact_node() {
+    let mut state = DaemonState::new();
+    let snapshot = ref_recovery_setup(&mut state, REF_RECOVERY_TWO_BUTTONS).await;
+    let refs = ref_recovery_refs(&snapshot, "Approve");
+    assert_eq!(refs.len(), 2, "{snapshot}");
+
+    ref_recovery_eval(
+        &mut state,
+        "var c = document.getElementById('c'); c.appendChild(document.getElementById('a')); c.firstChild.id",
+    )
+    .await;
+    let resp = execute_command(
+        &json!({ "id": "cl", "action": "click", "selector": refs[0] }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+
+    let clicks = ref_recovery_eval(&mut state, "window.clicks.a + ',' + window.clicks.b").await;
+    assert_eq!(clicks, "1,0");
+
+    let resp = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+    assert_success(&resp);
+}
+
+#[tokio::test]
+#[ignore]
+async fn e2e_ref_recovery_object_path_treats_detached_node_as_stale() {
+    let mut state = DaemonState::new();
+    let snapshot = ref_recovery_setup(
+        &mut state,
+        r#"<div id="c"><button>Approve</button><button>Approve</button></div><div id="u"><input aria-label="Email"></div>"#,
+    )
+    .await;
+    let approve = ref_recovery_refs(&snapshot, "Approve");
+    let email = ref_recovery_refs(&snapshot, "Email");
+    assert_eq!((approve.len(), email.len()), (2, 1), "{snapshot}");
+
+    ref_recovery_eval(
+        &mut state,
+        "c.innerHTML = '<button>Approve</button><button>Approve</button>'; u.innerHTML = '<input aria-label=\"Email\">'; true",
+    )
+    .await;
+
+    let resp = execute_command(
+        &json!({ "id": "g1", "action": "gettext", "selector": approve[0] }),
+        &mut state,
+    )
+    .await;
+    assert_eq!(resp["success"], false, "{resp}");
+    assert!(
+        resp["error"]
+            .as_str()
+            .unwrap_or("")
+            .contains("Run snapshot again"),
+        "{resp}"
+    );
+
+    let resp = execute_command(
+        &json!({ "id": "f1", "action": "fill", "selector": email[0], "value": "a@b.co" }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+    let value = ref_recovery_eval(&mut state, "u.querySelector('input').value").await;
+    assert_eq!(value, "a@b.co");
+
+    let resp = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+    assert_success(&resp);
+}
+
+#[tokio::test]
+#[ignore]
+async fn e2e_ref_recovery_object_fallback_requires_unique_match() {
+    let mut state = DaemonState::new();
+    ref_recovery_setup(
+        &mut state,
+        r#"<input id="a" aria-label="Name"><input id="b" aria-label="Name">"#,
+    )
+    .await;
+    state
+        .ref_map
+        .add("e900".to_string(), None, "textbox", "Name", None);
+    state
+        .ref_map
+        .add("e901".to_string(), None, "textbox", "Name", Some(0));
+
+    let resp = execute_command(
+        &json!({ "id": "f1", "action": "fill", "selector": "@e900", "value": "hello" }),
+        &mut state,
+    )
+    .await;
+    assert_eq!(resp["success"], false, "{resp}");
+    let error = resp["error"].as_str().unwrap_or("");
+    assert!(error.contains("several elements now match"), "{error}");
+    let values = ref_recovery_eval(
+        &mut state,
+        "document.getElementById('a').value + '|' + document.getElementById('b').value",
+    )
+    .await;
+    assert_eq!(values, "|");
+
+    ref_recovery_eval(&mut state, "document.getElementById('b').remove(); true").await;
+    let resp = execute_command(
+        &json!({ "id": "f3", "action": "fill", "selector": "@e901", "value": "marked" }),
+        &mut state,
+    )
+    .await;
+    assert_eq!(resp["success"], false, "{resp}");
+    let error = resp["error"].as_str().unwrap_or("");
+    assert!(
+        error.contains("the snapshot had several matching elements"),
+        "{error}"
+    );
+    let value = ref_recovery_eval(&mut state, "document.getElementById('a').value").await;
+    assert_eq!(value, "");
+
+    let resp = execute_command(
+        &json!({ "id": "f2", "action": "fill", "selector": "@e900", "value": "hello" }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+    let value = ref_recovery_eval(&mut state, "document.getElementById('a').value").await;
+    assert_eq!(value, "hello");
+
+    let resp = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+    assert_success(&resp);
+}
+
 // ---------------------------------------------------------------------------
 // Regression: Material Design checkbox/radio (#832)
 //

@@ -1736,6 +1736,10 @@ XPath, or an element reference from snapshot (e.g., @e1).
 If another element covers the click point, agent-browser reports the
 covering element instead of dispatching a click to the wrong target.
 
+Click and dblclick fail, instead of reporting success, when the element
+is hidden, disabled, or outside the viewport. With --new-tab, click opens
+the link's URL directly, so these checks do not apply.
+
 Options:
   --new-tab            Open link in a new tab instead of navigating current tab.
                        The new tab inherits session setup before its first load.
@@ -1764,6 +1768,9 @@ Usage: agent-browser dblclick <selector>
 
 Double-clicks on the specified element. Useful for text selection
 or triggering double-click handlers.
+
+Double-click fails, instead of reporting success, when the element is
+hidden, disabled, or outside the viewport.
 
 Global Options:
   --json               Output as JSON

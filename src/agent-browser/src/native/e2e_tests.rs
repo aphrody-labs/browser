@@ -5418,6 +5418,149 @@ async fn e2e_click_reports_covering_overlay() {
     assert_success(&resp);
 }
 
+#[tokio::test]
+#[ignore]
+async fn e2e_click_rejects_unreachable_elements() {
+    let mut state = DaemonState::new();
+    let resp = execute_command(
+        &json!({ "id": "1", "action": "launch", "headless": true }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+
+    let html = r#"
+        <html>
+        <body>
+            <button id="gone" style="display:none" onclick="document.getElementById('result').textContent = 'gone'">Gone</button>
+            <button id="hidden-attr" hidden onclick="document.getElementById('result').textContent = 'hidden'">Hidden</button>
+            <button id="invisible" style="visibility:hidden" onclick="document.getElementById('result').textContent = 'invisible'">Invisible</button>
+            <button id="collapsed" style="visibility:collapse" onclick="document.getElementById('result').textContent = 'collapsed'">Collapsed</button>
+            <button id="off-page" style="position:absolute;left:-9999px" onclick="document.getElementById('result').textContent = 'off'">Off page</button>
+            <button id="disabled-btn" disabled onclick="document.getElementById('result').textContent = 'disabled'">Disabled</button>
+            <fieldset disabled>
+                <button id="fieldset-disabled" onclick="document.getElementById('result').textContent = 'fieldset'">Fieldset</button>
+            </fieldset>
+            <button id="ok" onclick="document.getElementById('result').textContent = 'clicked'">Ok</button>
+            <label><input id="hidden-check" type="checkbox" style="display:none"> Accept</label>
+            <svg width="300" height="100"><line id="flat-line" x1="20" y1="50" x2="280" y2="50" stroke="black" stroke-width="8" onclick="document.getElementById('result').textContent = 'line'"/></svg>
+            <div id="result">idle</div>
+        </body>
+        </html>
+    "#;
+    let url = format!("data:text/html;base64,{}", STANDARD.encode(html));
+    let resp = execute_command(
+        &json!({ "id": "2", "action": "navigate", "url": url }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+
+    let cases = [
+        ("#gone", "is not visible"),
+        ("#hidden-attr", "is not visible"),
+        ("#invisible", "is not visible"),
+        ("#collapsed", "is not visible"),
+        ("#off-page", "is outside the viewport"),
+        ("#disabled-btn", "is disabled"),
+        ("#fieldset-disabled", "is disabled"),
+    ];
+    for (selector, expected) in cases {
+        let resp = execute_command(
+            &json!({ "id": "3", "action": "click", "selector": selector }),
+            &mut state,
+        )
+        .await;
+        assert_eq!(resp["success"], false, "{selector} should fail: {resp}");
+        let error = resp["error"].as_str().unwrap_or_default();
+        assert!(error.contains(expected), "{selector}: {error}");
+    }
+
+    async fn result_text(state: &mut DaemonState) -> Value {
+        let cmd = json!({ "id": "4", "action": "gettext", "selector": "#result" });
+        let resp = execute_command(&cmd, state).await;
+        assert_success(&resp);
+        get_data(&resp)["text"].clone()
+    }
+    assert_eq!(result_text(&mut state).await, "idle");
+
+    let snap = execute_command(&json!({ "id": "5", "action": "snapshot" }), &mut state).await;
+    assert_success(&snap);
+    let find_ref = |name: &str| {
+        get_data(&snap)["refs"]
+            .as_object()
+            .unwrap()
+            .iter()
+            .find(|(_, node)| node["name"] == name)
+            .unwrap()
+            .0
+            .clone()
+    };
+    for (name, expected) in [
+        ("Disabled", "is disabled"),
+        ("Off page", "is outside the viewport"),
+    ] {
+        let selector = format!("@{}", find_ref(name));
+        let resp = execute_command(
+            &json!({ "id": "6", "action": "click", "selector": selector }),
+            &mut state,
+        )
+        .await;
+        assert_eq!(resp["success"], false, "{name} ref should fail: {resp}");
+        let error = resp["error"].as_str().unwrap_or_default();
+        assert!(error.contains(expected), "{name}: {error}");
+    }
+    assert_eq!(result_text(&mut state).await, "idle");
+
+    let resp = execute_command(
+        &json!({ "id": "7", "action": "click", "selector": "#ok" }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+    assert_eq!(result_text(&mut state).await, "clicked");
+
+    let resp = execute_command(
+        &json!({ "id": "7b", "action": "click", "selector": "#flat-line" }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+    assert_eq!(result_text(&mut state).await, "line");
+
+    let resp = execute_command(
+        &json!({ "id": "8", "action": "isenabled", "selector": "#fieldset-disabled" }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+    assert_eq!(get_data(&resp)["enabled"], false);
+
+    let resp = execute_command(
+        &json!({ "id": "9", "action": "hover", "selector": "#disabled-btn" }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+
+    let resp = execute_command(
+        &json!({ "id": "10", "action": "check", "selector": "#hidden-check" }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+    let resp = execute_command(
+        &json!({ "id": "11", "action": "ischecked", "selector": "#hidden-check" }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+    assert_eq!(get_data(&resp)["checked"], true);
+
+    let resp = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+    assert_success(&resp);
+}
+
 // ---------------------------------------------------------------------------
 // Profile cookie persistence across restarts
 // ---------------------------------------------------------------------------

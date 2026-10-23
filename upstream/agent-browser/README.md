@@ -1542,6 +1542,8 @@ agent-browser --cdp "wss://your-browser-service.com/cdp?token=..." snapshot
 
 The session stays attached until `agent-browser close`. Later commands without a connection flag run against the same browser, as if you passed `--cdp` again. If that browser goes away, commands fail instead of launching a local one.
 
+If the debugging port is not open yet, `connect` and `--cdp` wait up to 2 seconds for it before failing.
+
 The `--cdp` flag accepts either:
 
 - A port number (e.g., `9222`) for local connections via `http://localhost:{port}`

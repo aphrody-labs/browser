@@ -1632,7 +1632,7 @@ fn parity_tools() -> Vec<Value> {
             TOOL_BATCH,
             "Batch",
             "Run multiple commands sequentially.",
-            json!({ "commands": { "type": "array", "items": { "type": "array", "items": { "type": "string" }, "minItems": 1 }, "minItems": 1 }, "bail": { "type": "boolean" } }),
+            json!({ "commands": { "type": "array", "items": { "type": "array", "items": { "type": "string" }, "minItems": 1 }, "minItems": 1 }, "bail": { "type": "boolean" }, "omitCommand": { "type": "boolean", "description": "Replace only command arrays with a stable zero-based input index. Does not make output safe for secrets: errors and response data are unchanged; type echoes typed text, and get value/eval may return input values." } }),
             &["commands"],
         ),
         tool(
@@ -3513,6 +3513,9 @@ fn call_batch(arguments: &Value) -> Result<Value, ProtocolError> {
     let mut args = vec!["batch".to_string()];
     if optional_bool(arguments, "bail")?.unwrap_or(false) {
         args.push("--bail".to_string());
+    }
+    if optional_bool(arguments, "omitCommand")?.unwrap_or(false) {
+        args.push("--omit-command".to_string());
     }
     let stdin = serde_json::to_string(&parsed_commands)
         .map_err(|e| ProtocolError::invalid_params(format!("commands encode error: {}", e)))?;

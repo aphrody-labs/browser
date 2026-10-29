@@ -2112,7 +2112,7 @@ fn tool(name: &str, title: &str, description: &str, properties: Value, required:
         "idleTimeout".to_string(),
         json!({
             "type": "string",
-            "description": "Daemon idle timeout such as 30s, 5m, 1h, or raw milliseconds. Defaults to 1h; 0 disables idle shutdown."
+            "description": "Daemon idle timeout such as 30s, 5m, 1h, or raw milliseconds. Values too large to convert to milliseconds produce a warning and are ignored. Defaults to 1h; 0 disables idle shutdown."
         }),
     );
     props.insert(
@@ -5272,18 +5272,21 @@ mod tests {
 
     #[test]
     fn common_global_args_include_idle_timeout() {
-        let mut args = Vec::new();
+        for (idle_timeout, normalized) in [
+            ("0", Some("0")),
+            ("30s", Some("30000")),
+            ("2305843009213693957s", None),
+        ] {
+            let mut args = Vec::new();
+            append_common_global_args(&mut args, &json!({ "idleTimeout": idle_timeout }), None)
+                .unwrap();
 
-        append_common_global_args(
-            &mut args,
-            &json!({
-                "idleTimeout": "0"
-            }),
-            None,
-        )
-        .unwrap();
-
-        assert_eq!(args, vec!["--idle-timeout", "0"]);
+            assert_eq!(args, vec!["--idle-timeout", idle_timeout]);
+            assert_eq!(
+                crate::flags::parse_flags(&args).idle_timeout.as_deref(),
+                normalized
+            );
+        }
     }
 
     #[test]

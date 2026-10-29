@@ -13,7 +13,7 @@ use serde_json::{json, Value};
 use std::collections::BTreeSet;
 use std::env;
 use std::fs;
-use std::io::{self, BufRead, Write};
+use std::io::{self, BufRead, Read, Write};
 use std::process::{Command, Stdio};
 use std::sync::{Arc, Mutex};
 use std::thread;
@@ -505,6 +505,76 @@ const MOBILE_PROFILE_TOOLS: &[&str] = &[
     TOOL_SWIPE,
     TOOL_DEVICE,
 ];
+
+/// Run one MCP tool call without the stdio session, print its `tools/call`
+/// result as JSON, and return the process exit code: 0 on success, 1 when the
+/// tool reports an error, 2 when the call itself is invalid.
+pub fn run_mcp_call(args: &[String]) -> i32 {
+    let mut stdout = io::stdout();
+    let output = match parse_mcp_call(args) {
+        Ok((name, arguments, config)) => {
+            match call_tool(
+                Some(&json!({ "name": name, "arguments": arguments })),
+                &config,
+            ) {
+                Ok(mut result) => {
+                    result["_meta"] = json!({ "agentBrowserVersion": env!("CARGO_PKG_VERSION") });
+                    Ok(result)
+                }
+                Err(err) => Err((err.code, err.message)),
+            }
+        }
+        Err(message) => Err((-32602, message)),
+    };
+    let (value, code) = match output {
+        Ok(result) => {
+            let failed = result["isError"].as_bool().unwrap_or(false);
+            (result, if failed { 1 } else { 0 })
+        }
+        Err((code, message)) => (
+            json!({
+                "error": { "code": code, "message": message },
+                "_meta": { "agentBrowserVersion": env!("CARGO_PKG_VERSION") },
+            }),
+            2,
+        ),
+    };
+    if write_json_line(&mut stdout, &value).is_err() {
+        return 2;
+    }
+    code
+}
+
+fn parse_mcp_call(args: &[String]) -> Result<(String, Value, McpConfig), String> {
+    const USAGE: &str =
+        "Usage: agent-browser mcp call <tool> [<arguments-json> | -] [--tools <profiles>]";
+    let Some(name) = args.first().filter(|name| !name.starts_with('-')) else {
+        return Err(format!("Missing tool name\n{}", USAGE));
+    };
+    let (raw, rest) = match args.get(1) {
+        Some(value) if value == "-" => {
+            let mut input = String::new();
+            io::stdin()
+                .read_to_string(&mut input)
+                .map_err(|e| format!("Failed to read arguments from stdin: {}", e))?;
+            (Some(input), &args[2..])
+        }
+        Some(value) if !value.starts_with("--") => (Some(value.clone()), &args[2..]),
+        _ => (None, &args[1..]),
+    };
+    let arguments = match raw {
+        Some(raw) => serde_json::from_str(&raw)
+            .map_err(|e| format!("Tool arguments must be a JSON object: {}", e))?,
+        None => json!({}),
+    };
+    // Profiles only bound the size of `tools/list`, which a single call never sends.
+    let config = if rest.is_empty() {
+        McpConfig::from_profiles(vec![ToolProfile::All])
+    } else {
+        parse_mcp_config(rest)?
+    };
+    Ok((name.clone(), arguments, config))
+}
 
 /// Run the MCP stdio server until stdin closes or a `shutdown` request is
 /// received.
@@ -2531,27 +2601,50 @@ const MCP_EXTRA_ARGS_GLOBALS: &[&str] = &[
     "--screenshot-format",
 ];
 
+/// Global flags that tools set from their own typed arguments (screenshot's
+/// screenshotDir, doctor's fix, chat's model).
+const MCP_TOOL_GLOBALS: &[&str] = &["--screenshot-dir", "--fix", "--model"];
+
 fn cli_tool_args(
     arguments: &Value,
     command_args: Vec<String>,
     session: Option<&str>,
 ) -> Result<Vec<String>, ProtocolError> {
     let extra_args = optional_string_array(arguments, "extraArgs")?.unwrap_or_default();
-    for token in &extra_args {
-        let name = token.split('=').next().unwrap_or(token);
-        let global = crate::flags::clean_args(&[name.to_string()]).is_empty();
-        if global && !MCP_EXTRA_ARGS_GLOBALS.contains(&name) {
+    let mut args = vec!["--json".to_string()];
+    append_common_global_args(&mut args, arguments, session)?;
+    // The CLI reads global flags anywhere in argv, so a tool argument such as
+    // a selector could otherwise carry its own --allowed-domains or --session.
+    let trusted: Vec<&str> = args.iter().map(|a| global_flag_name(a)).collect();
+    let tokens = command_args
+        .iter()
+        .map(|t| (t, MCP_TOOL_GLOBALS))
+        .chain(extra_args.iter().map(|t| (t, &[][..])));
+    for (token, tool_globals) in tokens {
+        let name = global_flag_name(token);
+        if !crate::flags::clean_args(&[name.to_string()]).is_empty() {
+            continue;
+        }
+        if !MCP_EXTRA_ARGS_GLOBALS.contains(&name) && !tool_globals.contains(&name) {
             return Err(ProtocolError::invalid_params(format!(
-                "extraArgs may not set {}; configure it in the MCP server's environment or config",
+                "Tool arguments may not set {}; configure it in the MCP server's environment or config",
+                name
+            )));
+        }
+        if name != "--json" && trusted.contains(&name) {
+            return Err(ProtocolError::invalid_params(format!(
+                "Tool arguments may not set {}; it is already set for this call",
                 name
             )));
         }
     }
-    let mut args = vec!["--json".to_string()];
-    append_common_global_args(&mut args, arguments, session)?;
     args.extend(command_args);
     args.extend(extra_args);
     Ok(args)
+}
+
+fn global_flag_name(token: &str) -> &str {
+    token.split('=').next().unwrap_or(token)
 }
 
 fn command_parts(command: &str) -> Vec<String> {
@@ -4738,6 +4831,38 @@ mod tests {
     }
 
     #[test]
+    fn parse_mcp_call_defaults_to_every_tool() {
+        let (name, arguments, config) =
+            parse_mcp_call(&[TOOL_OPEN.into(), r#"{"url":"https://example.com"}"#.into()]).unwrap();
+        assert_eq!(name, TOOL_OPEN);
+        assert_eq!(arguments["url"], "https://example.com");
+        assert!(config.allows(TOOL_NETWORK_HAR_START));
+        assert!(config.allows(TOOL_REACT_TREE));
+    }
+
+    #[test]
+    fn parse_mcp_call_limits_tools_to_requested_profiles() {
+        let (_, arguments, config) =
+            parse_mcp_call(&[TOOL_OPEN.into(), "--tools".into(), "core".into()]).unwrap();
+        assert_eq!(arguments, json!({}));
+        assert!(config.allows(TOOL_OPEN));
+        assert!(!config.allows(TOOL_NETWORK_HAR_START));
+    }
+
+    #[test]
+    fn parse_mcp_call_rejects_missing_tool_and_bad_json() {
+        assert!(parse_mcp_call(&[])
+            .unwrap_err()
+            .contains("Missing tool name"));
+        assert!(parse_mcp_call(&["--tools".into()])
+            .unwrap_err()
+            .contains("Missing tool name"));
+        assert!(parse_mcp_call(&[TOOL_OPEN.into(), "{".into()])
+            .unwrap_err()
+            .contains("JSON object"));
+    }
+
+    #[test]
     fn parse_mcp_config_rejects_unknown_profile() {
         let err = parse_mcp_config(&["--tools".into(), "bogus".into()]).unwrap_err();
         assert!(err.contains("Unknown MCP tools profile"));
@@ -4982,6 +5107,48 @@ mod tests {
     }
 
     #[test]
+    fn tool_arguments_cannot_carry_global_flags() {
+        let dir = tempfile::tempdir().unwrap();
+        let guard = crate::test_utils::EnvGuard::new(&[
+            "AGENT_BROWSER_ALLOWED_DOMAINS",
+            "AGENT_BROWSER_CONFIG",
+            "HOME",
+        ]);
+        guard.remove("AGENT_BROWSER_ALLOWED_DOMAINS");
+        guard.remove("AGENT_BROWSER_CONFIG");
+        guard.set("HOME", dir.path().to_str().unwrap());
+        let arguments = json!({ "session": "app", "allowedDomains": ["example.com"] });
+        for command in [
+            vec!["fill", "--allowed-domains", "evil.com"],
+            vec!["open", "--allowed-domains=evil.com"],
+            vec!["fill", "--session", "other"],
+            vec!["fill", "--init-script", "/x.js"],
+        ] {
+            let command = command.into_iter().map(String::from).collect();
+            let error = cli_tool_args(&arguments, command, Some("app")).unwrap_err();
+            assert!(error.message.contains("may not set"), "{}", error.message);
+        }
+        let open = cli_tool_args(
+            &arguments,
+            open_args(&json!({ "headed": true, "url": "https://example.com" })).unwrap(),
+            Some("app"),
+        );
+        assert!(open.is_ok());
+        let screenshot = cli_tool_args(
+            &arguments,
+            vec![
+                "--screenshot-dir".into(),
+                "/tmp".into(),
+                "screenshot".into(),
+            ],
+            Some("app"),
+        );
+        assert!(screenshot.is_ok());
+        let extra = json!({ "extraArgs": ["--screenshot-dir", "/tmp"] });
+        assert!(cli_tool_args(&extra, vec!["open".to_string()], None).is_err());
+    }
+
+    #[test]
     fn extra_args_reject_operator_owned_globals() {
         let dir = tempfile::tempdir().unwrap();
         let guard = crate::test_utils::EnvGuard::new(&[
@@ -5003,7 +5170,7 @@ mod tests {
         ] {
             let arguments = json!({ "extraArgs": bad });
             let error = cli_tool_args(&arguments, vec!["open".to_string()], None).unwrap_err();
-            assert!(error.message.contains("extraArgs may not set"), "{:?}", bad);
+            assert!(error.message.contains("may not set"), "{:?}", bad);
         }
         for ok in [vec!["--engine", "obscura"], vec!["--full"], vec!["-i"]] {
             let arguments = json!({ "extraArgs": ok });

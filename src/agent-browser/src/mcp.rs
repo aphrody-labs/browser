@@ -547,7 +547,7 @@ pub fn run_mcp_call(args: &[String]) -> i32 {
 
 fn parse_mcp_call(args: &[String]) -> Result<(String, Value, McpConfig), String> {
     const USAGE: &str =
-        "Usage: agent-browser mcp call <tool> [<arguments-json> | -] [--tools <profiles>]";
+        "Usage: agent-browser mcp call <tool> [<arguments-json> | -] [--tools <profiles>] [--config <trusted-path>]";
     let Some(name) = args.first().filter(|name| !name.starts_with('-')) else {
         return Err(format!("Missing tool name\n{}", USAGE));
     };
@@ -625,7 +625,7 @@ fn parse_mcp_config(args: &[String]) -> Result<McpConfig, String> {
             i += 1;
         } else {
             return Err(format!(
-                "Unknown mcp option: {}\nUsage: agent-browser mcp [--tools <profiles>]",
+                "Unknown mcp option: {}\nUsage: agent-browser mcp [--tools <profiles>] [--config <trusted-path>]",
                 arg
             ));
         }
@@ -4209,6 +4209,7 @@ fn run_command(
     })
 }
 
+/// Run tools through the CLI, including its trust restrictions on automatically discovered project config.
 fn run_cli(args: &[String], stdin_body: Option<String>, timeout_ms: u64) -> Result<CliRun, String> {
     let exe = env::current_exe().map_err(|e| e.to_string())?;
     let mut command = Command::new(exe);

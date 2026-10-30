@@ -33,7 +33,9 @@ use windows_sys::Win32::Foundation::CloseHandle;
 #[cfg(windows)]
 use windows_sys::Win32::System::Threading::OpenProcess;
 
-use commands::{attach_ca_cert_to_launch_command, gen_id, parse_command, ParseError};
+use commands::{
+    attach_ca_cert_to_launch_command, gen_id, parse_cdp_headers, parse_command, ParseError,
+};
 use connection::{
     cleanup_stale_files, daemon_unreachable, ensure_daemon, get_socket_dir,
     is_agent_browser_process, is_pid_alive, send_command, walk_daemons, DaemonOptions, Response,
@@ -1826,6 +1828,7 @@ fn main() {
         idle_timeout: flags.idle_timeout.as_deref(),
         default_timeout: flags.default_timeout,
         cdp: flags.cdp.as_deref(),
+        cdp_headers: flags.cdp_headers.as_deref(),
         no_auto_dialog: flags.no_auto_dialog,
         plugins: Some(plugin_registry_json.as_str()),
     };
@@ -1972,6 +1975,20 @@ fn main() {
 
         if let Some(ref dp) = flags.download_path {
             launch_cmd["downloadPath"] = json!(dp);
+        }
+
+        if let Some(ref raw) = flags.cdp_headers {
+            match parse_cdp_headers(raw) {
+                Ok(headers) => launch_cmd["cdpHeaders"] = headers,
+                Err(msg) => {
+                    if flags.json {
+                        print_json_error(&msg);
+                    } else {
+                        eprintln!("{} {}", color::error_indicator(), msg);
+                    }
+                    exit(1);
+                }
+            }
         }
 
         let err = match send_command(launch_cmd, &flags.session) {

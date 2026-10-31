@@ -2738,6 +2738,7 @@ fn provider_plugin_launch_options_from_command(cmd: &Value) -> Value {
     Value::Object(options)
 }
 
+/// Returns whether an action can run without implicitly launching a browser.
 fn skip_launch_action(action: &str) -> bool {
     if action == INTERNAL_DAEMON_SHUTDOWN_ACTION {
         return true;
@@ -2769,6 +2770,7 @@ fn skip_launch_action(action: &str) -> bool {
             | "stream_disable"
             | "stream_status"
             | "session_info"
+            | "cdp_url"
             | "webmcp_result"
             | "webmcp_cancel"
     )
@@ -3194,7 +3196,7 @@ pub async fn execute_command(cmd: &Value, state: &mut DaemonState) -> Value {
         "navigate" => handle_navigate(cmd, state).await,
         "read" => handle_read(cmd, state).await,
         "url" => handle_url(state).await,
-        "cdp_url" => handle_cdp_url(state),
+        "cdp_url" => handle_cdp_url(state).await,
         "inspect" => handle_inspect(state).await,
         "title" => handle_title(state).await,
         "content" => handle_content(state).await,
@@ -5992,8 +5994,11 @@ async fn handle_read(cmd: &Value, state: &DaemonState) -> Result<Value, String> 
     ))
 }
 
-fn handle_cdp_url(state: &DaemonState) -> Result<Value, String> {
+async fn handle_cdp_url(state: &DaemonState) -> Result<Value, String> {
     let mgr = state.browser.as_ref().ok_or("Browser not launched")?;
+    if !mgr.is_connection_alive().await {
+        return Err("Browser not launched".to_string());
+    }
     Ok(json!({ "cdpUrl": mgr.get_cdp_url() }))
 }
 
@@ -14309,6 +14314,23 @@ fn attach_tab_gone_data(resp: &mut Value, state: &DaemonState) {
 
 #[cfg(test)]
 mod tests {
+    #[tokio::test]
+    async fn cdp_url_without_browser_does_not_launch() {
+        let mut state = super::DaemonState::new();
+        state.policy = None;
+        state.confirm_actions = None;
+
+        let response = super::execute_command(
+            &serde_json::json!({ "id": "cdp", "action": "cdp_url" }),
+            &mut state,
+        )
+        .await;
+
+        assert_eq!(response["success"], false);
+        assert_eq!(response["error"], "Browser not launched");
+        assert!(state.browser.is_none());
+    }
+
     #[test]
     fn wedged_tab_replacement_follows_tab_policy() {
         let dir = tempfile::tempdir().unwrap();

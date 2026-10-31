@@ -1373,8 +1373,15 @@ fn parity_tools() -> Vec<Value> {
         tool(
             TOOL_TAB_NEW,
             "Tab new",
-            "Open a new tab after applying session setup before its first navigation.",
-            json!({ "url": { "type": "string" }, "label": { "type": "string" } }),
+            "Open a new tab after applying session setup before its first navigation. Rejected labels preserve the current tab's refs and selected frame.",
+            json!({
+                "url": { "type": "string" },
+                "label": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+                    "description": "Starts with an ASCII letter, then ASCII letters, digits, `-`, or `_`; `t<N>` and `T<N>` forms are reserved for tab IDs."
+                }
+            }),
             &[],
         ),
         tool(TOOL_TAB_LIST, "Tab list", "List tabs.", json!({}), &[]),

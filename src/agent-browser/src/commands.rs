@@ -343,6 +343,7 @@ pub fn parse_cdp_headers(raw: &str) -> Result<Value, String> {
 }
 
 /// Parses command arguments into normalized command data.
+/// Wait selector `--state` values are accepted only for selector waits.
 pub fn parse_command(args: &[String], flags: &Flags) -> Result<Value, ParseError> {
     let mut result = parse_command_inner(args, flags)?;
 
@@ -731,6 +732,48 @@ fn parse_command_inner(args: &[String], flags: &Flags) -> Result<Value, ParseErr
                 })?);
                 rest.drain(idx..=idx + 1);
             }
+            let mut element_state: Option<&str> = None;
+            if let Some(idx) = rest.iter().position(|&s| s == "--state") {
+                let raw = rest
+                    .get(idx + 1)
+                    .ok_or_else(|| ParseError::MissingArguments {
+                        context: "wait --state".to_string(),
+                        usage: "wait <selector> --state <visible|hidden|attached|detached>",
+                    })?;
+                if !matches!(*raw, "visible" | "hidden" | "attached" | "detached") {
+                    return Err(ParseError::InvalidValue {
+                        message: format!(
+                            "--state expects visible, hidden, attached, or detached, got '{}'. To load a state file, put --state <path> before wait.",
+                            raw
+                        ),
+                        usage: "wait <selector> --state <visible|hidden|attached|detached>",
+                    });
+                }
+                element_state = Some(*raw);
+                rest.drain(idx..=idx + 1);
+            }
+            let uses_non_selector_wait =
+                rest.iter().any(|arg| {
+                    matches!(
+                        *arg,
+                        "--url"
+                            | "-u"
+                            | "--load"
+                            | "-l"
+                            | "--fn"
+                            | "-f"
+                            | "--text"
+                            | "-t"
+                            | "--download"
+                            | "-d"
+                    )
+                }) || rest.first().is_some_and(|arg| arg.parse::<u64>().is_ok());
+            if element_state.is_some() && uses_non_selector_wait {
+                return Err(ParseError::InvalidValue {
+                    message: "--state can only be used with a selector wait".to_string(),
+                    usage: "wait <selector> --state <visible|hidden|attached|detached>",
+                });
+            }
             let with_timeout = |mut cmd: Value| {
                 if let Some(ms) = timeout_ms {
                     cmd["timeout"] = json!(ms);
@@ -811,9 +854,11 @@ fn parse_command_inner(args: &[String], flags: &Flags) -> Result<Value, ParseErr
                 if let Ok(timeout) = arg.parse::<u64>() {
                     Ok(json!({ "id": id, "action": "wait", "timeout": timeout }))
                 } else {
-                    Ok(with_timeout(
-                        json!({ "id": id, "action": "wait", "selector": arg }),
-                    ))
+                    let mut cmd = json!({ "id": id, "action": "wait", "selector": arg });
+                    if let Some(state) = element_state {
+                        cmd["state"] = json!(state);
+                    }
+                    Ok(with_timeout(cmd))
                 }
             } else {
                 Err(ParseError::MissingArguments {
@@ -5111,6 +5156,61 @@ mod tests {
         let cmd = parse_command(&args("wait #element"), &default_flags()).unwrap();
         assert_eq!(cmd["action"], "wait");
         assert_eq!(cmd["selector"], "#element");
+    }
+
+    #[test]
+    fn test_wait_selector_state_in_either_order() {
+        for (command, state) in [
+            ("wait #spinner --state visible", "visible"),
+            ("wait --state hidden #spinner", "hidden"),
+            ("wait #spinner --state attached", "attached"),
+            ("wait --state detached #spinner", "detached"),
+        ] {
+            let cmd = parse_command(&args(command), &default_flags()).unwrap();
+            assert_eq!(cmd["selector"], "#spinner");
+            assert_eq!(cmd["state"], state);
+        }
+    }
+
+    #[test]
+    fn test_wait_selector_state_with_timeout() {
+        let cmd = parse_command(
+            &args("wait --state hidden #spinner --timeout 9000"),
+            &default_flags(),
+        )
+        .unwrap();
+        assert_eq!(cmd["state"], "hidden");
+        assert_eq!(cmd["timeout"], 9000);
+    }
+
+    #[test]
+    fn test_wait_selector_state_rejects_unknown_value() {
+        for state in ["gone", "/tmp/auth.json"] {
+            let error = parse_command(
+                &args(&format!("wait #spinner --state {state}")),
+                &default_flags(),
+            )
+            .unwrap_err();
+            assert!(matches!(error, ParseError::InvalidValue { .. }));
+            assert!(error.format().contains("put --state <path> before wait"));
+        }
+    }
+
+    #[test]
+    fn test_wait_selector_state_rejects_non_selector_waits() {
+        for command in [
+            "wait --url **/dashboard --state hidden",
+            "wait --load networkidle --state hidden",
+            "wait --fn true --state hidden",
+            "wait --text Ready --state hidden",
+            "wait --download --state hidden",
+            "wait 1000 --state hidden",
+        ] {
+            assert!(matches!(
+                parse_command(&args(command), &default_flags()),
+                Err(ParseError::InvalidValue { .. })
+            ));
+        }
     }
 
     #[test]

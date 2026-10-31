@@ -993,13 +993,14 @@ fn tools() -> Vec<Value> {
         ),
         tool(TOOL_SCROLL_INTO_VIEW, "Scroll into view", "Scroll an element into view.", json!({ "selector": selector_schema() }), &["selector"]),
         tool(TOOL_WAIT_MS, "Wait milliseconds", "Wait for a fixed time.", json!({ "ms": { "type": "integer", "minimum": 0 } }), &["ms"]),
-        wait_tool(
-            TOOL_WAIT_FOR_SELECTOR,
-            "Wait for selector",
-            "Wait for an element with a CSS selector or @ref. Bare integers are rejected because they are treated as millisecond waits; use CSS selector syntax for numeric IDs.",
-            json!({ "selector": selector_schema() }),
-            &["selector"],
-        ),
+        wait_tool(TOOL_WAIT_FOR_SELECTOR, "Wait for selector", "Wait for an element with a CSS selector or @ref to reach a state. Bare integer selectors are rejected; use CSS selector syntax for numeric IDs or agent_browser_wait_ms for a delay.", json!({
+            "selector": selector_schema(),
+            "state": {
+                "type": "string",
+                "enum": ["visible", "hidden", "attached", "detached"],
+                "description": "Element state to wait for."
+            }
+        }), &["selector"]),
         wait_tool(TOOL_WAIT_FOR_TEXT, "Wait for text", "Wait for text to appear.", json!({ "text": { "type": "string" } }), &["text"]),
         wait_tool(TOOL_WAIT_FOR_URL, "Wait for URL", "Wait for the current URL to match a pattern.", json!({ "url": { "type": "string", "description": "URL glob or pattern." } }), &["url"]),
         wait_tool(TOOL_WAIT_FOR_LOAD, "Wait for load state", "Wait for a page load state. Uses the full wait timeout and returns an error when it expires.", json!({ "state": { "type": "string", "enum": ["load", "domcontentloaded", "networkidle"] } }), &["state"]),
@@ -2380,7 +2381,9 @@ fn call_tool(params: Option<&Value>, config: &McpConfig) -> Result<Value, Protoc
         TOOL_SCROLL => call_scroll(arguments),
         TOOL_SCROLL_INTO_VIEW => call_simple_selector(arguments, "scrollintoview"),
         TOOL_WAIT_MS => call_wait_ms(arguments),
-        TOOL_WAIT_FOR_SELECTOR => call_wait_flag(arguments, None, "selector"),
+        TOOL_WAIT_FOR_SELECTOR => {
+            call_cli_tool(arguments, wait_selector_command_args(arguments)?, None)
+        }
         TOOL_WAIT_FOR_TEXT => call_wait_flag(arguments, Some("--text"), "text"),
         TOOL_WAIT_FOR_URL => call_wait_flag(arguments, Some("--url"), "url"),
         TOOL_WAIT_FOR_LOAD => call_wait_flag(arguments, Some("--load"), "state"),
@@ -2635,12 +2638,22 @@ fn cli_tool_args(
     // The CLI reads global flags anywhere in argv, so a tool argument such as
     // a selector could otherwise carry its own --allowed-domains or --session.
     let trusted: Vec<&str> = args.iter().map(|a| global_flag_name(a)).collect();
+    let wait_selector_state = wait_selector_state_flag_index(&command_args);
     let tokens = command_args
         .iter()
-        .map(|t| (t, MCP_TOOL_GLOBALS))
-        .chain(extra_args.iter().map(|t| (t, &[][..])));
-    for (token, tool_globals) in tokens {
+        .enumerate()
+        .map(|(i, t)| (t, MCP_TOOL_GLOBALS, Some(i)))
+        .chain(extra_args.iter().map(|t| (t, &[][..], None)));
+    for (token, tool_globals, command_index) in tokens {
         let name = global_flag_name(token);
+        if wait_selector_state.is_some() && command_index == wait_selector_state {
+            continue;
+        }
+        if command_index.is_none() && name == "--state" {
+            return Err(ProtocolError::invalid_params(
+                "Tool arguments may not set --state; configure it in the MCP server's environment or config",
+            ));
+        }
         if !crate::flags::clean_args(&[name.to_string()]).is_empty() {
             continue;
         }
@@ -2660,6 +2673,21 @@ fn cli_tool_args(
     args.extend(command_args);
     args.extend(extra_args);
     Ok(args)
+}
+
+fn wait_selector_state_flag_index(command_args: &[String]) -> Option<usize> {
+    if command_args.len() < 4
+        || command_args[0] != "wait"
+        || command_args[1].starts_with('-')
+        || command_args[2] != "--state"
+        || !matches!(
+            command_args[3].as_str(),
+            "visible" | "hidden" | "attached" | "detached"
+        )
+    {
+        return None;
+    }
+    Some(2)
 }
 
 fn global_flag_name(token: &str) -> &str {
@@ -2968,6 +2996,32 @@ fn call_wait_ms(arguments: &Value) -> Result<Value, ProtocolError> {
     call_cli_tool(arguments, vec!["wait".to_string(), ms.to_string()], None)
 }
 
+fn wait_selector_command_args(arguments: &Value) -> Result<Vec<String>, ProtocolError> {
+    let selector = required_string(arguments, "selector")?;
+    if selector.parse::<u64>().is_ok() {
+        return Err(ProtocolError::invalid_params(
+            "Bare integer selectors are rejected. Use CSS selector syntax for numeric IDs or agent_browser_wait_ms for a delay.",
+        ));
+    }
+    let mut args = vec!["wait".to_string(), selector];
+    if let Some(state) = optional_string(arguments, "state")? {
+        if !matches!(
+            state.as_str(),
+            "visible" | "hidden" | "attached" | "detached"
+        ) {
+            return Err(ProtocolError::invalid_params(format!(
+                "state expects visible, hidden, attached, or detached, got '{}'",
+                state
+            )));
+        }
+        args.extend(["--state".to_string(), state]);
+    }
+    if let Some(timeout) = optional_u64(arguments, "waitTimeoutMs")? {
+        args.extend(["--timeout".to_string(), timeout.to_string()]);
+    }
+    Ok(args)
+}
+
 fn call_wait_flag(
     arguments: &Value,
     flag: Option<&str>,
@@ -2976,7 +3030,7 @@ fn call_wait_flag(
     let value = required_string(arguments, value_key)?;
     if flag.is_none() && value.parse::<u64>().is_ok() {
         return Err(ProtocolError::invalid_params(
-            "A bare integer selector is treated as a millisecond wait. Use CSS selector syntax for numeric IDs or agent_browser_wait_ms for a delay.",
+            "Bare integer selectors are rejected. Use CSS selector syntax for numeric IDs or agent_browser_wait_ms for a delay.",
         ));
     }
     let mut args = vec!["wait".to_string()];
@@ -4564,7 +4618,9 @@ mod tests {
         )
         .unwrap_err();
         assert_eq!(error.code, -32602);
-        assert!(error.message.contains("millisecond wait"));
+        assert!(error
+            .message
+            .contains("Bare integer selectors are rejected"));
     }
 
     #[cfg(unix)]
@@ -4600,6 +4656,74 @@ mod tests {
         assert!(names.contains(&TOOL_SESSION_INFO));
         assert!(!names.contains(&"agent_browser_frame_list"));
         assert!(names.iter().all(|name| name.starts_with("agent_browser_")));
+    }
+
+    #[test]
+    fn wait_for_selector_rejects_invalid_state_at_mcp_boundary() {
+        for state in ["gone", "/tmp/auth.json", "", "Visible"] {
+            let error = call_tool(
+                Some(&json!({
+                    "name": TOOL_WAIT_FOR_SELECTOR,
+                    "arguments": { "selector": "#spinner", "state": state }
+                })),
+                &McpConfig::all(),
+            )
+            .unwrap_err();
+            assert_eq!(error.code, -32602);
+            assert!(error
+                .message
+                .contains("state expects visible, hidden, attached, or detached"));
+            assert!(error.message.contains(&format!("got '{}'", state)));
+        }
+    }
+
+    #[test]
+    fn wait_for_selector_state_is_optional_and_maps_to_cli() {
+        let selector_tool = tools()
+            .into_iter()
+            .find(|tool| tool["name"].as_str() == Some(TOOL_WAIT_FOR_SELECTOR))
+            .unwrap();
+        assert_eq!(
+            selector_tool["inputSchema"]["properties"]["state"]["enum"],
+            json!(["visible", "hidden", "attached", "detached"])
+        );
+        assert_eq!(
+            selector_tool["inputSchema"]["required"],
+            json!(["selector"])
+        );
+        assert!(selector_tool["description"]
+            .as_str()
+            .unwrap()
+            .contains("Bare integer selectors are rejected"));
+
+        let with_state = wait_selector_command_args(&json!({
+            "selector": "#target",
+            "state": "hidden",
+            "waitTimeoutMs": 500
+        }))
+        .unwrap();
+        assert_eq!(
+            with_state,
+            ["wait", "#target", "--state", "hidden", "--timeout", "500"]
+        );
+        let flags = crate::flags::parse_flags(&with_state);
+        let command =
+            crate::commands::parse_command(&crate::flags::clean_args(&with_state), &flags).unwrap();
+        assert_eq!(command["state"], "hidden");
+        assert_eq!(command["timeout"], 500);
+
+        let without_state = wait_selector_command_args(&json!({
+            "selector": "#target",
+            "waitTimeoutMs": 500
+        }))
+        .unwrap();
+        assert_eq!(without_state, ["wait", "#target", "--timeout", "500"]);
+        let flags = crate::flags::parse_flags(&without_state);
+        let command =
+            crate::commands::parse_command(&crate::flags::clean_args(&without_state), &flags)
+                .unwrap();
+        assert!(command.get("state").is_none());
+        assert_eq!(command["timeout"], 500);
     }
 
     #[test]
@@ -5251,6 +5375,45 @@ mod tests {
         assert!(screenshot.is_ok());
         let extra = json!({ "extraArgs": ["--screenshot-dir", "/tmp"] });
         assert!(cli_tool_args(&extra, vec!["open".to_string()], None).is_err());
+    }
+
+    #[test]
+    fn selector_wait_state_passes_cli_tool_args_without_opening_global_state() {
+        let guard = crate::test_utils::EnvGuard::new(&[
+            "AGENT_BROWSER_ALLOWED_DOMAINS",
+            "AGENT_BROWSER_CONFIG",
+        ]);
+        guard.remove("AGENT_BROWSER_ALLOWED_DOMAINS");
+        guard.remove("AGENT_BROWSER_CONFIG");
+
+        for state in ["visible", "hidden", "attached", "detached"] {
+            let arguments = json!({"state": state, "waitTimeoutMs": 100});
+            let command_args = wait_selector_command_args(&json!({
+                "selector": "#spinner",
+                "state": state,
+                "waitTimeoutMs": 100
+            }))
+            .unwrap();
+            let args = cli_tool_args(&arguments, command_args, None).unwrap();
+            assert!(args.windows(2).any(|pair| pair == ["--state", state]));
+            let flags = crate::flags::parse_flags(&args);
+            assert_eq!(flags.state, None);
+            assert!(!flags.cli_state);
+        }
+
+        for extra_args in [
+            json!({"extraArgs": ["--state", "/tmp/auth.json"]}),
+            json!({"extraArgs": ["--state=/tmp/auth.json"]}),
+        ] {
+            let error = cli_tool_args(&extra_args, vec!["wait".into(), "#spinner".into()], None)
+                .unwrap_err();
+            assert!(error.message.contains("may not set --state"));
+        }
+
+        let operator_cli = ["--state", "/tmp/auth.json", "wait", "#spinner"].map(str::to_string);
+        let flags = crate::flags::parse_flags(&operator_cli);
+        assert_eq!(flags.state.as_deref(), Some("/tmp/auth.json"));
+        assert!(flags.cli_state);
     }
 
     #[test]

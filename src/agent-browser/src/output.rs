@@ -2176,6 +2176,12 @@ Modes:
   --text <text>        Wait for text to appear on page (substring match)
   --download [path]    Wait for a download to complete (optionally save to path)
 
+Selector Wait Options:
+  --state <state>      visible, hidden, attached, or detached
+                       Selector waits only; rejected with --url, --load, --fn,
+                       --text, --download, or millisecond waits
+  --state <path>       Global auth state option when placed before wait
+
 A load-state wait uses --timeout (or AGENT_BROWSER_DEFAULT_TIMEOUT) and fails when it expires.
 
 Download Options (with --download):
@@ -2193,7 +2199,10 @@ Global Options:
 
 Examples:
   agent-browser wait "#loading-spinner"
+  agent-browser wait "#loading-spinner" --state visible
+  agent-browser wait "#loading-spinner" --state attached
   agent-browser wait 2000
+  agent-browser --state ./auth-state.json wait "#loading-spinner"
   agent-browser wait --url "**/dashboard"
   # Use networkidle only for pages known to become quiet:
   agent-browser wait --load networkidle

@@ -7076,7 +7076,7 @@ async fn handle_wait(cmd: &Value, state: &mut DaemonState) -> Result<Value, Stri
 
     if let Some(load_state) = cmd.get("loadState").and_then(|v| v.as_str()) {
         let wait_until = WaitUntil::from_str(load_state);
-        mgr.wait_for_lifecycle_external(wait_until, &session_id)
+        mgr.wait_for_lifecycle_external(wait_until, &session_id, timeout_ms)
             .await?;
         return Ok(json!({ "waited": "load", "state": load_state }));
     }
@@ -10196,6 +10196,7 @@ async fn handle_waitforurl(cmd: &Value, state: &DaemonState) -> Result<Value, St
     Ok(json!({ "url": url }))
 }
 
+/// Wait for a page lifecycle state and return an error when its timeout expires.
 async fn handle_waitforloadstate(cmd: &Value, state: &DaemonState) -> Result<Value, String> {
     let mgr = state.browser.as_ref().ok_or("Browser not launched")?;
     let session_id = mgr.active_session_id()?.to_string();
@@ -10203,12 +10204,8 @@ async fn handle_waitforloadstate(cmd: &Value, state: &DaemonState) -> Result<Val
     let timeout_ms = state.timeout_ms(cmd);
 
     let wait_until = WaitUntil::from_str(load_state);
-    let _ = tokio::time::timeout(
-        tokio::time::Duration::from_millis(timeout_ms),
-        mgr.wait_for_lifecycle_external(wait_until, &session_id),
-    )
-    .await
-    .map_err(|_| format!("Timeout waiting for load state: {}", load_state))?;
+    mgr.wait_for_lifecycle_external(wait_until, &session_id, timeout_ms)
+        .await?;
 
     Ok(json!({ "state": load_state }))
 }

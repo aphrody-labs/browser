@@ -3196,6 +3196,72 @@ async fn e2e_wait_load_state_resolves_immediately_when_already_loaded() {
     assert_success(&resp);
 }
 
+#[tokio::test]
+#[ignore]
+async fn e2e_wait_network_idle_reports_timeout_on_busy_page() {
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let url = format!("http://{}/", listener.local_addr().unwrap());
+    let server = tokio::spawn(async move {
+        let mut held = Vec::new();
+        loop {
+            let (mut stream, _) = listener.accept().await.unwrap();
+            let mut request = [0u8; 4096];
+            let n = stream.read(&mut request).await.unwrap_or(0);
+            if String::from_utf8_lossy(&request[..n]).starts_with("GET /hang") {
+                held.push(stream);
+                continue;
+            }
+            let body = "<h1>Busy</h1><script>setInterval(() => fetch('/hang'), 200)</script>";
+            let response = format!(
+                "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
+                body.len(),
+                body
+            );
+            let _ = stream.write_all(response.as_bytes()).await;
+        }
+    });
+
+    let mut state = DaemonState::new();
+    let resp = execute_command(
+        &json!({ "id": "1", "action": "launch", "headless": true }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+
+    let resp = execute_command(
+        &json!({ "id": "2", "action": "navigate", "url": url }),
+        &mut state,
+    )
+    .await;
+    assert_success(&resp);
+
+    let started = std::time::Instant::now();
+    let wait_resp = execute_command(
+        &json!({ "id": "3", "action": "waitforloadstate", "state": "networkidle", "timeout": 30000 }),
+        &mut state,
+    )
+    .await;
+    let waited = started.elapsed();
+    let close_resp = execute_command(&json!({ "id": "99", "action": "close" }), &mut state).await;
+    server.abort();
+    assert_success(&close_resp);
+    assert_eq!(wait_resp["success"], false, "{wait_resp}");
+    // The requested budget is the one that counts. The inner wait used to stop
+    // at the browser's hardcoded 25s default, so a 30s wait failed early.
+    assert!(
+        waited >= std::time::Duration::from_millis(28_000),
+        "network-idle wait returned after {waited:?}, expected to use the 30000ms budget"
+    );
+    assert!(
+        wait_resp["error"].as_str().is_some_and(|error| {
+            error.contains("Timed out after 30000ms") && error.contains("load state 'networkidle'")
+        }),
+        "expected the network-idle timeout error: {}",
+        serde_json::to_string_pretty(&wait_resp).unwrap_or_default()
+    );
+}
+
 // ---------------------------------------------------------------------------
 // Same-document navigation regression test
 // ---------------------------------------------------------------------------

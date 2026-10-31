@@ -1642,7 +1642,7 @@ The `goto` and `navigate` aliases still require a URL.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
   --headers <json>     Set HTTP headers (scoped to this origin)
   --headed             Show browser window
   --enable react-devtools   Inject the React DevTools hook before any page JS
@@ -1674,7 +1674,7 @@ the browser's back button.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser back
@@ -1691,7 +1691,7 @@ the browser's forward button.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser forward
@@ -1708,7 +1708,7 @@ the browser's reload button.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser reload
@@ -1786,7 +1786,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser click "#submit-button"
@@ -1811,7 +1811,7 @@ hidden, disabled, or outside the viewport.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser dblclick "#editable-text"
@@ -1829,7 +1829,7 @@ This replaces any existing content in the field.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser fill "#email" "user@example.com"
@@ -1848,7 +1848,7 @@ Unlike fill, this does not clear existing content first.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser type "#search" "hello"
@@ -1871,7 +1871,7 @@ triggering hover states or dropdown menus.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser hover "#dropdown-trigger"
@@ -1888,7 +1888,7 @@ Sets keyboard focus to the specified element.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser focus "#input-field"
@@ -1905,7 +1905,7 @@ Checks a checkbox element. If already checked, no action is taken.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser check "#terms-checkbox"
@@ -1922,7 +1922,7 @@ Unchecks a checkbox element. If already unchecked, no action is taken.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser uncheck "#newsletter-opt-in"
@@ -1940,7 +1940,7 @@ Label matching normalizes whitespace such as non-breaking spaces.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser select "#country" "US"
@@ -1958,7 +1958,7 @@ Drags an element from source to target location.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser drag "#draggable" "#drop-zone"
@@ -1976,7 +1976,7 @@ Uploads one or more files to a file input element.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser upload "#file-input" ./document.pdf
@@ -1997,7 +1997,7 @@ Arguments:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser download "#download-btn" ./file.pdf
@@ -2028,7 +2028,7 @@ Modifiers (combine with +):
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser press Enter
@@ -2049,7 +2049,7 @@ Useful for holding modifier keys.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser keydown Shift
@@ -2066,7 +2066,7 @@ Releases a key that was pressed with keydown.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser keyup Shift
@@ -2094,7 +2094,7 @@ directly — it already operates on the current focus.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser keyboard type "Hello, World!"
@@ -2128,7 +2128,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser scroll
@@ -2150,7 +2150,7 @@ Aliases: scrollinto
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser scrollintoview "#footer"
@@ -2195,7 +2195,7 @@ Wait for text to disappear:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser wait "#loading-spinner"
@@ -2245,7 +2245,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser screenshot
@@ -2270,7 +2270,7 @@ Saves the current page as a PDF file.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser pdf ./page.pdf
@@ -2308,7 +2308,7 @@ interactive to false to retain visible text and status text.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser snapshot
@@ -2337,7 +2337,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser eval "document.title"
@@ -2369,7 +2369,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser close
@@ -2421,7 +2421,7 @@ Subcommands:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser get text @e1
@@ -2453,7 +2453,7 @@ Subcommands:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser is visible "#modal"
@@ -2494,7 +2494,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser find role button click --name Submit
@@ -2534,7 +2534,7 @@ Failed wheel dispatches leave the tracked pointer unchanged.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser mouse move 100 200
@@ -2570,7 +2570,7 @@ Settings:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser set viewport 1920 1080
@@ -2614,7 +2614,7 @@ Subcommands:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser network route "**/api/*" --abort
@@ -2653,7 +2653,7 @@ Operations:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser storage local
@@ -2695,7 +2695,7 @@ for the current page URL.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   # Simple cookie for current page
@@ -2759,7 +2759,7 @@ Operations:
 
 Global Options:
   --json               Output as JSON (includes each tab's targetId)
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser tab
@@ -2791,7 +2791,7 @@ Operations:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser window new
@@ -2813,7 +2813,7 @@ Arguments:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser frame "#embed-iframe"
@@ -2866,7 +2866,7 @@ Login behavior:
 
 Global Options:
   --json                   Output as JSON
-  --session <name>         Use specific session
+  --session <name>         Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   echo "pass" | agent-browser auth save github --url https://github.com/login --username user --password-stdin
@@ -2917,7 +2917,7 @@ Operations:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser dialog accept
@@ -2943,7 +2943,7 @@ Operations:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser trace start
@@ -2973,7 +2973,7 @@ Start Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   # Basic profiling
@@ -3034,7 +3034,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   # Record the page you are on (keeps login state and page state)
@@ -3079,7 +3079,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser console
@@ -3099,7 +3099,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser errors
@@ -3118,7 +3118,7 @@ Visually highlights an element on the page for debugging.
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser highlight "#target-element"
@@ -3143,7 +3143,7 @@ Operations:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser clipboard read
@@ -3183,7 +3183,7 @@ State Encryption:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser state save ./auth-state.json
@@ -3218,7 +3218,7 @@ Environment:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
   --namespace <name>   Use specific namespace
 
 Examples:
@@ -3391,7 +3391,7 @@ Options:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   # Connect to local Chrome with remote debugging
@@ -3453,7 +3453,7 @@ Notes:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser stream status
@@ -3475,7 +3475,7 @@ for touch-based interfaces like iOS Safari.
 
 Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser tap "#submit-button"
@@ -3498,7 +3498,7 @@ Arguments:
 
 Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser -p ios swipe up
@@ -3517,7 +3517,7 @@ Subcommands:
 
 Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser device list
@@ -3572,7 +3572,7 @@ URL Diff:
 
 Global Options:
   --json               Output as JSON
-  --session <name>     Use specific session
+  --session <name>     Session name: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser diff snapshot
@@ -3705,7 +3705,7 @@ Chat commands cannot set global flags other than --json and --annotate.
 
 Global Options:
   --json                 Structured JSON output per turn
-  --session <name>       Target session for commands
+  --session <name>       Target session: Unicode letters/numbers, hyphens, and underscores only
 
 Examples:
   agent-browser chat "open google.com and search for cats"
@@ -4130,7 +4130,9 @@ Authentication:
                              (or AGENT_BROWSER_PROFILE env)
   --restore [name]           Auto-save/restore cookies and localStorage.
                              Without a name, uses --session as the restore key
-                             (or AGENT_BROWSER_RESTORE env)
+                             (or AGENT_BROWSER_RESTORE env). Session and restore names
+                             accept Unicode letters and numbers, hyphens, and underscores
+                             only; spaces such as "my session" are rejected.
   --restore-save <policy>    Restore auto-save policy: auto, always, never (default: auto)
   --restore-check-url <glob> Validate restored state against current URL pattern
   --restore-check-text <txt> Validate restored state against visible page text
@@ -4144,7 +4146,7 @@ Authentication:
   --headers <json>           HTTP headers scoped to URL's origin (e.g., Authorization bearer token)
 
 Options:
-  --session <name>           Isolated session (or AGENT_BROWSER_SESSION env)
+  --session <name>           Isolated session: Unicode letters/numbers, hyphens, and underscores only (or AGENT_BROWSER_SESSION env)
   --namespace <name>         Isolate daemon sockets and restore-state directories
                              (or AGENT_BROWSER_NAMESPACE env)
   --executable-path <path>   Custom browser executable (or AGENT_BROWSER_EXECUTABLE_PATH)

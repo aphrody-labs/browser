@@ -1459,6 +1459,11 @@ fn main() {
             libc::signal(libc::SIGPIPE, libc::SIG_IGN);
         }
         let session = env::var("AGENT_BROWSER_SESSION").unwrap_or_else(|_| "default".to_string());
+        if !validation::is_valid_session_name(&session) {
+            let msg = validation::session_name_error(&session);
+            eprintln!("{} {}", color::error_indicator(), msg);
+            exit(1);
+        }
         let rt = tokio::runtime::Runtime::new().expect("Failed to create tokio runtime");
         rt.block_on(native::daemon::run_daemon(&session));
         return;
@@ -1623,6 +1628,20 @@ fn main() {
             exit(1);
         }
         return;
+    }
+
+    if !validation::is_valid_session_name(&flags.session) {
+        let msg = format!(
+            "{} Source: {}.",
+            validation::session_name_error(&flags.session),
+            flags.session_source
+        );
+        if flags.json {
+            print_json_error_with_type(msg, "invalid_session_name");
+        } else {
+            eprintln!("{} {}", color::error_indicator(), msg);
+        }
+        exit(1);
     }
 
     // Handle session separately (doesn't need daemon)

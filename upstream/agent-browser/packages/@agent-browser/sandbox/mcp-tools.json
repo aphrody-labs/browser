@@ -79,7 +79,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "tags": {
@@ -182,7 +182,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -279,7 +279,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -381,7 +381,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -488,7 +488,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "submitSelector": {
@@ -603,7 +603,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -700,7 +700,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -813,7 +813,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -919,7 +919,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -1023,7 +1023,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -1134,7 +1134,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -1231,7 +1231,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -1325,7 +1325,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -1419,7 +1419,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -1513,7 +1513,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "text": {
@@ -1618,7 +1618,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -1715,7 +1715,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -1816,7 +1816,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "target": {
@@ -1920,7 +1920,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2014,7 +2014,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2108,7 +2108,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2228,7 +2228,7 @@
             "type": "boolean"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2338,7 +2338,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2448,7 +2448,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2542,7 +2542,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2640,7 +2640,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2738,7 +2738,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2842,7 +2842,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -2936,7 +2936,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "text": {
@@ -3033,7 +3033,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -3127,7 +3127,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -3233,7 +3233,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "threshold": {
@@ -3342,7 +3342,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -3451,7 +3451,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -3575,7 +3575,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -3680,7 +3680,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -3783,7 +3783,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "source": {
@@ -3890,7 +3890,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -3988,7 +3988,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -4089,7 +4089,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "text": {
@@ -4223,7 +4223,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "text": {
@@ -4331,7 +4331,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -4426,7 +4426,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -4521,7 +4521,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -4618,7 +4618,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -4722,7 +4722,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -4822,7 +4822,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -4917,7 +4917,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5013,7 +5013,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5112,7 +5112,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5211,7 +5211,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5310,7 +5310,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5407,7 +5407,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5501,7 +5501,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5599,7 +5599,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5698,7 +5698,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5799,7 +5799,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5894,7 +5894,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -5988,7 +5988,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -6090,7 +6090,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -6189,7 +6189,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -6288,7 +6288,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -6383,7 +6383,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "text": {
@@ -6483,7 +6483,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "text": {
@@ -6587,7 +6587,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -6688,7 +6688,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -6794,7 +6794,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -6903,7 +6903,7 @@
             "type": "integer"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "steps": {
@@ -7022,7 +7022,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -7122,7 +7122,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -7227,7 +7227,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -7324,7 +7324,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -7421,7 +7421,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -7527,7 +7527,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "status": {
@@ -7641,7 +7641,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -7741,7 +7741,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -7842,7 +7842,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -7951,7 +7951,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8074,7 +8074,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8171,7 +8171,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8278,7 +8278,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8379,7 +8379,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8480,7 +8480,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8580,7 +8580,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8677,7 +8677,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8771,7 +8771,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8865,7 +8865,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -8972,7 +8972,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9072,7 +9072,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9169,7 +9169,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9269,7 +9269,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9366,7 +9366,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9488,7 +9488,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9610,7 +9610,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9734,7 +9734,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9835,7 +9835,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -9929,7 +9929,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10027,7 +10027,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10164,7 +10164,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "threshold": {
@@ -10283,7 +10283,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10381,7 +10381,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10480,7 +10480,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10586,7 +10586,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10693,7 +10693,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10787,7 +10787,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10881,7 +10881,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -10978,7 +10978,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11082,7 +11082,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11185,7 +11185,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11289,7 +11289,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11401,7 +11401,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11498,7 +11498,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11601,7 +11601,7 @@
             "type": "number"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11716,7 +11716,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11810,7 +11810,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -11907,7 +11907,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12035,7 +12035,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12133,7 +12133,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12236,7 +12236,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12330,7 +12330,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12427,7 +12427,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12530,7 +12530,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12631,7 +12631,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12731,7 +12731,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -12828,7 +12828,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "storageType": {
@@ -12935,7 +12935,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "storageType": {
@@ -13042,7 +13042,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "storageType": {
@@ -13151,7 +13151,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -13248,7 +13248,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -13342,7 +13342,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -13448,7 +13448,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -13545,7 +13545,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "tab": {
@@ -13644,7 +13644,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -13744,7 +13744,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -13842,7 +13842,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "tab": {
@@ -13948,7 +13948,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14045,7 +14045,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14139,7 +14139,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14236,7 +14236,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14344,7 +14344,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "text": {
@@ -14450,7 +14450,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14547,7 +14547,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14653,7 +14653,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14754,7 +14754,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14855,7 +14855,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -14957,7 +14957,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -15057,7 +15057,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "state": {
@@ -15171,7 +15171,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "state": {
@@ -15283,7 +15283,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "text": {
@@ -15388,7 +15388,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -15496,7 +15496,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -15596,7 +15596,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -15702,7 +15702,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -15809,7 +15809,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -15909,7 +15909,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {
@@ -16010,7 +16010,7 @@
             "type": "string"
           },
           "session": {
-            "description": "Optional isolated browser session name.",
+            "description": "Optional isolated browser session name. Accepts Unicode letters and numbers, hyphens, and underscores only; spaces are rejected.",
             "type": "string"
           },
           "timeoutMs": {

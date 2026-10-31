@@ -1878,14 +1878,14 @@ fn parity_tools() -> Vec<Value> {
         tool(
             TOOL_SKILLS_LIST,
             "Skills list",
-            "List bundled skills.",
+            "List available skills.",
             json!({}),
             &[],
         ),
         tool(
             TOOL_SKILLS_GET,
             "Skills get",
-            "Get bundled skill content.",
+            "Get skill content, including home-directory skills when no package root is found. Package discovery looks for the bundled skill-data/core/SKILL.md file.",
             json!({ "names": string_array_schema("Skill names."), "all": { "type": "boolean" }, "full": { "type": "boolean" } }),
             &[],
         ),

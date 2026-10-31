@@ -578,6 +578,8 @@ Use comma-separated origins only when each is a trusted dashboard URL. Every ori
 
 ## Full reference
 
+When no package root is found, the CLI reads manually installed skills from `~/.agent-browser/skills` and `~/.agent-browser/skill-data`. Package discovery looks for the bundled `skill-data/core/SKILL.md` file.
+
 Everything covered here plus the complete command/flag/env listing:
 
 ```bash

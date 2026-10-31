@@ -3556,19 +3556,27 @@ fn parse_network(rest: &[&str], id: &str) -> Result<Value, ParseError> {
     }
 }
 
+/// Parses storage operations with exact operand counts and one-key read shorthand.
 fn parse_storage(rest: &[&str], id: &str) -> Result<Value, ParseError> {
     const VALID: &[&str] = &["local", "session"];
 
     match rest.first().copied() {
         Some("local") | Some("session") => {
             let storage_type = rest.first().unwrap();
-            let (op, key, value) = match rest.get(1) {
-                Some(&"get") => ("get", rest.get(2), rest.get(3)),
-                Some(&"set") => ("set", rest.get(2), rest.get(3)),
-                Some(&"clear") => ("clear", rest.get(2), rest.get(3)),
-                Some(_) => ("get", rest.get(1), rest.get(2)),
-                None => ("get", None, None),
+            let (op, key, value, max_rest_len) = match rest.get(1) {
+                Some(&"get") => ("get", rest.get(2), None, 3),
+                Some(&"set") => ("set", rest.get(2), rest.get(3), 4),
+                Some(&"clear") => ("clear", None, None, 2),
+                Some(_) => ("get", rest.get(1), None, 2),
+                None => ("get", None, None, 2),
             };
+            if let Some(extra) = rest.get(max_rest_len) {
+                return Err(ParseError::InvalidValue {
+                    message: format!("Unexpected argument: {}", extra),
+                    usage:
+                        "storage <local|session> [get [key] | set <key> <value> | clear | <key>]",
+                });
+            }
             match op {
                 "set" => {
                     let k = key.ok_or_else(|| ParseError::MissingArguments {
@@ -3602,7 +3610,7 @@ fn parse_storage(rest: &[&str], id: &str) -> Result<Value, ParseError> {
         }),
         None => Err(ParseError::MissingArguments {
             context: "storage".to_string(),
-            usage: "storage <local|session> [get|set|clear] [key] [value]",
+            usage: "storage <local|session> [get [key] | set <key> <value> | clear | <key>]",
         }),
     }
 }
@@ -4219,6 +4227,52 @@ mod tests {
         assert_eq!(cmd["action"], "storage_get");
         assert_eq!(cmd["type"], "local");
         assert_eq!(cmd["key"], "mykey");
+    }
+
+    #[test]
+    fn test_storage_implicit_get_rejects_extra_operands_and_preserves_keys() {
+        for storage_type in ["local", "session"] {
+            for key in ["delete", "remove"] {
+                let bare = parse_command(
+                    &args(&format!("storage {storage_type} {key}")),
+                    &default_flags(),
+                )
+                .unwrap();
+                assert_eq!(bare["action"], "storage_get");
+                assert_eq!(bare["type"], storage_type);
+                assert_eq!(bare["key"], key);
+
+                let err = parse_command(
+                    &args(&format!("storage {storage_type} {key} extra")),
+                    &default_flags(),
+                )
+                .unwrap_err();
+                match err {
+                    ParseError::InvalidValue { message, usage } => {
+                        assert!(message.contains("Unexpected argument: extra"));
+                        assert!(usage.contains("<key>"));
+                    }
+                    other => panic!("expected InvalidValue, got {:?}", other),
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_storage_operations_reject_extra_operands() {
+        for (command, extra) in [
+            ("storage local get greeting extra", "extra"),
+            ("storage local set greeting hello world", "world"),
+            ("storage local clear greeting", "greeting"),
+        ] {
+            let error = parse_command(&args(command), &default_flags()).unwrap_err();
+            match error {
+                ParseError::InvalidValue { message, .. } => {
+                    assert_eq!(message, format!("Unexpected argument: {}", extra));
+                }
+                other => panic!("expected InvalidValue, got {:?}", other),
+            }
+        }
     }
 
     #[test]

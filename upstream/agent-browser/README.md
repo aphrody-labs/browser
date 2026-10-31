@@ -392,6 +392,8 @@ agent-browser network har start --content none # Metadata only, no bodies
 agent-browser network har stop [output.har]    # Stop and save HAR (temp path if omitted)
 ```
 
+If HAR export fails, recording and captured requests remain available. Fix the destination and retry `network har stop`.
+
 ### Tabs & Windows
 
 ```bash

@@ -2594,6 +2594,8 @@ Subcommands:
   request <requestId>        View full request/response detail (including body)
   har <start|stop> [path]    Record and export a HAR file
     --content <mode>         Response bodies to embed on start: text (default), all, none
+    If export fails, recording and captured requests remain available. Fix the
+    destination and retry stop.
 
 Global Options:
   --json               Output as JSON

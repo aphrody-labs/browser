@@ -1036,7 +1036,7 @@ fn tools() -> Vec<Value> {
         tool(
             TOOL_EVAL,
             "Evaluate JavaScript",
-            "Run JavaScript in the page using stdin to avoid shell escaping.",
+            "Run JavaScript in the page using stdin to avoid shell escaping. When the top-level result is a value JSON cannot represent, the structured response includes `response.data.unserializable` and the text content prints the JavaScript token.",
             json!({
                 "script": { "type": "string", "description": "JavaScript expression or script to evaluate." }
             }),
@@ -4347,6 +4347,9 @@ fn response_text(value: &Value) -> Option<String> {
         }
 
         if let Some(data) = obj.get("data") {
+            if let Some(token) = data.get("unserializable").and_then(Value::as_str) {
+                return Some(token.to_string());
+            }
             // Accessibility reports carry a URL alongside their findings. Use
             // the same report formatter as the CLI before the generic string
             // field fallback turns the MCP text content into only that URL.

@@ -5,6 +5,8 @@ navTitle: "Commands"
 
 ## Core
 
+When the top-level Chrome/CDP `eval` result is a value JSON cannot represent, plain output prints its exact JavaScript token, including `NaN`, `Infinity`, `-Infinity`, `-0`, BigInt literals, and `undefined`. With `--json`, `data.result` stays `null` and sibling `data.unserializable` contains the token. MCP text prints the token, and structured responses expose it at `structuredContent.response.data.unserializable`.
+
 ```bash
 agent-browser open                    # Launch browser (no nav); stays on about:blank
 agent-browser open <url>              # Launch + navigate (aliases: goto, navigate)

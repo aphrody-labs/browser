@@ -1227,7 +1227,7 @@ fn parity_tools() -> Vec<Value> {
         tool(
             TOOL_SET_VIEWPORT,
             "Set viewport",
-            "Set viewport size.",
+            "Set viewport size. The optional scale must be finite.",
             json!({ "width": int_schema(), "height": int_schema(), "scale": number_schema() }),
             &["width", "height"],
         ),
@@ -1241,7 +1241,7 @@ fn parity_tools() -> Vec<Value> {
         tool(
             TOOL_SET_GEO,
             "Set geolocation",
-            "Set geolocation.",
+            "Set geolocation with finite latitude and longitude.",
             json!({ "latitude": number_schema(), "longitude": number_schema() }),
             &["latitude", "longitude"],
         ),

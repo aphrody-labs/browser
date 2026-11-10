@@ -15,15 +15,15 @@ use smallvec::SmallVec;
 
 use super::expression::is_link_in_brackets;
 use super::{FileLowering, FunctionLowering};
-use crate::ir::generated::QuotedText;
+use crate::ir::generated::QuotedSource;
 use crate::load::test_runner_names::{skip_to_written_use, written_name_of_local};
 
 #[derive(Default)]
-pub(in crate::lower) struct QuotedTexts {
+pub(in crate::lower) struct QuotedSources {
     text: Vec<u8>,
     places: FxHashMap<ExprId, (u32, u32)>,
     is_printed: Vec<u64>,
-    quoted: Vec<QuotedText>,
+    quoted: Vec<QuotedSource>,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -263,7 +263,7 @@ impl Printer<'_, '_, '_, '_, '_> {
             Constant::Boolean(value) => self.word(if value { b"true" } else { b"false" }),
             Constant::Number(number) => self.number(number, level),
             Constant::String(text) => {
-                append_printed_text(self.file.queries.atom_bytes(text), &mut self.text);
+                append_printed_string(self.file.queries.atom_bytes(text), &mut self.text);
             }
             Constant::BigInt(digits) => {
                 self.word(self.file.queries.atom_bytes(digits));
@@ -455,7 +455,7 @@ impl Printer<'_, '_, '_, '_, '_> {
                     .expect("a list of bytes takes every byte");
                 self.text.push(b'`');
             }
-            _ => append_printed_text(name, &mut self.text),
+            _ => append_printed_string(name, &mut self.text),
         }
         self.text.push(b']');
     }
@@ -486,12 +486,12 @@ impl Printer<'_, '_, '_, '_, '_> {
                 return true;
             }
             NameKind::Identifier | NameKind::StringLiteral | NameKind::Jsx => {
-                append_quoted_text(key, false, &mut self.text)
+                append_string_literal(key, false, &mut self.text)
             }
             NameKind::NumericLiteral => self.numeric_key(key),
             NameKind::ComputedString => {
                 self.text.push(b'[');
-                append_printed_text(key, &mut self.text);
+                append_printed_string(key, &mut self.text);
                 self.text.push(b']');
             }
             NameKind::ComputedNumber => {
@@ -1167,15 +1167,15 @@ impl<'a, 'c, 'p, 's> FileLowering<'a, 'c, 'p, 's> {
         outermost
     }
 
-    fn print_quoted_text(
+    fn print_quoted_source(
         &mut self,
         print: impl FnOnce(&mut Printer<'_, 'a, 'c, 'p, 's>),
     ) -> Option<(u32, u32)> {
-        let text = core::mem::take(&mut self.quoted_texts.text);
+        let text = core::mem::take(&mut self.quoted_sources.text);
         let start = text.len();
         let mut printer = Printer {
             text,
-            places: core::mem::take(&mut self.quoted_texts.places),
+            places: core::mem::take(&mut self.quoted_sources.places),
             minifies_syntax: self.inputs.options.removable.minifies_syntax(),
             file: self,
             gaps: 0,
@@ -1189,22 +1189,22 @@ impl<'a, 'c, 'p, 's> FileLowering<'a, 'c, 'p, 's> {
             text, places, gaps, ..
         } = printer;
         let end = text.len();
-        self.quoted_texts.text = text;
-        self.quoted_texts.places = places;
+        self.quoted_sources.text = text;
+        self.quoted_sources.places = places;
         (gaps == 0).then_some((start as u32, end as u32))
     }
 
     #[inline]
-    fn quotes_texts(&self) -> bool {
-        !self.inputs.options.obfuscates && self.inputs.options.embeds_function_text
+    fn should_quote_source(&self) -> bool {
+        !self.inputs.options.obfuscates && self.inputs.options.embeds_function_source
     }
 
     fn quote_at(&mut self, position: u32, expression: ExprId) {
         let expression = self.skip_to_written_expression(expression);
-        let mut place = self.quoted_texts.places.get(&expression).copied();
+        let mut place = self.quoted_sources.places.get(&expression).copied();
         if place.is_none() {
             let outermost = self.outermost_printed_expression_around(expression);
-            let is_printed = &mut self.quoted_texts.is_printed;
+            let is_printed = &mut self.quoted_sources.is_printed;
             if is_printed.is_empty() {
                 is_printed.resize(self.hir.exprs.len().div_ceil(64), 0);
             }
@@ -1215,16 +1215,16 @@ impl<'a, 'c, 'p, 's> FileLowering<'a, 'c, 'p, 's> {
             }
             *word |= bit;
             let is_statement = matches!(self.bound.parent_of_expr(outermost), Parent::Stmt(statement) if matches!(self.hir[statement].kind, StmtKind::Expr(_)));
-            self.print_quoted_text(|printer| {
+            self.print_quoted_source(|printer| {
                 if is_statement {
                     printer.start_of_statement = printer.start;
                 }
                 printer.expression(outermost, Level::Lowest, Around::default());
             });
-            place = self.quoted_texts.places.get(&expression).copied();
+            place = self.quoted_sources.places.get(&expression).copied();
         }
         if let Some((start, end)) = place {
-            self.quoted_texts.quoted.push(QuotedText {
+            self.quoted_sources.quoted.push(QuotedSource {
                 position,
                 start,
                 end,
@@ -1260,13 +1260,13 @@ impl<'a, 'c, 'p, 's> FileLowering<'a, 'c, 'p, 's> {
         written.map_or(hir[binary].pos, |written| from + written as u32)
     }
 
-    pub(in crate::lower) fn take_quoted_texts(&mut self) -> (Vec<QuotedText>, Vec<u8>) {
-        let QuotedTexts {
+    pub(in crate::lower) fn take_quoted_sources(&mut self) -> (Vec<QuotedSource>, Vec<u8>) {
+        let QuotedSources {
             text, mut quoted, ..
-        } = core::mem::take(&mut self.quoted_texts);
-        let text_of = |quoted: &QuotedText| &text[quoted.start as usize..quoted.end as usize];
+        } = core::mem::take(&mut self.quoted_sources);
+        let text_of = |quoted: &QuotedSource| &text[quoted.start as usize..quoted.end as usize];
         quoted.sort_by_u32(|quoted| quoted.position);
-        let mut kept: Vec<QuotedText> = Vec::with_capacity(quoted.len());
+        let mut kept: Vec<QuotedSource> = Vec::with_capacity(quoted.len());
         let mut index = 0;
         while let Some(first) = quoted.get(index) {
             let (mut earliest, mut is_one_text) = (first, true);
@@ -1281,7 +1281,7 @@ impl<'a, 'c, 'p, 's> FileLowering<'a, 'c, 'p, 's> {
                 index += 1;
             }
             if is_one_text {
-                kept.push(QuotedText { ..*earliest });
+                kept.push(QuotedSource { ..*earliest });
             }
         }
         (kept, text)
@@ -1308,7 +1308,7 @@ impl<'a, 'c, 'p, 's> FileLowering<'a, 'c, 'p, 's> {
 impl FunctionLowering<'_, '_, '_, '_, '_> {
     #[inline]
     pub(in crate::lower) fn quote_if_next_fails(&mut self, expression: ExprId) {
-        if self.file.quotes_texts() {
+        if self.file.should_quote_source() {
             let position = self.position();
             self.file.quote_at(position, expression);
         }
@@ -1319,7 +1319,7 @@ impl FunctionLowering<'_, '_, '_, '_, '_> {
             unreachable!("report_at_member takes a Dot or an Index expression");
         };
         self.set_position(self.file.last_token_position_of(object));
-        if self.file.quotes_texts() {
+        if self.file.should_quote_source() {
             let quoted = self.file.find_expression_quoted_for_member(access);
             self.quote_if_next_fails(quoted);
         }
@@ -1381,11 +1381,11 @@ impl FunctionLowering<'_, '_, '_, '_, '_> {
         print: impl FnOnce(&mut Printer<'_, '_, '_, '_, '_>),
     ) {
         let position = self.position();
-        if !self.file.quotes_texts() {
+        if !self.file.should_quote_source() {
             return;
         }
-        if let Some((start, end)) = self.file.print_quoted_text(print) {
-            self.file.quoted_texts.quoted.push(QuotedText {
+        if let Some((start, end)) = self.file.print_quoted_source(print) {
+            self.file.quoted_sources.quoted.push(QuotedSource {
                 position,
                 start,
                 end,
@@ -1394,11 +1394,11 @@ impl FunctionLowering<'_, '_, '_, '_, '_> {
     }
 }
 
-pub(in crate::lower) fn append_printed_text(text: &[u8], printed: &mut Vec<u8>) {
-    append_quoted_text(text, true, printed);
+pub(in crate::lower) fn append_printed_string(text: &[u8], printed: &mut Vec<u8>) {
+    append_string_literal(text, true, printed);
 }
 
-fn append_quoted_text(text: &[u8], may_be_template: bool, printed: &mut Vec<u8>) {
+fn append_string_literal(text: &[u8], may_be_template: bool, printed: &mut Vec<u8>) {
     let (mut single_cost, mut double_cost, mut backtick_cost) = (0, 0, 0);
     let mut bytes = text.iter().take(1024).enumerate();
     while let Some((index, &byte)) = bytes.next() {
@@ -1477,13 +1477,13 @@ fn append_digits(mut number: u64, printed: &mut Vec<u8>) {
 mod tests {
     use crate::compile::testing::{default_settings, lower_program_with_settings};
 
-    fn text_of_quotes(source: &str) -> Vec<u8> {
+    fn quoted_source_text(source: &str) -> Vec<u8> {
         let lowered = lower_program_with_settings(&[("main.js", source)], &default_settings());
         let modules = lowered
             .into_iter()
             .map(|(_, lowered)| lowered.fragment.module);
         modules
-            .flat_map(|module| module.positions.text_of_quotes)
+            .flat_map(|module| module.positions.quoted_source_text)
             .collect()
     }
 
@@ -1491,13 +1491,16 @@ mod tests {
     fn sum_of_400_000_terms_is_printed() {
         let sum = vec!["holder.a"; 400_000].join(" + ");
         let source = format!("export function probe(holder) {{\n  return {sum};\n}}\n");
-        assert_eq!(text_of_quotes(&source), sum.as_bytes());
+        assert_eq!(quoted_source_text(&source), sum.as_bytes());
     }
 
     #[test]
     fn property_that_sets_the_prototype_keeps_its_value() {
         let source = "export function probe(run, __proto__, key) {\n  return run({ __proto__: __proto__, key: key }, { __proto__ });\n}\n";
         let printed = "run({ __proto__: __proto__, key }, { __proto__ })";
-        assert_eq!(String::from_utf8_lossy(&text_of_quotes(source)), printed);
+        assert_eq!(
+            String::from_utf8_lossy(&quoted_source_text(source)),
+            printed
+        );
     }
 }

@@ -15,9 +15,9 @@ use bun_sema::hir::MemberKey;
 use bun_sema::program::FileId;
 use bun_sema::util::{FxHashSet, SharedSort};
 
-const NO_FACE: u32 = u32::MAX;
+const NO_FACADE: u32 = u32::MAX;
 
-struct Face {
+struct Facade {
     file: FileId,
     copies: Vec<SyntheticExportId>,
     ranks: Vec<u32>,
@@ -72,14 +72,14 @@ struct DecisionInputs {
 }
 
 #[derive(Default)]
-pub(super) struct Faces {
+pub(super) struct Facades {
     inputs: DecisionInputs,
     imported_names: Vec<ImportedName>,
     places_by_owner: Vec<(FileId, u32)>,
     seen_namespaces: Vec<SeenNamespace>,
     copies_that_stay_empty: Vec<SyntheticExportId>,
-    face_of: Vec<u32>,
-    faces: Vec<Face>,
+    facade_indices: Vec<u32>,
+    facades: Vec<Facade>,
     unnumbered_checks: Vec<(FileId, Vec<UnnumberedCheck>)>,
     checks: Vec<(FileId, CheckedCopies)>,
 }
@@ -314,12 +314,12 @@ fn is_known_only_at_run_time(exports: &CommonJsExports, owner: ModuleRef, name: 
             })
 }
 
-impl Faces {
+impl Facades {
     pub(super) fn new(
         input: &CommonJsInput<'_, '_, '_>,
         tables: &ExportTables,
         imports: &[FileImports],
-    ) -> Faces {
+    ) -> Facades {
         let (files, scans, modules) = (input.bind.files, input.scans, input.modules);
         let seen = collect_seen_namespaces(modules, tables, imports).into_iter();
         let seen_namespaces = seen.map(|file| {
@@ -338,24 +338,24 @@ impl Faces {
             ..DecisionInputs::default()
         };
         inputs.find_names_to_check(input, tables);
-        Faces {
+        Facades {
             inputs,
             seen_namespaces: seen_namespaces.collect(),
-            face_of: vec![NO_FACE; files.modules.len()],
-            ..Faces::default()
+            facade_indices: vec![NO_FACADE; files.modules.len()],
+            ..Facades::default()
         }
     }
 
-    fn find(&self, file: FileId) -> Option<&Face> {
-        let place = *self.face_of.get(file.idx())?;
-        self.faces.get(place as usize)
+    fn find(&self, file: FileId) -> Option<&Facade> {
+        let place = *self.facade_indices.get(file.idx())?;
+        self.facades.get(place as usize)
     }
 
-    fn ensure_face(&mut self, file: FileId) -> &mut Face {
-        let place = &mut self.face_of[file.idx()];
-        if *place == NO_FACE {
-            *place = self.faces.len() as u32;
-            self.faces.push(Face {
+    fn ensure_facade(&mut self, file: FileId) -> &mut Facade {
+        let place = &mut self.facade_indices[file.idx()];
+        if *place == NO_FACADE {
+            *place = self.facades.len() as u32;
+            self.facades.push(Facade {
                 file,
                 copies: Vec::new(),
                 ranks: Vec::new(),
@@ -363,7 +363,7 @@ impl Faces {
                 captures: false,
             });
         }
-        &mut self.faces[*place as usize]
+        &mut self.facades[*place as usize]
     }
 
     fn find_seen_namespace(&self, file: FileId) -> Result<usize, usize> {
@@ -372,13 +372,13 @@ impl Faces {
     }
 
     fn add_copy(&mut self, exporter: FileId, owner: FileId, copy: SyntheticExportId, rank: u32) {
-        let face = self.ensure_face(exporter);
-        if !face.copies.contains(&copy) {
-            let place = face.ranks.partition_point(|&earlier| earlier < rank);
-            face.copies.insert(place, copy);
-            face.ranks.insert(place, rank);
+        let facade = self.ensure_facade(exporter);
+        if !facade.copies.contains(&copy) {
+            let place = facade.ranks.partition_point(|&earlier| earlier < rank);
+            facade.copies.insert(place, copy);
+            facade.ranks.insert(place, rank);
         }
-        self.ensure_face(owner);
+        self.ensure_facade(owner);
     }
 
     fn list_imported_names(
@@ -436,7 +436,7 @@ impl Faces {
         }
         self.add_copy(exporter, owner, copy, place);
         if is_known_only_at_run_time(exports, module, name) {
-            self.ensure_face(owner).captures = true;
+            self.ensure_facade(owner).captures = true;
         }
     }
 
@@ -484,12 +484,12 @@ impl Faces {
             table
         });
         self.seen_namespaces[place].names = names;
-        let face = self.ensure_face(file);
+        let facade = self.ensure_facade(file);
         match table {
-            Some(table) => face.exports = table,
+            Some(table) => facade.exports = table,
             None => {
-                face.captures = true;
-                face.exports.clear();
+                facade.captures = true;
+                facade.exports.clear();
             }
         }
     }
@@ -497,7 +497,7 @@ impl Faces {
     fn add_imported_file(&mut self, exports: &CommonJsExports, file: FileId) {
         let text = exports.text_of(ModuleRef::File(file));
         if text.is_none_or(|text| !text.has_names) {
-            self.ensure_face(file).captures = true;
+            self.ensure_facade(file).captures = true;
         }
     }
 
@@ -581,9 +581,11 @@ impl Faces {
 }
 
 impl CommonJsExports {
-    pub fn face(&self, module: ModuleRef) -> Option<ModuleRef> {
+    pub fn facade(&self, module: ModuleRef) -> Option<ModuleRef> {
         match module {
-            ModuleRef::File(file) if self.faces.find(file).is_some() => Some(ModuleRef::Face(file)),
+            ModuleRef::File(file) if self.facades.find(file).is_some() => {
+                Some(ModuleRef::Facade(file))
+            }
             _ => None,
         }
     }
@@ -593,48 +595,48 @@ impl CommonJsExports {
         (!self.checked_copies(root).is_empty()).then_some(ModuleRef::Check(root))
     }
 
-    pub fn copies(&self, face: FileId) -> &[SyntheticExportId] {
-        let face = self.faces.find(face);
-        face.map_or(&[], |face| &face.copies[..])
+    pub fn copies(&self, facade: FileId) -> &[SyntheticExportId] {
+        let facade = self.facades.find(facade);
+        facade.map_or(&[], |facade| &facade.copies[..])
     }
 
-    pub fn exports_of_face(&self, face: FileId) -> &[ModuleExport] {
-        let face = self.faces.find(face);
-        face.map_or(&[], |face| &face.exports[..])
+    pub fn facade_exports(&self, facade: FileId) -> &[ModuleExport] {
+        let facade = self.facades.find(facade);
+        facade.map_or(&[], |facade| &facade.exports[..])
     }
 
-    pub(in crate::modules) fn limit_exports_of_faces(&mut self, find_use: FindExportUse<'_>) {
-        for face in &mut self.faces.faces {
-            retain_used_exports(&mut face.exports, face.file, find_use);
+    pub(in crate::modules) fn retain_used_facade_exports(&mut self, find_use: FindExportUse<'_>) {
+        for facade in &mut self.facades.facades {
+            retain_used_exports(&mut facade.exports, facade.file, find_use);
         }
     }
 
-    pub fn face_captures(&self, face: FileId) -> bool {
-        let face = self.faces.find(face);
-        face.is_some_and(|face| face.captures)
+    pub fn has_capturing_facade(&self, facade: FileId) -> bool {
+        let facade = self.facades.find(facade);
+        facade.is_some_and(|facade| facade.captures)
     }
 
     pub(in crate::modules) fn number_checks(&mut self, failures: &NumberedFailures) {
         let number =
             |check: UnnumberedCheck| (check.copy, failures.id_of(check.importer, check.order));
-        let unnumbered = core::mem::take(&mut self.faces.unnumbered_checks).into_iter();
+        let unnumbered = core::mem::take(&mut self.facades.unnumbered_checks).into_iter();
         let numbered =
             unnumbered.map(|(root, checks)| (root, checks.into_iter().map(number).collect()));
-        self.faces.checks = numbered.collect();
+        self.facades.checks = numbered.collect();
     }
 
     pub fn checked_copies(&self, check: FileId) -> &[(SyntheticExportId, ModuleFailureId)] {
         debug_assert!(
-            self.faces.unnumbered_checks.is_empty(),
+            self.facades.unnumbered_checks.is_empty(),
             "the checks have no numbers yet"
         );
-        let checks = &self.faces.checks;
+        let checks = &self.facades.checks;
         let found = checks.binary_search_by_key(&check, |entry| entry.0);
         found.map_or(&[], |place| &checks[place].1[..])
     }
 
     pub fn may_stay_empty(&self, copy: SyntheticExportId) -> bool {
-        let copies = &self.faces.copies_that_stay_empty;
+        let copies = &self.facades.copies_that_stay_empty;
         copies.binary_search(&copy).is_ok()
     }
 }
@@ -687,18 +689,18 @@ mod tests {
 
     #[test]
     fn copies_are_ordered_by_rank_in_any_insertion_order() {
-        let mut faces = Faces {
-            face_of: vec![NO_FACE; 3],
-            ..Faces::default()
+        let mut facades = Facades {
+            facade_indices: vec![NO_FACADE; 3],
+            ..Facades::default()
         };
         let [exporter, owner] = [FileId(0), FileId(2)];
         for (copy, rank) in [(7, 5), (3, 2), (7, 9), (4, 3)] {
-            faces.add_copy(exporter, owner, SyntheticExportId(copy), rank);
+            facades.add_copy(exporter, owner, SyntheticExportId(copy), rank);
         }
-        let face = faces.find(exporter).expect("the exporter has a face");
-        assert_eq!(face.copies, [3, 4, 7].map(SyntheticExportId));
-        assert!(faces.find(owner).is_some());
-        assert!(faces.find(FileId(1)).is_none());
+        let facade = facades.find(exporter).expect("the exporter has a facade");
+        assert_eq!(facade.copies, [3, 4, 7].map(SyntheticExportId));
+        assert!(facades.find(owner).is_some());
+        assert!(facades.find(FileId(1)).is_none());
     }
 
     #[test]

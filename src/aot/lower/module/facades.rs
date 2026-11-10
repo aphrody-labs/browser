@@ -86,10 +86,10 @@ impl FunctionLowering<'_, '_, '_, '_, '_> {
 }
 
 impl FileLowering<'_, '_, '_, '_> {
-    pub(super) fn declare_face_body(&mut self) {
+    pub(super) fn declare_facade_body(&mut self) {
         let modules = self.inputs.modules;
-        if modules.face(ModuleRef::File(self.file)).is_some() {
-            declare_body(self, FunctionKey::FaceBody(self.file));
+        if modules.facade(ModuleRef::File(self.file)).is_some() {
+            declare_body(self, FunctionKey::FacadeBody(self.file));
         }
     }
 
@@ -99,22 +99,24 @@ impl FileLowering<'_, '_, '_, '_> {
         }
     }
 
-    pub(crate) fn lower_face_body(&mut self, function: FunctionId) {
+    pub(crate) fn lower_facade_body(&mut self, function: FunctionId) {
         let modules = self.inputs.modules;
         let own_file = self.file;
         let mut lowering = FunctionLowering::begin(self, function);
         let module = lowering.file.module_id();
-        let face = ModuleRef::Face(own_file);
-        let face = lowering.file.fragment.declare_module(face);
-        lowering.builder.evaluate_module(module, face, true, false);
-        for owner in modules.faces_behind(own_file) {
-            let owner = ModuleRef::Face(owner);
+        let facade = ModuleRef::Facade(own_file);
+        let facade = lowering.file.fragment.declare_module(facade);
+        lowering
+            .builder
+            .evaluate_module(module, facade, true, false);
+        for owner in modules.facade_dependencies(own_file) {
+            let owner = ModuleRef::Facade(owner);
             let owner = lowering.file.fragment.declare_module(owner);
-            lowering.builder.evaluate_module(owner, face, true, false);
+            lowering.builder.evaluate_module(owner, facade, true, false);
         }
         for &export in modules.commonjs().copies(own_file) {
             let copied = *modules.synthetic_export(export);
-            if matches!(copied.module, ModuleRef::File(owner) if modules.commonjs().face_captures(owner))
+            if matches!(copied.module, ModuleRef::File(owner) if modules.commonjs().has_capturing_facade(owner))
                 && !(modules.commonjs()).is_getter_that_no_loop_sees(copied.module, copied.name)
             {
                 continue;

@@ -1,3 +1,6 @@
+// A module of compiled programs alone: `bun run` has no text under this name and never loads it.
+// test/internal/second-texts-of-modules.test.ts holds that no text outside this folder asks for it.
+
 // Making process.stdout or process.stderr loads all of node:stream, which adds members to what its parts define. The light streams that a compiled program may have
 // in their place (builtins/stdio.ts) load none of it: where a part is loaded already, they ask here for the rest.
 export default {

@@ -1,3 +1,5 @@
+// Functions of compiled programs alone: native code makes them where the program was compiled, and `bun run` never enters them.
+
 type NeedsWholeStream = () => never;
 type WriteToSink = (fd: number, data: unknown) => number | boolean | Promise<unknown>;
 type GetWindowSize = (fd: number, size: number[]) => boolean;

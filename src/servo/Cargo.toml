@@ -74,7 +74,7 @@ media-gstreamer = ["dep:servo-media-gstreamer", "dep:gstreamer"]
 multiprocess = ["servo-base/multiprocess", "servo-constellation/multiprocess"]
 
 native-bluetooth = ["servo-bluetooth/native-bluetooth"]
-no-wgl = ["dep:mozangle", "mozangle/egl", "mozangle/build_dlls", "surfman/sm-angle-default", "paint_api/no-wgl"]
+no-wgl = ["dep:mozangle", "mozangle/egl", "mozangle/build_dlls", "surfman/sm-angle-builtin", "paint_api/no-wgl"]
 profilemozjs = ["script/profilemozjs"]
 testbinding = ["script/testbinding"]
 tracing = [

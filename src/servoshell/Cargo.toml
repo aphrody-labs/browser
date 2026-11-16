@@ -135,7 +135,7 @@ xcomponent-sys = {version = "0.4.0", features = ["api-20", "keyboard-types"]}
 nix = {version = "0.30", features = ["fs"]}
 serde_json = "1.0"
 servo-base = {version = "=0.8.0", path = "../servo-base"}
-surfman = {features = ["sm-angle-default"], path = "../surfman"}
+surfman = {features = ["sm-angle-builtin"], path = "../surfman"}
 
 [target.'cfg(not(any(target_os = "android", target_env = "ohos")))'.dependencies]
 dirs = "7.0"

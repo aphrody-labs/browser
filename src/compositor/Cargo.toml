@@ -6,11 +6,11 @@ edition = "2018"
 license = "MPL-2.0"
 
 [dependencies]
-webrender = { path = "../../webrender" }
-gleam = "0.15"
+webrender = {path = "../webrender"}
+gleam = {path = "../gleam"}
 
 [target.'cfg(windows)'.dependencies]
-compositor-windows = { path = "../compositor-windows" }
+compositor-windows = {path = "../compositor-windows"}
 
 [target.'cfg(target_os = "linux")'.dependencies]
-compositor-wayland = { path = "../compositor-wayland" }
+compositor-wayland = {path = "../compositor-wayland"}

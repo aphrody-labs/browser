@@ -1,13 +1,13 @@
 [package]
 name = "tendril-bench"
 publish = false
-edition.workspace = true
+edition = "2021"
 
 [dependencies]
 tendril = {path = "../tendril"}
 
 [dev-dependencies]
-criterion = { workspace = true }
+criterion = "0.8"
 
 [lib]
 test = false

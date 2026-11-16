@@ -97,7 +97,7 @@ pub fn encoded_len(
 /// ```
 pub fn hash_encoded(pwd: &[u8], salt: &[u8], config: &Config) -> Result<String> {
     let context = Context::new(config.clone(), pwd, salt)?;
-    let hash = run(&context);
+    let hash = run(&context)?;
     let encoded = encoding::encode_string(&context, &hash);
     Ok(encoded)
 }
@@ -141,7 +141,7 @@ pub fn hash_encoded(pwd: &[u8], salt: &[u8], config: &Config) -> Result<String> 
 /// ```
 pub fn hash_raw(pwd: &[u8], salt: &[u8], config: &Config) -> Result<Vec<u8>> {
     let context = Context::new(config.clone(), pwd, salt)?;
-    let hash = run(&context);
+    let hash = run(&context)?;
     Ok(hash)
 }
 
@@ -220,12 +220,12 @@ pub fn verify_raw(pwd: &[u8], salt: &[u8], hash: &[u8], config: &Config) -> Resu
         ..config.clone()
     };
     let context = Context::new(config, pwd, salt)?;
-    let calculated_hash = run(&context);
+    let calculated_hash = run(&context)?;
     Ok(constant_time_eq(hash, &calculated_hash))
 }
 
-fn run(context: &Context) -> Vec<u8> {
-    let mut memory = Memory::new(context.config.lanes, context.lane_length);
+fn run(context: &Context) -> Result<Vec<u8>> {
+    let mut memory = Memory::new(context.config.lanes, context.lane_length)?;
     core::initialize(context, &mut memory);
     // SAFETY: `memory` is constructed from `context`.
     unsafe { core::fill_memory_blocks(context, &mut memory) };

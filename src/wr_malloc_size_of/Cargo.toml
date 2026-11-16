@@ -10,5 +10,5 @@ edition = "2018"
 path = "lib.rs"
 
 [dependencies]
-app_units = "0.7"
-euclid = "0.22"
+app_units = {path = "../app_units"}
+euclid = {path = "../euclid"}

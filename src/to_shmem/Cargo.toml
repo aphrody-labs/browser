@@ -23,10 +23,10 @@ string_cache = ["dep:string_cache"]
 thin-vec = ["dep:thin-vec"]
 
 [dependencies]
-cssparser = { version = "0.38", optional = true }
+cssparser = {optional = true, path = "../cssparser"}
 hashbrown = "0.17"
-servo_arc = { workspace = true, optional = true }
-smallbitvec = { version = "2.3.0", optional = true }
-smallvec = { version = "1.13", optional = true }
-string_cache = { version = "0.11", optional = true }
-thin-vec = { version = "0.2.1", optional = true }
+servo_arc = {version = "0.6.0", path = "../servo_arc", optional = true}
+smallbitvec = {optional = true, path = "../smallbitvec"}
+smallvec = {version = "1.13", optional = true}
+string_cache = {optional = true, path = "../string_cache"}
+thin-vec = {version = "0.2.1", optional = true}

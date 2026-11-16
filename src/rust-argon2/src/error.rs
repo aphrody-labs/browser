@@ -58,6 +58,9 @@ pub enum Error {
     /// The memory cost is too large (maximum 2GiB on 32-bit or 4TiB on 64-bit).
     MemoryTooMuch,
 
+    /// The memory matrix or the output could not be allocated.
+    MemoryAllocationFailed,
+
     /// The number of lanes (parallelism) is too small (minimum is 1).
     LanesTooFew,
 
@@ -91,6 +94,7 @@ impl Error {
             Error::TimeTooLarge => "Time cost is too large",
             Error::MemoryTooLittle => "Memory cost is too small",
             Error::MemoryTooMuch => "Memory cost is too large",
+            Error::MemoryAllocationFailed => "Memory allocation failed",
             Error::LanesTooFew => "Too few lanes",
             Error::LanesTooMany => "Too many lanes",
             Error::IncorrectType => "There is no such type of Argon2",

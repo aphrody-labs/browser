@@ -1,41 +1,51 @@
 [package]
 name = "servo-webgpu"
-version.workspace = true
-authors.workspace = true
-license.workspace = true
-edition.workspace = true
-publish.workspace = true
-rust-version.workspace = true
-repository.workspace = true
-description.workspace = true
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
 
 [lib]
 name = "webgpu"
 path = "lib.rs"
 
 [dependencies]
-arrayvec = { workspace = true, features = ["serde"] }
-euclid = { workspace = true }
-log = { workspace = true }
-paint_api = { workspace = true }
-pixels = { workspace = true }
-rustc-hash = { workspace = true }
-servo-base = { workspace = true }
-servo-config = { workspace = true }
-webgpu_traits = { workspace = true }
-webrender_api = { workspace = true }
-wgpu-core = { workspace = true, features = ["serde", "wgsl"] }
-wgpu-types = { workspace = true }
+arrayvec = {version = "0.7", features = ["serde"]}
+euclid = {path = "../euclid"}
+log = "0.4.32"
+paint_api = {package = "servo-paint-api", version = "=0.8.0", path = "../servo-paint-api"}
+pixels = {package = "servo-pixels", version = "=0.8.0", path = "../servo-pixels"}
+rustc-hash = "2.1.2"
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-config = {version = "=0.8.0", path = "../servo-config"}
+webgpu_traits = {package = "servo-webgpu-traits", version = "=0.8.0", path = "../servo-webgpu-traits"}
+webrender_api = {path = "../webrender_api"}
+wgpu-core = {version = "30", features = ["serde", "wgsl"]}
+wgpu-types = "30"
 
 # We want the wgpu-core Metal backend on macOS and iOS.
 [target.'cfg(any(target_os = "ios", target_os = "macos"))'.dependencies]
-wgpu-core = { workspace = true, features = ["metal"] }
+wgpu-core = {version = "30", features = ["metal"]}
 
 [target.'cfg(any(windows, all(unix, not(any(target_os = "macos", target_os = "ios")))))'.dependencies]
-wgpu-core = { workspace = true, features = ["gles", "vulkan"] }
+wgpu-core = {version = "30", features = ["gles", "vulkan"]}
 
 [target.'cfg(windows)'.dependencies]
-wgpu-core = { workspace = true, features = ["dx12", "vulkan"] }
+wgpu-core = {version = "30", features = ["dx12", "vulkan"]}
 
-[lints]
-workspace = true
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

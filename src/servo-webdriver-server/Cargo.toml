@@ -1,39 +1,49 @@
 [package]
 name = "servo-webdriver-server"
-version.workspace = true
-authors.workspace = true
-license.workspace = true
-edition.workspace = true
-publish.workspace = true
-rust-version.workspace = true
-repository.workspace = true
-description.workspace = true
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
 
 [lib]
 name = "webdriver_server"
 path = "lib.rs"
 
 [dependencies]
-base64 = { workspace = true }
-cookie = { workspace = true }
-crossbeam-channel = { workspace = true }
-embedder_traits = { workspace = true }
-euclid = { workspace = true }
-http = { workspace = true }
-image = { workspace = true }
-keyboard-types = { workspace = true }
-log = { workspace = true }
-rustc-hash = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
-servo-base = { workspace = true }
-servo-config = { workspace = true }
-servo-geometry = { workspace = true }
-servo-url = { workspace = true }
-stylo_traits = { workspace = true }
-time = { workspace = true }
-uuid = { workspace = true }
-webdriver = { workspace = true }
+base64 = "0.23.0"
+cookie = {package = "cookie", version = "0.18"}
+crossbeam-channel = "0.5"
+embedder_traits = {package = "servo-embedder-traits", version = "=0.8.0", path = "../servo-embedder-traits"}
+euclid = {path = "../euclid"}
+http = "1.4"
+image = {version = "0.25", default-features = false, features = ["bmp", "gif", "ico", "jpeg", "png", "rayon", "webp"]}
+keyboard-types = {version = "0.8.3", features = ["serde", "webdriver"]}
+log = "0.4.32"
+rustc-hash = "2.1.2"
+serde = "1.0.228"
+serde_json = "1.0"
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-config = {version = "=0.8.0", path = "../servo-config"}
+servo-geometry = {version = "=0.8.0", path = "../servo-geometry"}
+servo-url = {version = "=0.8.0", path = "../servo-url"}
+stylo_traits = {path = "../stylo_traits"}
+time = {package = "time", version = "0.3", features = ["large-dates", "local-offset", "serde"]}
+uuid = {version = "1.23.3", features = ["v4", "v5"]}
+webdriver = "0.54.0"
 
-[lints]
-workspace = true
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

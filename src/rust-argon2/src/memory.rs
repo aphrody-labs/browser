@@ -9,6 +9,8 @@
 #![warn(unsafe_op_in_unsafe_fn)]
 
 use crate::block::Block;
+use crate::error::Error;
+use crate::result::Result;
 use std::fmt;
 use std::fmt::Debug;
 use std::marker::PhantomData;
@@ -29,12 +31,17 @@ pub struct Memory {
 
 impl Memory {
     /// Creates a new memory matrix.
-    pub fn new(lanes: u32, lane_length: u32) -> Memory {
+    pub fn new(lanes: u32, lane_length: u32) -> Result<Memory> {
         let rows = lanes as usize;
         let cols = lane_length as usize;
         let total = rows * cols;
-        let blocks = vec![Block::zero(); total].into_boxed_slice();
-        Memory { rows, cols, blocks }
+        let mut blocks = Vec::new();
+        blocks
+            .try_reserve_exact(total)
+            .map_err(|_| Error::MemoryAllocationFailed)?;
+        blocks.resize_with(total, Block::zero);
+        let blocks = blocks.into_boxed_slice();
+        Ok(Memory { rows, cols, blocks })
     }
 
     /// Returns a pointer to the flat array of blocks useful for parallel disjoint access.
@@ -158,7 +165,7 @@ mod tests {
     fn new_returns_correct_instance() {
         let lanes = 4;
         let lane_length = 128;
-        let memory = Memory::new(lanes, lane_length);
+        let memory = Memory::new(lanes, lane_length).unwrap();
         assert_eq!(memory.rows, lanes as usize);
         assert_eq!(memory.cols, lane_length as usize);
         assert_eq!(memory.blocks.len(), 512);

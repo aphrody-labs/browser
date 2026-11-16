@@ -4,28 +4,28 @@ description = "Basic, unsupported DOM structure for use by tests in html5ever/xm
 readme = "README.md"
 documentation = "https://docs.rs/markup5ever_rcdom"
 categories = [ "parser-implementations", "web-programming" ]
-version.workspace = true
-license.workspace = true
-authors.workspace = true
-repository.workspace = true
-edition.workspace = true
-rust-version.workspace = true
 publish = false
+version = "0.40.1"
+edition = "2021"
+authors = ["The html5ever Project Developers"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/servo/html5ever"
+rust-version = "1.85"
 
 [lib]
 path = "lib.rs"
 
 [dependencies]
-html5ever = { workspace = true }
-markup5ever = { workspace = true, features = ["serde"] }
-tendril = { workspace = true }
-xml5ever = { workspace = true }
+html5ever = {version = "0.40", path = "../html5ever"}
+markup5ever = {version = "0.40", path = "../markup5ever", features = ["serde"]}
+tendril = {version = "0.5", path = "../tendril"}
+xml5ever = {version = "0.40", path = "../xml5ever"}
 
 [dev-dependencies]
-criterion = { workspace = true }
-env_logger = { workspace = true }
-libtest-mimic = { workspace = true }
-serde_json = { workspace = true }
+criterion = "0.8"
+env_logger = "0.11"
+libtest-mimic = "0.8.1"
+serde_json = "1.0"
 
 [[bench]]
 name = "deserialize-serialize"

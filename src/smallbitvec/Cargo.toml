@@ -13,8 +13,8 @@ edition = "2021"
 rust-version = "1.56"
 
 [dependencies]
-malloc_size_of = { version = "0.1", default-features = false, optional = true }
+malloc_size_of = {version = "0.1", default-features = false, optional = true}
 
 [dev-dependencies]
-rand = { version = "0.8.5", features = ["small_rng"] }
+rand = {version = "0.8.5", features = ["small_rng"]}
 bit-vec = "0.6.3"

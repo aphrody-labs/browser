@@ -1,10 +1,10 @@
 [package]
 name = "obscura-cdp"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
 autotests = false
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/h4ckf0r0day/obscura"
 
 [[test]]
 name = "integration"
@@ -17,30 +17,30 @@ stealth = ["obscura-browser/stealth"]
 render = ["obscura-browser/render", "dep:image", "dep:jpeg-encoder", "dep:png", "dep:fast_image_resize"]
 
 [dependencies]
-obscura-dom = { workspace = true }
-obscura-browser = { workspace = true }
-obscura-js = { workspace = true }
-tokio = { workspace = true }
-tokio-tungstenite = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
-url = { workspace = true }
-uuid = { workspace = true }
-tracing = { workspace = true }
-thiserror = { workspace = true }
-anyhow = { workspace = true }
-base64 = { workspace = true }
+obscura-dom = {path = "../obscura-dom"}
+obscura-browser = {path = "../obscura-browser"}
+obscura-js = {path = "../obscura-js"}
+tokio = {version = "1", features = ["full"]}
+tokio-tungstenite = "0.26"
+serde = {version = "1", features = ["derive"]}
+serde_json = "1"
+url = {path = "../rust-url-url"}
+uuid = {version = "1", features = ["v4"]}
+tracing = "0.1"
+thiserror = "2"
+anyhow = "1"
+base64 = "0.22"
 futures-util = "0.3"
-obscura-net = { workspace = true }
-image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"], optional = true }
-jpeg-encoder = { version = "0.7.1", features = ["simd"], optional = true }
-fast_image_resize = { version = "6.1", optional = true }
-png = { version = "0.18", optional = true }
+obscura-net = {path = "../obscura-net"}
+image = {version = "0.25", default-features = false, features = ["jpeg", "png", "webp"], optional = true}
+jpeg-encoder = {version = "0.7.1", features = ["simd"], optional = true}
+fast_image_resize = {version = "6.1", optional = true}
+png = {version = "0.18", optional = true}
 
 [target.'cfg(target_env = "gnu")'.dependencies]
 libc = "0.2"
 
 [dev-dependencies]
-tokio = { workspace = true, features = ["test-util"] }
-tokio-tungstenite = { workspace = true }
+tokio = {version = "1", features = ["full", "test-util"]}
+tokio-tungstenite = "0.26"
 futures-util = "0.3"

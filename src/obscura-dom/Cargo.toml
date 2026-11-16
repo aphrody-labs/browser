@@ -1,18 +1,18 @@
 [package]
 name = "obscura-dom"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/h4ckf0r0day/obscura"
 
 [dependencies]
-html5ever = { workspace = true }
-markup5ever = { workspace = true }
-selectors = { workspace = true }
-servo_arc = { workspace = true }
-cssparser = { workspace = true }
-thiserror = { workspace = true }
-tracing = { workspace = true }
+html5ever = {path = "../html5ever"}
+markup5ever = {path = "../markup5ever"}
+selectors = {path = "../selectors"}
+servo_arc = {path = "../servo_arc"}
+cssparser = {path = "../cssparser"}
+thiserror = "2"
+tracing = "0.1"
 precomputed-hash = "0.1"
 
 [dev-dependencies]

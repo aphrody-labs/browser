@@ -1,13 +1,13 @@
 [package]
 name = "servo-capi-tests"
-version.workspace = true
-authors.workspace = true
-license.workspace = true
-edition.workspace = true
 publish = false # This crate is only for testing.
-rust-version.workspace = true
-repository.workspace = true
 description = "Integration tests for C API of servo"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+rust-version = "1.88.0"
 
 [lib]
 name = "servo_capi_tests"

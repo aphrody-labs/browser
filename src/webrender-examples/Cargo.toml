@@ -54,14 +54,14 @@ path = "yuv.rs"
 debug = ["webrender/capture", "webrender/profiler"]
 
 [dependencies]
-app_units = "0.7"
-env_logger = { version = "0.10", default-features = false }
-euclid = "0.22"
-gleam = "0.15"
+app_units = {path = "../app_units"}
+env_logger = {version = "0.10", default-features = false}
+euclid = {path = "../euclid"}
+gleam = {path = "../gleam"}
 glutin = "0.28"
 rayon = "1"
-webrender = { path = "../webrender" }
+webrender = {path = "../webrender"}
 winit = "0.26"
 
 [target.'cfg(target_os = "macos")'.dependencies]
-core-foundation = "0.7"
+core-foundation = {path = "../core-foundation"}

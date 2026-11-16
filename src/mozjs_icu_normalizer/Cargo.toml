@@ -124,106 +124,28 @@ path = "benches/decomposing_normalizer_nfkd.rs"
 name = "utf16_throughput"
 path = "benches/utf16_throughput.rs"
 
-[dependencies.databake]
-version = "0.2.0"
-features = ["derive"]
-optional = true
-default-features = false
-
-[dependencies.harfbuzz-traits]
-version = "0.6.0"
-default-features = false
-optional = true
-
-[dependencies.displaydoc]
-version = "0.2.3"
-default-features = false
-
-[dependencies.icu_collections]
-version = "=153.7.0"
-package = "mozjs_icu_collections"
-path = "../icu_collections"
-default-features = false
-
-[dependencies.icu_normalizer_data]
-version = "=153.7.0"
-package = "mozjs_icu_normalizer_data"
-path = "../icu_normalizer_data"
-optional = true
-default-features = false
-
-[dependencies.icu_properties]
-version = "2.1.1"
-optional = true
-default-features = false
-
-[dependencies.icu_provider]
-version = "2.1.1"
-default-features = false
-
-[dependencies.serde]
-version = "1.0.220"
-features = [
-    "derive",
-    "alloc",
-]
-optional = true
-default-features = false
-
-[dependencies.smallvec]
-version = "1.10.0"
-default-features = false
-
-[dependencies.utf16_iter]
-version = "=153.7.0"
-package = "mozjs_utf16_iter"
-path = "../utf16_iter"
-optional = true
-default-features = false
-features = ["icu_collections"]
-
-[dependencies.utf8_iter]
-version = "=153.7.0"
-package = "mozjs_utf8_iter"
-path = "../utf8_iter"
-optional = true
-default-features = false
-features = ["icu_collections"]
-
-[dependencies.write16]
-version = "1.0.0"
-features = ["alloc"]
-optional = true
-default-features = false
-
-[dependencies.zerovec]
-version = "0.11.3"
-default-features = false
-
-[dev-dependencies.arraystring]
-version = "0.3.0"
-
-[dev-dependencies.arrayvec]
-version = "0.7.2"
-default-features = false
-
-[dev-dependencies.atoi]
-version = "2.0.0"
-
-[dev-dependencies.detone]
-version = "1.0.0"
-
-[dev-dependencies.write16]
-version = "1.0.0"
-features = [
-    "arrayvec",
-    "smallvec",
-]
-default-features = false
-
-[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies.criterion]
-version = "0.5.0"
-
+[dependencies]
+databake = {version = "0.2.0", features = ["derive"], optional = true, default-features = false}
+harfbuzz-traits = {default-features = false, optional = true, path = "../harfbuzz-traits"}
+displaydoc = {version = "0.2.3", default-features = false}
+icu_collections = {version = "=153.7.0", package = "mozjs_icu_collections", path = "../mozjs_icu_collections", default-features = false}
+icu_normalizer_data = {version = "=153.7.0", package = "mozjs_icu_normalizer_data", path = "../mozjs_icu_normalizer_data", optional = true, default-features = false}
+icu_properties = {version = "2.1.1", optional = true, default-features = false}
+icu_provider = {version = "2.1.1", default-features = false}
+serde = {version = "1.0.220", features = ["derive", "alloc"], optional = true, default-features = false}
+smallvec = {version = "1.10.0", default-features = false}
+utf16_iter = {version = "=153.7.0", package = "mozjs_utf16_iter", path = "../mozjs_utf16_iter", optional = true, default-features = false, features = ["icu_collections"]}
+utf8_iter = {version = "=153.7.0", package = "mozjs_utf8_iter", path = "../mozjs_utf8_iter", optional = true, default-features = false, features = ["icu_collections"]}
+write16 = {version = "1.0.0", features = ["alloc"], optional = true, default-features = false}
+zerovec = {version = "0.11.3", default-features = false}
+[dev-dependencies]
+arraystring = "0.3.0"
+arrayvec = {version = "0.7.2", default-features = false}
+atoi = "2.0.0"
+detone = "1.0.0"
+write16 = {version = "1.0.0", features = ["arrayvec", "smallvec"], default-features = false}
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+criterion = "0.5.0"
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0

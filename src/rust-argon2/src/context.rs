@@ -44,12 +44,12 @@ impl<'a> Context<'a> {
         }
 
         let lanes = config.lanes;
-        if config.mem_cost < common::MIN_MEMORY {
+        // Bun: no `8 * lanes` floor, so hashes older Bun versions produced
+        // with `m < 8` still verify. Memory is padded to 8 * lanes below.
+        if config.mem_cost < 1 {
             return Err(Error::MemoryTooLittle);
         } else if config.mem_cost > common::MAX_MEMORY {
             return Err(Error::MemoryTooMuch);
-        } else if config.mem_cost < 8 * lanes {
-            return Err(Error::MemoryTooLittle);
         }
 
         if config.time_cost < common::MIN_TIME {
@@ -152,7 +152,7 @@ mod tests {
     #[test]
     fn new_with_too_little_mem_cost_returns_correct_error() {
         let config = Config {
-            mem_cost: 7,
+            mem_cost: 0,
             ..Default::default()
         };
         assert_eq!(
@@ -162,16 +162,15 @@ mod tests {
     }
 
     #[test]
-    fn new_with_less_than_8_x_lanes_mem_cost_returns_correct_error() {
+    fn new_with_less_than_8_x_lanes_mem_cost_pads_memory() {
         let config = Config {
             lanes: 4,
             mem_cost: 31,
             ..Default::default()
         };
-        assert_eq!(
-            Context::new(config, &[0u8; 8], &[0u8; 8]),
-            Err(Error::MemoryTooLittle)
-        );
+        let context = Context::new(config, &[0u8; 8], &[0u8; 8]).unwrap();
+        assert_eq!(context.memory_blocks, 32);
+        assert_eq!(context.segment_length, 2);
     }
 
     #[test]

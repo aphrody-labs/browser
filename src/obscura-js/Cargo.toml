@@ -1,9 +1,9 @@
 [package]
 name = "obscura-js"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/h4ckf0r0day/obscura"
 
 [features]
 default = []
@@ -20,36 +20,36 @@ render = ["dep:obscura-render", "obscura-render/paint"]
 deno_core = "0.412"
 
 [dependencies]
-obscura-dom = { workspace = true }
-obscura-net = { workspace = true }
+obscura-dom = {path = "../obscura-dom"}
+obscura-net = {path = "../obscura-net"}
 deno_core = "0.412"
-tokio = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
-url = { workspace = true }
+tokio = {version = "1", features = ["full"]}
+serde = {version = "1", features = ["derive"]}
+serde_json = "1"
+url = {path = "../rust-url-url"}
 # document.domain must reject public suffixes (including private suffixes such
 # as github.io), not just compare dotted strings.  `psl` embeds the Mozilla
 # Public Suffix List and adds no runtime I/O.
 psl = "2"
-tracing = { workspace = true }
-thiserror = { workspace = true }
-anyhow = { workspace = true }
-reqwest = { workspace = true }
-html5ever = { workspace = true }
+tracing = "0.1"
+thiserror = "2"
+anyhow = "1"
+reqwest = {version = "0.12", features = ["gzip", "brotli", "deflate", "rustls-tls", "socks"], default-features = false}
+html5ever = {path = "../html5ever"}
 deno_error = "0.7"
-base64 = { workspace = true }
+base64 = "0.22"
 sha1 = "0.10"
 sha2 = "0.10"
 # WebCrypto (crypto.subtle) primitives. RustCrypto, pure Rust, no CMake/OpenSSL,
 # and they unify on the digest 0.10 / cipher 0.4 stack already in the tree.
 hmac = "0.12"
 aes = "0.8"
-aes-kw = { version = "0.2", features = ["alloc"] }
+aes-kw = {version = "0.2", features = ["alloc"]}
 aes-gcm = "0.10"
-cbc = { version = "0.1", features = ["alloc"] }
+cbc = {version = "0.1", features = ["alloc"]}
 ctr = "0.9"
-pbkdf2 = { version = "0.12", default-features = false, features = ["hmac"] }
+pbkdf2 = {version = "0.12", default-features = false, features = ["hmac"]}
 hkdf = "0.12"
 # CSPRNG for getRandomValues / randomUUID (replaces Math.random).
 getrandom = "0.2"
-obscura-render = { workspace = true, optional = true }
+obscura-render = {path = "../obscura-render", optional = true}

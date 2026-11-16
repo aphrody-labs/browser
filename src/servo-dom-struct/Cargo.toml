@@ -1,23 +1,33 @@
 [package]
 name = "servo-dom-struct"
-edition.workspace = true
-version.workspace = true
-authors.workspace = true
-license.workspace = true
-publish.workspace = true
-rust-version.workspace = true
-repository.workspace = true
-description.workspace = true
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
 
 [dependencies]
-prettyplease = { workspace = true }
-proc-macro2 = { workspace = true }
-quote = { workspace = true }
-syn = { workspace = true, features = ["extra-traits", "full", "parsing", "printing", "proc-macro"] }
+prettyplease = "0.2.32"
+proc-macro2 = "1"
+quote = "1"
+syn = {version = "2", default-features = false, features = ["clone-impls", "derive", "parsing", "extra-traits", "full", "printing", "proc-macro"]}
 
 [lib]
 path = "lib.rs"
 proc-macro = true
 
-[lints]
-workspace = true
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

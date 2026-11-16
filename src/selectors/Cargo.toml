@@ -20,14 +20,14 @@ to_shmem = ["dep:to_shmem", "dep:to_shmem_derive"]
 
 [dependencies]
 bitflags = "2"
-cssparser = "0.38"
-derive_more = { version = "2", features = ["add", "add_assign"] }
+cssparser = {path = "../cssparser"}
+derive_more = {version = "2", features = ["add", "add_assign"]}
 hashbrown = "0.17"
 rustc-hash = "2.1.1"
 log = "0.4"
 precomputed-hash = "0.1"
-servo_arc = { workspace = true }
+servo_arc = {version = "0.6.0", path = "../servo_arc"}
 smallvec = "1.0"
-to_shmem = { workspace = true, optional = true }
-to_shmem_derive = { workspace = true, optional = true }
+to_shmem = {version = "0.8.0", path = "../to_shmem", features = ["servo"], optional = true}
+to_shmem_derive = {version = "0.3.0", path = "../to_shmem_derive", optional = true}
 new_debug_unreachable = "1"

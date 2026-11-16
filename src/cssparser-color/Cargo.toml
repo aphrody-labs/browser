@@ -13,8 +13,8 @@ rust-version = "1.85"
 path = "lib.rs"
 
 [dependencies]
-cssparser = { path = "..", version = "0.38", default-features = false }
-serde = { version = "1.0", features = ["derive"], optional = true }
+cssparser = {path = "../cssparser", version = "0.38", default-features = false}
+serde = {version = "1.0", features = ["derive"], optional = true}
 
 [features]
 default = ["cssparser/default"]

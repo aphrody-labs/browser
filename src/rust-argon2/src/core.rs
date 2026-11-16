@@ -11,7 +11,9 @@
 use crate::block::Block;
 use crate::common;
 use crate::context::Context;
+use crate::error::Error;
 use crate::memory::{Memory, UnsafeBlocks};
+use crate::result::Result;
 use crate::variant::Variant;
 use crate::version::Version;
 use blake2b_simd::Params;
@@ -48,16 +50,20 @@ pub unsafe fn fill_memory_blocks(context: &Context, memory: &mut Memory) {
 }
 
 /// Calculates the final hash and returns it.
-pub fn finalize(context: &Context, memory: &Memory) -> Vec<u8> {
+pub fn finalize(context: &Context, memory: &Memory) -> Result<Vec<u8>> {
     let mut blockhash = memory[context.lane_length - 1].clone();
     for l in 1..context.config.lanes {
         let last_block_in_lane = l * context.lane_length + (context.lane_length - 1);
         blockhash ^= &memory[last_block_in_lane];
     }
 
-    let mut hash = vec![0u8; context.config.hash_length as usize];
+    let hash_length = context.config.hash_length as usize;
+    let mut hash = Vec::new();
+    hash.try_reserve_exact(hash_length)
+        .map_err(|_| Error::MemoryAllocationFailed)?;
+    hash.resize(hash_length, 0u8);
     hprime(hash.as_mut_slice(), blockhash.as_u8());
-    hash
+    Ok(hash)
 }
 
 fn blake2b(out: &mut [u8], input: &[&[u8]]) {

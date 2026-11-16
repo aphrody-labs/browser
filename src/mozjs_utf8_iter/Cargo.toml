@@ -12,7 +12,7 @@ keywords = ["encoding", "UTF-8", "unicode", "iterator"]
 categories = ["text-processing", "encoding", "internationalization"]
 
 [dependencies]
-icu_collections = { package = "mozjs_icu_collections", version = "=153.7.0", path = "../icu_collections", optional = true }
+icu_collections = {package = "mozjs_icu_collections", version = "=153.7.0", path = "../mozjs_icu_collections", optional = true}
 
 [features]
 icu_collections = ["dep:icu_collections"]

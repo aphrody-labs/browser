@@ -18,12 +18,12 @@ std = ["num-traits/std"]
 libm = ["num-traits/libm"]
 
 [dependencies]
-num-traits = { version = "0.2.15", default-features = false }
-serde = { version = "1.0", default-features = false, features = ["serde_derive"], optional = true }
-malloc_size_of = { version = "0.1", default-features = false, optional = true }
-mint = { version = "0.5.1", optional = true }
-arbitrary = { version = "1", optional = true }
-bytemuck = { version = "1.9", optional = true }
+num-traits = {version = "0.2.15", default-features = false}
+serde = {version = "1.0", default-features = false, features = ["serde_derive"], optional = true}
+malloc_size_of = {version = "0.1", default-features = false, optional = true}
+mint = {version = "0.5.1", optional = true}
+arbitrary = {version = "1", optional = true}
+bytemuck = {version = "1.9", optional = true}
 
 [dev-dependencies]
 serde_test = "1.0"

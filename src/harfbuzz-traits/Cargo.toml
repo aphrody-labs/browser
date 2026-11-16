@@ -3,10 +3,10 @@ name = "harfbuzz-traits"
 version = "0.6.0"
 description = "Rust traits for the HarfBuzz text shaping engine bindings"
 
-authors = { workspace = true }
-categories = { workspace = true }
-documentation = { workspace = true }
-edition = { workspace = true }
-keywords = { workspace = true }
-license = { workspace = true }
-repository = { workspace = true }
+authors = ["The Servo Project Developers"]
+categories = ["text-processing"]
+documentation = "https://docs.rs/harfbuzz/"
+edition = "2021"
+keywords = ["opentype", "font", "text", "unicode", "shaping"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/servo/rust-harfbuzz"

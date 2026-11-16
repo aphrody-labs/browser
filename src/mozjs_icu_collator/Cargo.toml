@@ -83,103 +83,25 @@ name = "bench"
 path = "benches/bench.rs"
 harness = false
 
-[dependencies.databake]
-version = "0.2.0"
-features = ["derive"]
-optional = true
-default-features = false
-
-[dependencies.displaydoc]
-version = "0.2.3"
-default-features = false
-
-[dependencies.icu_collator_data]
-version = "=153.7.0"
-package = "mozjs_icu_collator_data"
-path = "../icu_collator_data"
-optional = true
-default-features = false
-
-[dependencies.icu_collections]
-version = "=153.7.0"
-package = "mozjs_icu_collections"
-path = "../icu_collections"
-default-features = false
-
-[dependencies.icu_locale]
-version = "~2.1.1"
-optional = true
-default-features = false
-
-[dependencies.icu_locale_core]
-version = "2.1.1"
-features = ["alloc"]
-default-features = false
-
-[dependencies.icu_normalizer]
-version = "=153.7.0"
-package = "mozjs_icu_normalizer"
-path = "../icu_normalizer"
-default-features = false
-
-[dependencies.icu_properties]
-version = "~2.1.1"
-default-features = false
-
-[dependencies.icu_provider]
-version = "2.1.1"
-default-features = false
-
-[dependencies.serde]
-version = "1.0.110"
-features = [
-    "derive",
-    "alloc",
-]
-optional = true
-default-features = false
-
-[dependencies.smallvec]
-version = "1.10.0"
-features = [
-    "union",
-    "const_generics",
-    "const_new",
-]
-default-features = false
-
-[dependencies.tinystr]
-version = "0.8.0"
-optional = true
-default-features = false
-
-[dependencies.utf16_iter]
-version = "=153.7.0"
-package = "mozjs_utf16_iter"
-path = "../utf16_iter"
-default-features = false
-features = ["icu_collections"]
-
-[dependencies.utf8_iter]
-version = "=153.7.0"
-package = "mozjs_utf8_iter"
-path = "../utf8_iter"
-default-features = false
-features = ["icu_collections"]
-
-[dependencies.zerovec]
-version = "0.11.1"
-default-features = false
-
-[dev-dependencies.arraystring]
-version = "0.3.0"
-
-[dev-dependencies.atoi]
-version = "2.0.0"
-
-[dev-dependencies.icu_normalizer_data]
-version = "~2.1.1"
-default-features = false
-
-[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies.criterion]
-version = "0.5.0"
+[dependencies]
+databake = {version = "0.2.0", features = ["derive"], optional = true, default-features = false}
+displaydoc = {version = "0.2.3", default-features = false}
+icu_collator_data = {version = "=153.7.0", package = "mozjs_icu_collator_data", path = "../mozjs_icu_collator_data", optional = true, default-features = false}
+icu_collections = {version = "=153.7.0", package = "mozjs_icu_collections", path = "../mozjs_icu_collections", default-features = false}
+icu_locale = {version = "~2.1.1", optional = true, default-features = false}
+icu_locale_core = {version = "2.1.1", features = ["alloc"], default-features = false}
+icu_normalizer = {version = "=153.7.0", package = "mozjs_icu_normalizer", path = "../mozjs_icu_normalizer", default-features = false}
+icu_properties = {version = "~2.1.1", default-features = false}
+icu_provider = {version = "2.1.1", default-features = false}
+serde = {version = "1.0.110", features = ["derive", "alloc"], optional = true, default-features = false}
+smallvec = {version = "1.10.0", features = ["union", "const_generics", "const_new"], default-features = false}
+tinystr = {version = "0.8.0", optional = true, default-features = false}
+utf16_iter = {version = "=153.7.0", package = "mozjs_utf16_iter", path = "../mozjs_utf16_iter", default-features = false, features = ["icu_collections"]}
+utf8_iter = {version = "=153.7.0", package = "mozjs_utf8_iter", path = "../mozjs_utf8_iter", default-features = false, features = ["icu_collections"]}
+zerovec = {version = "0.11.1", default-features = false}
+[dev-dependencies]
+arraystring = "0.3.0"
+atoi = "2.0.0"
+icu_normalizer_data = {version = "~2.1.1", default-features = false}
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+criterion = "0.5.0"

@@ -8,7 +8,7 @@ edition = "2018"
 rust-version = "1.60"
 
 [dev-dependencies]
-url = { path = "../url" }
+url = {path = "../rust-url-url"}
 debugger_test = "0.1"
 debugger_test_parser = "0.1"
 

@@ -15,12 +15,12 @@ name = "micro"
 harness = false
 
 [dependencies]
-string_cache = { path = ".." }
+string_cache = {path = "../string_cache"}
 
 [dev-dependencies]
-criterion = { version = "0.7.0", features = ["html_reports"] }
-rand = { version = "0.8", features = ["small_rng"] }
-string_cache_codegen = { path = "../string-cache-codegen" }
+criterion = {version = "0.7.0", features = ["html_reports"]}
+rand = {version = "0.8", features = ["small_rng"]}
+string_cache_codegen = {path = "../string_cache_codegen"}
 
 [build-dependencies]
-string_cache_codegen = { path = "../string-cache-codegen" }
+string_cache_codegen = {path = "../string_cache_codegen"}

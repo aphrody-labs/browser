@@ -1,14 +1,14 @@
 [package]
 name = "servo-net"
-version.workspace = true
-authors.workspace = true
-license.workspace = true
-edition.workspace = true
-publish.workspace = true
-rust-version.workspace = true
-repository.workspace = true
-description.workspace = true
 autotests = false # Inhibit lookup for tests/*.rs without [[test]] sections
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
 
 [lib]
 name = "net"
@@ -22,94 +22,104 @@ test-util = ["hyper-util/server-graceful", "dep:servo-default-resources", "net_t
 tracing = ["dep:tracing"]
 
 [dependencies]
-aws-lc-rs = { workspace = true }
-async-compression = { workspace = true, features = ["brotli", "gzip", "tokio", "zlib", "zstd"] }
-async-recursion = { workspace = true }
-async-tungstenite = { workspace = true }
-base64 = { workspace = true }
-bytes = { workspace = true }
-chrono = { workspace = true }
-content-security-policy = { workspace = true }
-cookie = { workspace = true }
-crossbeam-channel = { workspace = true }
-data-url = { workspace = true }
-devtools_traits = { workspace = true, optional = true }
-embedder_traits = { workspace = true }
-fst = { workspace = true }
-fonts = { workspace = true }
-futures = { workspace = true }
-futures-core = { workspace = true }
-futures-util = { workspace = true }
-headers = { workspace = true }
-http = { workspace = true }
-http-body-util = { workspace = true }
-hyper = { workspace = true, features = ["client", "http1", "http2"] }
-hyper-rustls = { workspace = true }
-hyper-util = { workspace = true }
-hyper_serde = { workspace = true }
-imsz = { workspace = true }
-ipc-channel = { workspace = true }
-itertools = { workspace = true }
-log = { workspace = true }
-malloc_size_of = { workspace = true }
-malloc_size_of_derive = { workspace = true }
-mime = { workspace = true }
-mime_guess = { workspace = true }
-net_traits = { workspace = true }
-nom = { workspace = true }
-paint_api = { workspace = true }
-parking_lot = { workspace = true }
-pixels = { workspace = true }
-profile_traits = { workspace = true }
-postcard = { workspace = true }
-quick_cache = { workspace = true }
-rand = { workspace = true }
-regex = { workspace = true }
-resvg = { workspace = true }
-rustc-hash = { workspace = true }
-rustls = { workspace = true, features = ["aws-lc-rs"] }
-rustls-pki-types = { workspace = true }
-rustls-platform-verifier = { workspace = true }
-rusqlite = { workspace = true }
-serde = { workspace = true }
-servo-base = { workspace = true }
-servo-config = { workspace = true }
-servo-default-resources = { workspace = true, optional = true }
-servo-tracing = { workspace = true }
-servo-url = { workspace = true }
-servo_arc = { workspace = true }
-sea-query = { workspace = true }
-sea-query-rusqlite = { workspace = true }
-smallvec = { workspace = true }
-tempfile = { workspace = true }
-time = { workspace = true }
-tokio = { workspace = true, features = ["fs", "macros", "rt-multi-thread", "sync"] }
-tokio-rustls = { workspace = true }
-tokio-stream = { workspace = true }
-tokio-util = { workspace = true, features = ["codec", "io"] }
-tower = { workspace = true }
-tracing = { workspace = true, optional = true }
-tungstenite = { workspace = true }
-url = { workspace = true }
-uuid = { workspace = true }
-walkdir = { workspace = true }
-webpki-roots = { workspace = true }
-webrender_api = { workspace = true }
+aws-lc-rs = {version = "1.17", default-features = false, features = ["aws-lc-sys"]}
+async-compression = {version = "0.4.12", default-features = false, features = ["brotli", "gzip", "tokio", "zlib", "zstd"]}
+async-recursion = "1.1"
+async-tungstenite = {version = "0.35", features = ["tokio-rustls-webpki-roots"]}
+base64 = "0.23.0"
+bytes = {version = "1.0", features = ["serde"]}
+chrono = {version = "0.4", features = ["serde"]}
+content-security-policy = {version = "0.9", features = ["serde"]}
+cookie = {package = "cookie", version = "0.18"}
+crossbeam-channel = "0.5"
+data-url = {path = "../data-url"}
+devtools_traits = {package = "servo-devtools-traits", version = "=0.8.0", path = "../servo-devtools-traits", optional = true}
+embedder_traits = {package = "servo-embedder-traits", version = "=0.8.0", path = "../servo-embedder-traits"}
+fst = "0.4"
+fonts = {package = "servo-fonts", version = "=0.8.0", path = "../servo-fonts"}
+futures = {version = "0.3", default-features = false}
+futures-core = {version = "0.3", default-features = false}
+futures-util = {version = "0.3", default-features = false}
+headers = "0.4"
+http = "1.4"
+http-body-util = "0.1"
+hyper = {version = "1.10", features = ["client", "http1", "http2"]}
+hyper-rustls = {version = "0.27", default-features = false, features = ["http1", "http2", "logging", "tls12", "webpki-tokio"]}
+hyper-util = {version = "0.1", features = ["client-legacy", "client-proxy", "http2", "tokio"]}
+hyper_serde = {package = "servo-hyper-serde", version = "=0.8.0", path = "../servo-hyper-serde"}
+imsz = "0.4"
+ipc-channel = {path = "../ipc-channel"}
+itertools = "0.15"
+log = "0.4.32"
+malloc_size_of = {package = "servo-malloc-size-of", version = "=0.8.0", path = "../servo-malloc-size-of"}
+malloc_size_of_derive = "0.1"
+mime = "0.3.13"
+mime_guess = "2.0.5"
+net_traits = {package = "servo-net-traits", version = "=0.8.0", path = "../servo-net-traits"}
+nom = "8.0.0"
+paint_api = {package = "servo-paint-api", version = "=0.8.0", path = "../servo-paint-api"}
+parking_lot = {version = "0.12", features = ["serde"]}
+pixels = {package = "servo-pixels", version = "=0.8.0", path = "../servo-pixels"}
+profile_traits = {package = "servo-profile-traits", version = "=0.8.0", path = "../servo-profile-traits"}
+postcard = {version = "1.1.3", default-features = false, features = ["use-std"]}
+quick_cache = {version = "0.7.0", default-features = false, features = ["custom-hasher"]}
+rand = "0.10"
+regex = "1.12"
+resvg = "0.50.0"
+rustc-hash = "2.1.2"
+rustls = {version = "0.23", default-features = false, features = ["logging", "std", "tls12", "aws-lc-rs"]}
+rustls-pki-types = "1.14"
+rustls-platform-verifier = "0.7.0"
+rusqlite = {version = "0.38", features = ["bundled"]}
+serde = "1.0.228"
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-config = {version = "=0.8.0", path = "../servo-config"}
+servo-default-resources = {version = "=0.8.0", path = "../servo-default-resources", optional = true}
+servo-tracing = {version = "=0.8.0", path = "../servo-tracing"}
+servo-url = {version = "=0.8.0", path = "../servo-url"}
+servo_arc = {path = "../servo_arc"}
+sea-query = {version = "1.0.1", default-features = false, features = ["backend-sqlite", "derive"]}
+sea-query-rusqlite = "0.8.0"
+smallvec = {version = "1.15", features = ["serde", "union"]}
+tempfile = "3"
+time = {package = "time", version = "0.3", features = ["large-dates", "local-offset", "serde"]}
+tokio = {version = "1", features = ["fs", "macros", "rt-multi-thread", "sync"]}
+tokio-rustls = {version = "0.26", default-features = false, features = ["logging"]}
+tokio-stream = "0.1"
+tokio-util = {version = "0.7.18", default-features = false, features = ["codec", "io"]}
+tower = {version = "0.5", default-features = false, features = ["util"]}
+tracing = {version = "0.1.44", optional = true}
+tungstenite = "0.30"
+url = {path = "../rust-url-url"}
+uuid = {version = "1.23.3", features = ["v4", "v5"]}
+walkdir = "2.5"
+webpki-roots = "1.0"
+webrender_api = {path = "../webrender_api"}
 
 [dev-dependencies]
-flate2 = { workspace = true }
-fst = { workspace = true }
-hyper = { workspace = true, features = ["full"] }
-hyper-util = { workspace = true, features = ["server-graceful"] }
+flate2 = "1.1"
+fst = "0.4"
+hyper = {version = "1.10", features = ["full"]}
+hyper-util = {version = "0.1", features = ["client-legacy", "client-proxy", "http2", "tokio", "server-graceful"]}
 # This must always be a path dependency, we don't want to add a dependency on a
 # crates.io version of ourselves - we want to enable a feature of ourselves.
-net = { package = "servo-net", path = ".", features = ["devtools", "test-util"] }
-rustls = { workspace = true, features = ["aws-lc-rs"] }
-servo-default-resources = { workspace = true }
-
-[lints]
-workspace = true
+net = {package = "servo-net", path = ".", features = ["devtools", "test-util"]}
+rustls = {version = "0.23", default-features = false, features = ["logging", "std", "tls12", "aws-lc-rs"]}
+servo-default-resources = {version = "=0.8.0", path = "../servo-default-resources"}
 
 [[test]]
 name = "main"
 path = "tests/main.rs"
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

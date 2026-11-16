@@ -1,14 +1,14 @@
 [package]
 name = "servoshell"
 build = "build.rs"
-version.workspace = true
-authors.workspace = true
-license.workspace = true
-edition.workspace = true
 publish = false
-rust-version.workspace = true
-repository.workspace = true
-description.workspace = true
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
 
 [lib]
 name = "servoshell"
@@ -20,11 +20,8 @@ name = "servoshell"
 path = "main.rs"
 bench = false
 
-[lints]
-workspace = true
-
 [target.'cfg(windows)'.build-dependencies]
-winresource = { workspace = true }
+winresource = "0.1"
 
 [package.metadata.winresource]
 FileDescription = "ServoShell"
@@ -81,97 +78,102 @@ webgpu = ["servo/webgpu"]
 webxr = ["servo/webxr"]
 
 [dependencies]
-accesskit = { workspace = true }
-bpaf = { workspace = true, features = ["derive"] }
-cfg-if = { workspace = true }
-crossbeam-channel = { workspace = true }
-dpi = { workspace = true }
-euclid = { workspace = true }
-flate2 = { workspace = true }
-hitrace = { workspace = true, optional = true }
-image = { workspace = true }
-keyboard-types = { workspace = true }
-libc = { workspace = true }
-log = { workspace = true }
-mime_guess = { workspace = true }
-raw-window-handle = { workspace = true }
-rustls = { workspace = true, features = ["aws-lc-rs"] }
-servo = { workspace = true, features = ["background_hang_monitor", "bluetooth", "testbinding"], default-features = false }
-tokio = { workspace = true }
-tracing = { workspace = true, optional = true }
-tracing-perfetto = { workspace = true, optional = true }
-tracing-subscriber = { workspace = true, optional = true, features = ["env-filter"] }
-url = { workspace = true }
-webdriver_server = { workspace = true }
+accesskit = {version = "0.24.0", features = ["serde"]}
+bpaf = {version = "0.9.26", features = ["derive"]}
+cfg-if = "1.0.4"
+crossbeam-channel = "0.5"
+dpi = "0.1"
+euclid = {path = "../euclid"}
+flate2 = "1.1"
+hitrace = {version = "0.2.0", features = ["api-19", "tracing-rs"], optional = true}
+image = {version = "0.25", default-features = false, features = ["bmp", "gif", "ico", "jpeg", "png", "rayon", "webp"]}
+keyboard-types = {version = "0.8.3", features = ["serde", "webdriver"]}
+libc = "0.2"
+log = "0.4.32"
+mime_guess = "2.0.5"
+raw-window-handle = "0.6"
+rustls = {version = "0.23", default-features = false, features = ["logging", "std", "tls12", "aws-lc-rs"]}
+servo = {version = "=0.8.0", path = "../servo", default-features = false, features = ["background_hang_monitor", "bluetooth", "testbinding"]}
+tokio = "1"
+tracing = {version = "0.1.44", optional = true}
+tracing-perfetto = {version = "0.1.5", optional = true}
+tracing-subscriber = {version = "0.3.23", optional = true, features = ["env-filter"]}
+url = {path = "../rust-url-url"}
+webdriver_server = {package = "servo-webdriver-server", version = "=0.8.0", path = "../servo-webdriver-server"}
 
 [target.'cfg(target_os = "android")'.dependencies]
-android_logger = { workspace = true }
-jni = { workspace = true }
+android_logger = "0.15"
+jni = "0.22"
 # https://github.com/servo/servo/issues/32175
 # By default Android enforce the tagged pointers feature, which does not work well with mozjs.
 # Like Gecko, replace the system allocator with jemalloc.
-servo-allocator = { workspace = true, features = ["use-jemalloc"] }
+servo-allocator = {version = "=0.8.0", path = "../servo-allocator", features = ["use-jemalloc"]}
 
 [target.'cfg(not(target_os = "android"))'.dependencies]
-backtrace = { workspace = true }
+backtrace = "0.3"
 
 [target.'cfg(target_env = "ohos")'.dependencies]
-env_filter = { workspace = true }
-euclid = { workspace = true }
-hilog = { workspace = true }
+env_filter = "0.1.4"
+euclid = {path = "../euclid"}
+hilog = "0.2.2"
 # force inprocess until we add multi-process support for ohos
-ipc-channel = { workspace = true, features = ["force-inprocess"] }
-napi-derive-ohos = { workspace = true }
-napi-ohos = { workspace = true }
-ohos-abilitykit-sys = { workspace = true, features = ["api-14"] }
-ohos-deviceinfo = { workspace = true }
-ohos-ime = { workspace = true }
-ohos-ime-sys = { workspace = true }
-ohos-vsync = { workspace = true }
-ohos-window-sys = { workspace = true }
-ohos-sys-opaque-types = { workspace = true }
-ohos-window-manager-sys = { workspace = true, features = ["api-14"] }
-memmap2 = { workspace = true }
-xcomponent-sys = { workspace = true, features = ["api-20", "keyboard-types"] }
+ipc-channel = {features = ["force-inprocess"], path = "../ipc-channel"}
+napi-derive-ohos = "1.2.0"
+napi-ohos = "1.2.0"
+ohos-abilitykit-sys = {version = "0.1.6", features = ["api-14"]}
+ohos-deviceinfo = "0.1.0"
+ohos-ime = "0.4.2"
+ohos-ime-sys = "0.2.4"
+ohos-vsync = "0.1.3"
+ohos-window-sys = "0.1.7"
+ohos-sys-opaque-types = "0.1.7"
+ohos-window-manager-sys = {version = "0.1", features = ["api-14"]}
+memmap2 = "0.9.10"
+xcomponent-sys = {version = "0.4.0", features = ["api-20", "keyboard-types"]}
 
 [target.'cfg(any(target_os = "android", target_env = "ohos"))'.dependencies]
-nix = { workspace = true, features = ["fs"] }
-serde_json = { workspace = true }
-servo-base = { workspace = true }
-surfman = { workspace = true, features = ["sm-angle-default"] }
+nix = {version = "0.30", features = ["fs"]}
+serde_json = "1.0"
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+surfman = {features = ["sm-angle-default"], path = "../surfman"}
 
 [target.'cfg(not(any(target_os = "android", target_env = "ohos")))'.dependencies]
-dirs = { workspace = true }
-egui = { workspace = true }
-egui-winit = { workspace = true, features = ["accesskit", "clipboard", "wayland"] }
-egui_glow = { workspace = true, features = ["winit"] }
-gilrs = { workspace = true }
-glow = { workspace = true }
-headers = { workspace = true }
-itertools = { workspace = true }
-rfd = { workspace = true }
-serde_json = { workspace = true }
+dirs = "7.0"
+egui = "0.34.3"
+egui-winit = {version = "0.34.3", default-features = false, features = ["accesskit", "clipboard", "wayland"]}
+egui_glow = {version = "0.34.3", features = ["winit"]}
+gilrs = "0.11.1"
+glow = "0.17.0"
+headers = "0.4"
+itertools = "0.15"
+rfd = "0.18.0"
+serde_json = "1.0"
 # For optional feature servo-allocator/use-jemalloc and servo-allocator/allocation-tracking
-servo-allocator = { workspace = true }
-surfman = { workspace = true, features = ["sm-x11"] }
-winit = { workspace = true }
+servo-allocator = {version = "=0.8.0", path = "../servo-allocator"}
+surfman = {features = ["sm-x11"], path = "../surfman"}
+winit = "0.30.13"
 
 [target.'cfg(any(all(target_os = "linux", not(target_env = "ohos")), target_os = "macos"))'.dependencies]
-signal-hook-registry = { workspace = true }
+signal-hook-registry = "1.4.8"
 
 [target.'cfg(target_os = "windows")'.dependencies]
-servo = { workspace = true, features = ["no-wgl"] }
-windows-sys = { workspace = true, features = ["Win32_Graphics_Gdi", "Win32_System_Console"] }
+servo = {version = "=0.8.0", path = "../servo", default-features = false, features = ["no-wgl"]}
+windows-sys = {version = "0.61", features = ["Win32_Graphics_Gdi", "Win32_System_Console"]}
 
 [target.'cfg(target_os = "macos")'.dependencies]
-mach2 = { workspace = true }
-objc2-app-kit = { workspace = true, features = [
-    "std",
-    "NSColorSpace",
-    "NSResponder",
-    "NSView",
-    "NSWindow",
-] }
-objc2-foundation = { workspace = true, features = [
-    "std",
-] }
+mach2 = "0.7"
+objc2-app-kit = {version = "0.3.2", default-features = false, features = ["std", "NSColorSpace", "NSResponder", "NSView", "NSWindow"]}
+objc2-foundation = {version = "0.3.1", default-features = false, features = ["std"]}
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

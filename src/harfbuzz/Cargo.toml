@@ -1,0 +1,31 @@
+[package]
+name = "harfbuzz"
+version = "0.8.0"
+readme = "README.md"
+description = "High-level Rust bindings to the HarfBuzz text shaping engine"
+
+authors = { workspace = true }
+categories = { workspace = true }
+documentation = { workspace = true }
+edition = { workspace = true }
+keywords = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+
+[dependencies.harfbuzz-sys]
+path = "../harfbuzz-sys"
+version = "0.8.0"
+default-features = false
+
+[dependencies.harfbuzz-traits]
+path = "../harfbuzz-traits"
+version = "0.6.0"
+default-features = false
+
+[features]
+default = ["coretext", "directwrite", "freetype", "std"]
+bundled = ["harfbuzz-sys/bundled"]
+coretext = ["harfbuzz-sys/coretext"]
+directwrite = ["harfbuzz-sys/directwrite"]
+freetype = ["harfbuzz-sys/freetype"]
+std = []

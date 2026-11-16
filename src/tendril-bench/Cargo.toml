@@ -7,7 +7,7 @@ edition = "2021"
 tendril = {path = "../tendril"}
 
 [dev-dependencies]
-criterion = "0.8"
+criterion = "0.8.2"
 
 [lib]
 test = false

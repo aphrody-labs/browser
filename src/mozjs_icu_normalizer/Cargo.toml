@@ -145,7 +145,7 @@ atoi = "2.0.0"
 detone = "1.0.0"
 write16 = {version = "1.0.0", features = ["arrayvec", "smallvec"], default-features = false}
 [target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
-criterion = "0.5.0"
+criterion = "0.8.2"
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0

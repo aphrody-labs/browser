@@ -22,8 +22,8 @@ to_shmem = ["dep:to_shmem", "dep:to_shmem_derive"]
 bitflags = "2"
 cssparser = {path = "../cssparser"}
 derive_more = {version = "2", features = ["add", "add_assign"]}
-hashbrown = "0.17"
-rustc-hash = "2.1.1"
+hashbrown = "0.17.0"
+rustc-hash = "2.1.2"
 log = "0.4"
 precomputed-hash = "0.1"
 servo_arc = {version = "0.6.0", path = "../servo_arc"}

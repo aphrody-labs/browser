@@ -13,7 +13,7 @@ bun_core.workspace = true
 bun_glob.workspace = true
 bstr.workspace = true
 smallvec.workspace = true
-rustc-hash = "2"
+rustc-hash = "2.1.2"
 
 [lints]
 workspace = true

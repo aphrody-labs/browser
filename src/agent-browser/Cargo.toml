@@ -12,21 +12,21 @@ categories = ["command-line-utilities", "web-programming"]
 [dependencies]
 serde = {version = "1.0", features = ["derive"]}
 serde_json = "1.0"
-base64 = "0.22"
-getrandom = "0.2"
+base64 = "0.23.0"
+getrandom = "0.4"
 tokio = {version = "1", features = ["rt-multi-thread", "macros", "net", "io-util", "time", "sync", "signal", "process"]}
 tokio-tungstenite = {version = "0.24", features = ["rustls-tls-webpki-roots"]}
 rustls = {version = "0.23", default-features = false}
 rustls-native-certs = "0.8"
 rustls-pemfile = "2"
-webpki-roots = "0.26"
+webpki-roots = "1.0"
 futures-util = "0.3"
 url = {path = "../rust-url-url"}
 uuid = {version = "1", features = ["v4"]}
 image = "0.25"
 reqwest = {version = "0.12", default-features = false, features = ["json", "rustls-tls-webpki-roots", "stream"]}
-sha2 = "0.10"
-aes-gcm = "0.10"
+sha2 = "0.11"
+aes-gcm = "0.11"
 async-trait = "0.1"
 socket2 = "0.6"
 similar = "2"
@@ -43,7 +43,7 @@ psl = "=2.1.246"
 libc = "0.2"
 
 [target.'cfg(windows)'.dependencies]
-windows-sys = {version = "0.52", features = ["Win32_System_Threading", "Win32_Foundation", "Win32_Storage_FileSystem", "Win32_Security", "Win32_System_JobObjects", "Win32_System_StationsAndDesktops", "Win32_Graphics_Gdi"]}
+windows-sys = {version = "0.61", features = ["Win32_System_Threading", "Win32_Foundation", "Win32_Storage_FileSystem", "Win32_Security", "Win32_System_JobObjects", "Win32_System_StationsAndDesktops", "Win32_Graphics_Gdi"]}
 
 [dev-dependencies]
 tempfile = "3"

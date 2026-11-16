@@ -23,6 +23,6 @@ bun_core.workspace = true
 bun_collections.workspace = true
 bun_removable_features.workspace = true
 bun_threading.workspace = true
-rustc-hash = "2"
+rustc-hash = "2.1.2"
 enumset.workspace = true
 smallvec.workspace = true

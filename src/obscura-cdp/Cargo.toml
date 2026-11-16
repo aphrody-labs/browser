@@ -29,13 +29,13 @@ uuid = {version = "1", features = ["v4"]}
 tracing = "0.1"
 thiserror = "2"
 anyhow = "1"
-base64 = "0.22"
+base64 = "0.23.0"
 futures-util = "0.3"
 obscura-net = {path = "../obscura-net"}
 image = {version = "0.25", default-features = false, features = ["jpeg", "png", "webp"], optional = true}
 jpeg-encoder = {version = "0.7.1", features = ["simd"], optional = true}
 fast_image_resize = {version = "6.1", optional = true}
-png = {version = "0.18", optional = true}
+png = {version = "0.17", optional = true}
 
 [target.'cfg(target_env = "gnu")'.dependencies]
 libc = "0.2"

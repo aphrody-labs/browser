@@ -24,7 +24,7 @@ servo-base = {version = "=0.8.0", path = "../servo-base"}
 webrender_api = {path = "../webrender_api"}
 
 [dev-dependencies]
-criterion = {version = "0.8", features = ["html_reports"]}
+criterion = {version = "0.8.2", features = ["html_reports"]}
 
 [[bench]]
 name = "load_from_memory"

@@ -12,8 +12,8 @@ crate-type = ["lib", "cdylib"]
 path = "src/main.rs"
 
 [dependencies]
-base64 = "0.13"
-env_logger = {version = "0.10", optional = true, default-features = false}
+base64 = "0.23.0"
+env_logger = {version = "0.11", optional = true, default-features = false}
 gleam = {path = "../gleam"}
 glutin = "0.28"
 clap = {version = "3.1", features = ["yaml"]}
@@ -27,7 +27,7 @@ osmesa-sys = {version = "0.1.2", optional = true}
 osmesa-src = {version = "0.2", git = "https://github.com/servo/osmesa-src", optional = true}
 webrender = {path = "../webrender", features = ["capture", "replay", "png", "profiler", "dynamic_freetype", "leak_checks"]}
 webrender_build = {path = "../webrender_build"}
-winit = "0.26"
+winit = "0.30.13"
 serde = {version = "1.0", features = ["derive"]}
 semver = "1.0.12"
 swgl = {path = "../swgl", optional = true}

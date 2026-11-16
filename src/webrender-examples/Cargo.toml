@@ -55,13 +55,13 @@ debug = ["webrender/capture", "webrender/profiler"]
 
 [dependencies]
 app_units = {path = "../app_units"}
-env_logger = {version = "0.10", default-features = false}
+env_logger = {version = "0.11", default-features = false}
 euclid = {path = "../euclid"}
 gleam = {path = "../gleam"}
 glutin = "0.28"
 rayon = "1"
 webrender = {path = "../webrender"}
-winit = "0.26"
+winit = "0.30.13"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 core-foundation = {path = "../core-foundation"}

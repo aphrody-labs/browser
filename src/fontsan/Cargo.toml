@@ -13,7 +13,7 @@ readme = "README.md"
 fontsan-woff2 = {version = "0.1.1", path = "src/deps/woff2", optional = true}
 wuff-capi = {version = "0.2.0", optional = true}
 libc = "0.2"
-libz-rs-sys = {version = "0.5.1", features = ["export-symbols"], optional = true}
+libz-rs-sys = {version = "0.6", features = ["export-symbols"], optional = true}
 libz-sys = {version = "1.1", default-features = false, features = ["libc"], optional = true}
 
 [features]

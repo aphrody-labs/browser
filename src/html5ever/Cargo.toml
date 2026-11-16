@@ -21,7 +21,7 @@ memchr = "2.8.0"
 log = "0.4"
 
 [dev-dependencies]
-criterion = "0.8"
+criterion = "0.8.2"
 typed-arena = "2.0.2"
 
 [[bench]]

@@ -34,7 +34,7 @@ bun_url.workspace = true
 bun_wyhash.workspace = true
 
 [dev-dependencies]
-criterion = "0.5"
+criterion = "0.8.2"
 regex = "1"
 
 [[bench]]

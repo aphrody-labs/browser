@@ -23,7 +23,7 @@ bun_wyhash.workspace = true
 bun_zstd.workspace = true
 bstr.workspace = true
 hashbrown.workspace = true
-rustc-hash = "2"
+rustc-hash = "2.1.2"
 smallvec.workspace = true
 bitflags.workspace = true
 

@@ -24,7 +24,7 @@ thin-vec = ["dep:thin-vec"]
 
 [dependencies]
 cssparser = {optional = true, path = "../cssparser"}
-hashbrown = "0.17"
+hashbrown = "0.17.0"
 servo_arc = {version = "0.6.0", path = "../servo_arc", optional = true}
 smallbitvec = {optional = true, path = "../smallbitvec"}
 smallvec = {version = "1.13", optional = true}

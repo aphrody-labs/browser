@@ -35,7 +35,7 @@ use crate::spatial_tree::{SceneSpatialTree, SpatialTreeUpdates};
 use crate::telemetry::Telemetry;
 use crate::SceneBuilderHooks;
 use std::iter;
-use time::precise_time_ns;
+fn precise_time_ns() -> u64 { static S: std::sync::OnceLock<std::time::Instant> = std::sync::OnceLock::new(); S.get_or_init(std::time::Instant::now).elapsed().as_nanos() as u64 }
 use crate::util::drain_filter;
 use std::thread;
 use std::time::Duration;

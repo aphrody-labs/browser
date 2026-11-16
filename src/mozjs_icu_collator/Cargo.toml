@@ -104,4 +104,4 @@ arraystring = "0.3.0"
 atoi = "2.0.0"
 icu_normalizer_data = {version = "~2.1.1", default-features = false}
 [target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
-criterion = "0.5.0"
+criterion = "0.8.2"

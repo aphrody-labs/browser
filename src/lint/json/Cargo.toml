@@ -11,7 +11,7 @@ bun_lint.workspace = true
 bun_parsers.workspace = true
 bun_alloc.workspace = true
 bun_core.workspace = true
-rustc-hash = "2"
+rustc-hash = "2.1.2"
 
 [lints]
 workspace = true

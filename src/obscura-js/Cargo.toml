@@ -37,19 +37,19 @@ anyhow = "1"
 reqwest = {version = "0.12", features = ["gzip", "brotli", "deflate", "rustls-tls", "socks"], default-features = false}
 html5ever = {path = "../html5ever"}
 deno_error = "0.7"
-base64 = "0.22"
+base64 = "0.23.0"
 sha1 = "0.10"
-sha2 = "0.10"
+sha2 = "0.11"
 # WebCrypto (crypto.subtle) primitives. RustCrypto, pure Rust, no CMake/OpenSSL,
 # and they unify on the digest 0.10 / cipher 0.4 stack already in the tree.
 hmac = "0.12"
 aes = "0.8"
 aes-kw = {version = "0.2", features = ["alloc"]}
-aes-gcm = "0.10"
+aes-gcm = "0.11"
 cbc = {version = "0.1", features = ["alloc"]}
 ctr = "0.9"
 pbkdf2 = {version = "0.12", default-features = false, features = ["hmac"]}
 hkdf = "0.12"
 # CSPRNG for getRandomValues / randomUUID (replaces Math.random).
-getrandom = "0.2"
+getrandom = "0.4"
 obscura-render = {path = "../obscura-render", optional = true}

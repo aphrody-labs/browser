@@ -23,7 +23,7 @@ markup5ever = {version = "0.40", path = "../markup5ever"}
 log = "0.4"
 
 [dev-dependencies]
-criterion = "0.8"
+criterion = "0.8.2"
 
 [[bench]]
 name = "xml5ever"

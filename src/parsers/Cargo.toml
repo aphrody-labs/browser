@@ -23,9 +23,9 @@ bun_wyhash.workspace = true
 bun_simdutf_sys.workspace = true
 
 [dev-dependencies]
-criterion = "0.5"
+criterion = "0.8.2"
 quick-xml = "0.38"
-roxmltree = "0.20"
+roxmltree = "0.21.1"
 xml_rs = { package = "xml-rs", version = "0.8" }
 
 [[bench]]

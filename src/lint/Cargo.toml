@@ -23,7 +23,7 @@ bun_zstd.workspace = true
 bstr.workspace = true
 bitflags.workspace = true
 smallvec.workspace = true
-rustc-hash = "2"
+rustc-hash = "2.1.2"
 
 [lints]
 workspace = true

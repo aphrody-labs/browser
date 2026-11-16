@@ -1,0 +1,72 @@
+[package]
+name = "servo-paint"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+name = "paint"
+path = "lib.rs"
+
+[features]
+default = []
+tracing = ["dep:tracing"]
+webgl = ["dep:webgl"]
+webgpu = ["dep:webgpu"]
+webxr = ["webgl", "dep:webxr", "dep:webxr-api"]
+
+[dependencies]
+bitflags = "2.11"
+crossbeam-channel = "0.5"
+dpi = "0.1"
+embedder_traits = {package = "servo-embedder-traits", version = "=0.8.0", path = "../servo-embedder-traits"}
+euclid = {path = "../euclid"}
+gleam = {path = "../gleam"}
+image = {version = "0.25", default-features = false, features = ["bmp", "gif", "ico", "jpeg", "png", "rayon", "webp"]}
+log = "0.4.32"
+malloc_size_of = {package = "servo-malloc-size-of", version = "=0.8.0", path = "../servo-malloc-size-of"}
+media = {package = "servo-media-thread", version = "=0.8.0", path = "../servo-media-thread"}
+paint_api = {package = "servo-paint-api", version = "=0.8.0", path = "../servo-paint-api"}
+profile_traits = {package = "servo-profile-traits", version = "=0.8.0", path = "../servo-profile-traits"}
+rayon = "1"
+rustc-hash = "2.1.2"
+servo-allocator = {version = "=0.8.0", path = "../servo-allocator"}
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-canvas-traits = {version = "=0.8.0", path = "../servo-canvas-traits"}
+servo-config = {version = "=0.8.0", path = "../servo-config"}
+servo-constellation-traits = {version = "=0.8.0", path = "../servo-constellation-traits"}
+servo-geometry = {version = "=0.8.0", path = "../servo-geometry"}
+servo-tracing = {version = "=0.8.0", path = "../servo-tracing"}
+smallvec = {version = "1.15", features = ["serde", "union"]}
+stylo_traits = {path = "../stylo_traits"}
+surfman = {path = "../surfman"}
+timers = {package = "servo-timers", version = "=0.8.0", path = "../servo-timers"}
+tracing = {version = "0.1.44", optional = true}
+webgl = {package = "servo-webgl", version = "=0.8.0", path = "../servo-webgl", default-features = false, optional = true}
+webgpu = {package = "servo-webgpu", version = "=0.8.0", path = "../servo-webgpu", optional = true}
+webrender = {features = ["serde"], path = "../webrender"}
+webrender_api = {path = "../webrender_api"}
+webxr = {package = "servo-webxr", version = "=0.8.0", path = "../servo-webxr", optional = true}
+webxr-api = {package = "servo-webxr-api", version = "=0.8.0", path = "../servo-webxr-api", optional = true}
+wr_malloc_size_of = {path = "../wr_malloc_size_of"}
+
+[dev-dependencies]
+surfman = {path = "../surfman"}
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

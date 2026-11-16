@@ -1,0 +1,98 @@
+//! Cross-platform GPU device and surface management.
+//!
+//! You can use this crate to multithread a graphics application so that rendering happens on
+//! multiple threads, sharing textures among them in the most efficient manner. It may also be
+//! useful as a lightweight framework for *just* initializing rendering in native applications.
+//! This is in contrast to crates like SDL, GLFW, winit, and Glutin, all of which have a broader
+//! focus in that they manage windowing and the event loop as well.
+
+#![warn(missing_docs)]
+
+#[macro_use]
+extern crate bitflags;
+#[allow(unused_imports)]
+#[macro_use]
+extern crate log;
+
+pub mod adapter;
+#[cfg(all(windows_platform, feature = "sm-angle"))]
+pub mod angle;
+pub(crate) mod base;
+#[cfg(macos_platform)]
+pub mod cgl;
+pub mod chains;
+pub mod connection;
+mod context;
+mod context_descriptor;
+pub mod device;
+pub mod error;
+#[cfg(free_unix)]
+pub mod free_unix;
+mod gl_utils;
+#[cfg(any(android_platform, ohos_platform))]
+pub mod hardware_buffer;
+mod info;
+pub mod macros;
+#[cfg(free_unix)]
+pub mod mesa_surfaceless;
+mod renderbuffers;
+mod surface;
+mod surface_texture;
+#[cfg(wayland_platform)]
+pub mod wayland;
+#[cfg(wgl)]
+pub mod wgl;
+#[cfg(windows_platform)]
+pub mod windows;
+#[cfg(x11_platform)]
+pub mod x11;
+
+pub use crate::connection::Connection;
+pub use crate::context::{Context, ContextAttributeFlags, ContextAttributes, ContextID};
+pub use crate::context_descriptor::ContextDescriptor;
+pub use crate::device::Device;
+pub use crate::error::{Error, WindowingApiError};
+pub use crate::info::{GLApi, GLVersion};
+pub use crate::surface::{Surface, SurfaceAccess, SurfaceID, SurfaceInfo, SurfaceType};
+pub use crate::surface_texture::SurfaceTexture;
+pub use adapter::{Adapter, AdapterPreferences, PowerPreference, RenderingPreference};
+pub(crate) use glow::{self as gl, Context as Gl};
+
+#[cfg(all(windows_platform, not(any(wgl, angle))))]
+compile_error!("On Windows, you must enable at least one of `sm-wgl` and `sm-angle`");
+
+// TODO(pcwalton): Fill this in with other OS's.
+#[cfg(target_os = "macos")]
+pub use base::io_surface::adapter::AppleAdapter;
+#[cfg(target_os = "macos")]
+pub use base::io_surface::connection::Connection as SystemConnection;
+#[cfg(target_os = "macos")]
+pub use base::io_surface::device::Device as SystemDevice;
+#[cfg(target_os = "macos")]
+pub use base::io_surface::surface::Surface as SystemSurface;
+
+#[cfg(any(android_platform, angle, free_unix, ohos_platform))]
+pub use crate::base::egl::context::EglContextDescriptor;
+
+#[cfg(any(
+    target_os = "android",
+    target_env = "ohos",
+    all(target_os = "windows", feature = "sm-angle"),
+    unix
+))]
+#[allow(non_camel_case_types)]
+#[allow(clippy::all)]
+mod egl {
+    use std::os::raw::{c_long, c_void};
+    pub type khronos_utime_nanoseconds_t = khronos_uint64_t;
+    pub type khronos_uint64_t = u64;
+    pub type khronos_ssize_t = c_long;
+    pub type EGLint = i32;
+    pub type EGLNativeDisplayType = *const c_void;
+    pub type EGLNativePixmapType = *const c_void;
+    pub type EGLNativeWindowType = *const c_void;
+    pub type NativeDisplayType = EGLNativeDisplayType;
+    pub type NativePixmapType = EGLNativePixmapType;
+    pub type NativeWindowType = EGLNativeWindowType;
+    include!(concat!(env!("OUT_DIR"), "/egl_bindings.rs"));
+}

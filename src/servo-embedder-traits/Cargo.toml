@@ -1,0 +1,60 @@
+[package]
+name = "servo-embedder-traits"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+name = "embedder_traits"
+path = "lib.rs"
+
+[features]
+gamepad = []
+
+[dependencies]
+accesskit = {version = "0.24.0", features = ["serde"]}
+bitflags = "2.11"
+bytes = {version = "1.0", features = ["serde"]}
+content-security-policy = {version = "0.9", features = ["serde"]}
+cookie = {package = "cookie", version = "0.18"}
+crossbeam-channel = "0.5"
+euclid = {path = "../euclid"}
+http = "1.4"
+hyper_serde = {package = "servo-hyper-serde", version = "=0.8.0", path = "../servo-hyper-serde"}
+image = {version = "0.25", default-features = false, features = ["bmp", "gif", "ico", "jpeg", "png", "rayon", "webp"]}
+inventory = "0.3.24"
+keyboard-types = {version = "0.8.3", features = ["serde", "webdriver"]}
+log = "0.4.32"
+malloc_size_of = {package = "servo-malloc-size-of", version = "=0.8.0", path = "../servo-malloc-size-of"}
+malloc_size_of_derive = "0.1"
+pixels = {package = "servo-pixels", version = "=0.8.0", path = "../servo-pixels"}
+rustc-hash = "2.1.2"
+serde = "1.0.228"
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-geometry = {version = "=0.8.0", path = "../servo-geometry"}
+servo-url = {version = "=0.8.0", path = "../servo-url"}
+strum = {version = "0.28", features = ["derive"]}
+stylo = {path = "../stylo"}
+stylo_traits = {path = "../stylo_traits"}
+url = {path = "../rust-url-url"}
+uuid = {version = "1.23.3", features = ["v4", "v5"]}
+webdriver = "0.54.0"
+webrender_api = {path = "../webrender_api"}
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

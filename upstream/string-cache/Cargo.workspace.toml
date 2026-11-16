@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "string-cache-codegen",
+    "integration-tests",
+]

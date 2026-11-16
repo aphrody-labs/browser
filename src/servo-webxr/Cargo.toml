@@ -1,0 +1,54 @@
+[package]
+name = "servo-webxr"
+keywords = ["ar", "headset", "openxr", "vr", "webxr"]
+description = '''A safe Rust API that provides a way to interact with
+virtual reality and augmented reality devices and integration with OpenXR.
+The API is inspired by the WebXR Device API (https://www.w3.org/TR/webxr/)
+but adapted to Rust design patterns.'''
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+path = "lib.rs"
+
+[features]
+default = ["x11"]
+angle = ["surfman/sm-angle"]
+glwindow = []
+headless = []
+openxr-api = ["angle", "openxr", "winapi", "wio", "surfman/sm-angle-builtin"]
+x11 = ["surfman/sm-x11"]
+
+[dependencies]
+crossbeam-channel = "0.5"
+euclid = {path = "../euclid"}
+glow = "0.17.0"
+log = "0.4.32"
+openxr = {version = "0.21", optional = true}
+profile_traits = {package = "servo-profile-traits", version = "=0.8.0", path = "../servo-profile-traits"}
+raw-window-handle = "0.6"
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+surfman = {path = "../surfman"}
+webxr-api = {package = "servo-webxr-api", version = "=0.8.0", path = "../servo-webxr-api"}
+
+[target.'cfg(target_os = "windows")'.dependencies]
+winapi = {version = "0.3", optional = true, features = ["d3d11", "dxgi", "winerror"]}
+wio = {version = "0.2", optional = true}
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

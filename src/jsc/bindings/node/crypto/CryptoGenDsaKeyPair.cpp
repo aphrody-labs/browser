@@ -1,0 +1,59 @@
+#include "CryptoGenDsaKeyPair.h"
+#include "CryptoUtil.h"
+#include "NodeValidator.h"
+
+using namespace Bun;
+using namespace JSC;
+
+ncrypto::EVPKeyCtxPointer DsaKeyPairJobCtx::setup()
+{
+    ncrypto::EVPKeyCtxPointer paramCtx = ncrypto::EVPKeyCtxPointer::NewFromID(EVP_PKEY_DSA);
+
+    if (!paramCtx || paramCtx.initForParamgen() || !paramCtx.setDsaParameters(m_modulusLength, m_divisorLength)) {
+        m_opensslError = ERR_get_error();
+        return {};
+    }
+
+    auto keyParams = paramCtx.paramgen();
+    if (!keyParams) {
+        m_opensslError = ERR_get_error();
+        return {};
+    }
+
+    ncrypto::EVPKeyCtxPointer keyCtx = keyParams.newCtx();
+    if (!keyCtx.initForKeygen()) {
+        m_opensslError = ERR_get_error();
+        return {};
+    }
+
+    return keyCtx;
+}
+
+std::optional<DsaKeyPairJobCtx> DsaKeyPairJobCtx::fromJS(JSC::JSGlobalObject* globalObject, JSC::ThrowScope& scope, const JSC::GCOwnedDataScope<WTF::StringView>& typeView, JSC::JSValue optionsValue, const KeyEncodingConfig& config)
+{
+    VM& vm = globalObject->vm();
+
+    V::validateObject(scope, globalObject, optionsValue, "options"_s);
+    RETURN_IF_EXCEPTION(scope, std::nullopt);
+
+    JSValue modulusLengthValue = optionsValue.get(globalObject, Identifier::fromString(vm, "modulusLength"_s));
+    RETURN_IF_EXCEPTION(scope, std::nullopt);
+    uint32_t modulusLength;
+    V::validateUint32(scope, globalObject, modulusLengthValue, "options.modulusLength"_s, jsUndefined(), &modulusLength);
+    RETURN_IF_EXCEPTION(scope, std::nullopt);
+
+    JSValue divisorLengthValue = optionsValue.get(globalObject, Identifier::fromString(vm, "divisorLength"_s));
+    RETURN_IF_EXCEPTION(scope, std::nullopt);
+    std::optional<int32_t> divisorLength = std::nullopt;
+    if (!divisorLengthValue.isUndefinedOrNull()) {
+        int32_t length;
+        V::validateInt32(scope, globalObject, divisorLengthValue, "options.divisorLength"_s, jsNumber(0), jsUndefined(), &length);
+        RETURN_IF_EXCEPTION(scope, std::nullopt);
+        divisorLength = length;
+    }
+
+    return DsaKeyPairJobCtx(
+        modulusLength,
+        divisorLength,
+        config);
+}

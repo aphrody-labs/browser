@@ -1,0 +1,49 @@
+[package]
+name = "servo-allocator"
+build = "build.rs"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+path = "lib.rs"
+
+[features]
+allocation-tracking = ["backtrace", "dep:rustc-hash", "log"]
+use-jemalloc = ["dep:tikv-jemalloc-sys", "dep:tikv-jemallocator"]
+
+[dependencies]
+backtrace = {version = "0.3", optional = true}
+log = {version = "0.4.32", optional = true}
+rustc-hash = {version = "2.1.2", optional = true}
+
+[target.'cfg(not(any(windows, target_env = "ohos")))'.dependencies]
+libc = "0.2"
+
+[target.'cfg(not(any(windows, target_env = "ohos", sanitizer = "address", sanitizer = "memory", sanitizer = "thread")))'.dependencies]
+tikv-jemalloc-sys = {version = "0.6.1", optional = true, features = ["stats"]}
+tikv-jemallocator = {version = "0.6.1", optional = true}
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = {version = "0.61", features = ["Win32_System_Memory"]}
+
+[target.'cfg(target_env = "ohos")'.dependencies]
+libc = "0.2"
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

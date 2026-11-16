@@ -1,0 +1,8 @@
+[workspace]
+members = [".", "./macros", "./color"]
+default-members = [".", "./macros", "./color"]
+
+[profile.profiling]
+inherits = "release"
+debug = true
+

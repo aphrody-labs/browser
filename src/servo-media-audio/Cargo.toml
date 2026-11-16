@@ -1,0 +1,49 @@
+[package]
+name = "servo-media-audio"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+name = "servo_media_audio"
+path = "lib.rs"
+
+[dependencies]
+byte-slice-cast = "1.2.3"
+euclid = {path = "../euclid"}
+fft-convolver = "0.4"
+log = "0.4.32"
+parking_lot = {version = "0.12", features = ["serde"]}
+malloc_size_of = {package = "servo-malloc-size-of", version = "=0.8.0", path = "../servo-malloc-size-of"}
+malloc_size_of_derive = "0.1"
+num-complex = "0.4.6"
+num-traits = "0.2"
+petgraph = {version = "0.8.3", features = ["stable_graph"]}
+rustc-hash = "2.1.2"
+realfft = "3.5.0"
+serde = {version = "1.0.228", features = ["derive"]}
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-media-derive = {version = "=0.8.0", path = "../servo-media-derive"}
+servo-media-player = {version = "=0.8.0", path = "../servo-media-player"}
+servo-media-streams = {version = "=0.8.0", path = "../servo-media-streams"}
+servo-media-traits = {version = "=0.8.0", path = "../servo-media-traits"}
+smallvec = {version = "1.15", features = ["serde", "union"]}
+speexdsp-resampler = "0.1.0"
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

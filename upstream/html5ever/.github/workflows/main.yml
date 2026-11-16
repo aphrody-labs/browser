@@ -1,0 +1,156 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+    types: [checks_requested]
+
+jobs:
+  build-and-test:
+    name: CI
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [stable, beta]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set toolchain
+        run: |
+          rustup set profile minimal
+          rustup override set ${{ matrix.version }}
+
+      - name: Init submodules
+        run: git submodule update --init
+
+      - name: Cargo build
+        run: cargo build --all
+
+      - name: Cargo test
+        run: cargo test --all
+
+      - name: Test tendril w/encoding feature
+        run: cargo test -p tendril --features encoding_rs
+
+  doc:
+    name: Cargo doc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set toolchain
+        run: |
+          rustup set profile minimal
+          rustup override set nightly
+      - run: cargo doc
+        env:
+          RUSTFLAGS: --cfg bench
+
+  bench-html5ever:
+    name: Bench html5ever
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: cargo bench -p html5ever
+        env:
+          RUSTFLAGS: --cfg bench
+
+  bench-tendril:
+    name: Bench tendril
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: cargo bench -p tendril-bench --bench tendril -- --quick --significance-level 0.01
+        env:
+          RUSTFLAGS: --cfg bench
+      - run: cargo bench -p tendril-bench --bench futf -- --quick --significance-level 0.01
+        env:
+          RUSTFLAGS: --cfg bench
+
+  miri:
+    name: Tests with Miri
+    runs-on: ubuntu-latest
+    env:
+      # Miri is much slower than native, so running the entire test suite takes too much time
+      WHICH_TESTS: -p markup5ever -p tendril --features encoding_rs
+    steps:
+      - name: Which tests to run
+        run: echo "$WHICH_TESTS"
+      - uses: actions/checkout@v7
+      - name: Setup Miri
+        run: |
+          rustup set profile minimal
+          rustup override set nightly
+          rustup component add miri
+          cargo miri setup
+          cargo miri setup --target i686-unknown-linux-gnu
+          cargo miri setup --target s390x-unknown-linux-gnu
+      - name: Run some tests with Miri
+        run: cargo miri test $WHICH_TESTS
+      - name: Run some tests with Miri 32-bit
+        run: cargo miri test $WHICH_TESTS --target i686-unknown-linux-gnu
+      - name: Run some tests with Miri big-endian
+        run: cargo miri test $WHICH_TESTS --target s390x-unknown-linux-gnu
+
+  msrv:
+    name: MSRV
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install MSRV toolchain
+        run: |
+          rustup set profile minimal
+          rustup override set 1.85.0
+
+      - name: Downgrade some crates that have newer MSRV
+        # encoding_rs 0.8.40 requires Rust 1.88
+        run: |
+          cargo update encoding_rs --precise 0.8.35
+
+      - run: cargo check --lib --all-features
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install stable toolchain
+        run: |
+          rustup set profile minimal
+          rustup override set stable
+
+      - name: Install clippy
+        run: |
+          rustup component add clippy
+          rustup component add rustfmt
+
+      - name: Format
+        run: cargo fmt --all -- --check
+
+      - name: Run clippy
+        uses: servo/actions/cargo-annotation@main
+        with:
+          cargo-command: clippy --all-features --all-targets
+
+  build_result:
+    name: Result
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-test
+      - doc
+      - lint
+      - msrv
+      - bench-html5ever
+      - bench-tendril
+      - miri
+
+    steps:
+      - name: Success
+        if: ${{ !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+        run: exit 0
+      - name: Failure
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1

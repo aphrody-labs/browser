@@ -23,10 +23,15 @@ result: engines, versions, hosts, the corpus and the upstream heads are read liv
 | Last report | `bun testing/acceptance.ts report [run] [--json]` |
 
 ## Where to run it
-Linux builds and heavy runs go to the build hosts, never the workstation: copy `tools/` and run there (`BROWSER_ENGINES`
-points at extra engine directories). The PC is fine for `engines`, `sites`, a few pages, `serve` and `deploy`.
-`Bun.WebView` cannot start Chrome or Edge on the Windows workstation (`Chrome process closed the pipe`): the front is
-reported `SKIP` there and `ok` on Linux.
+Heavy runs and every build go to a build host, never the workstation: copy `testing/` and `tools/` there (`BROWSER_ENGINES` points at extra
+engine directories). Which hosts exist, and what is installed on them, is private telemetry: `bun testing/acceptance.ts telemetry`
+(hosts from `.local/config.toml`), then `docs` writes `.local/docs/fleet.md`. A front that cannot start the browser on a machine is
+reported `SKIP`, not as a page failure.
+
+## Private state
+Nothing about a machine, an account or the work in progress is committed or written into docs and agent files. `.local/` (git-ignored)
+holds `config.toml` (overlay of `testing/acceptance.toml`: hosts, paths, the published host), the store, telemetry and the generated
+documents; `.claude.local.md` is generated from the notes. Add what you learn with `bun testing/acceptance.ts note "<text>" --kind gotcha`.
 
 ## Reading a result
 - Verdicts: `pass`; `auth`, `consent`, `refused` (a wall or the server's answer, not the engine's fault); `fail` (the engine's).

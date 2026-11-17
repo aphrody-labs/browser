@@ -101,6 +101,56 @@ const checks: [string, () => Promise<Omit<Result, "name">>][] = [
     },
   ],
   [
+    "private-data",
+    async () => {
+      // Nothing about a machine, an account or a private host is tracked: those facts live in .local/ and .claude.local.md (generated).
+      const generic = [
+        /\/srv\//,
+        /\/home\/[a-z0-9_.-]+/i,
+        /\/c\/src\//,
+        /[A-Za-z]:[\\/]+(Users|src)[\\/]/,
+        /@users\.noreply\.github\.com/,
+        /\b(ssh|scp)\s+(-\S+\s+)*(fr\d|prd|vps\w*)\b/i,
+      ];
+      const config = (await Bun.file(".local/config.toml").exists())
+        ? (Bun.TOML.parse(await Bun.file(".local/config.toml").text()) as Record<string, any>)
+        : {};
+      const literal = [
+        ...Object.values((config.hosts ?? {}) as Record<string, { ssh: string }>).map((h) => h.ssh),
+        config.serve?.host,
+        config.serve?.origin,
+        config.paths?.chromium_src,
+        config.paths?.scratch,
+      ].filter((x): x is string => typeof x === "string" && x.length > 2);
+      const files = (await tracked("."))
+        .filter(
+          (f) =>
+            !/^(third_party|node_modules)\//.test(f) &&
+            !/(\.lock|\.lockb|\.png|\.ico|LICENSE)$/.test(f) &&
+            f !== "PRESUBMIT.ts" &&
+            !f.startsWith("tools/upstreams.lock"),
+        )
+        .filter((f) => !f.endsWith("track.test.ts") || true);
+      const hits: string[] = [];
+      for (const file of files) {
+        const text = await Bun.file(file)
+          .text()
+          .catch(() => "");
+        if (text.includes("\0")) continue;
+        for (const [n, line] of text.split("\n").entries()) {
+          const bad = generic.find((re) => re.test(line)) ?? literal.find((l) => line.includes(l));
+          if (bad) hits.push(`${file}:${n + 1}`);
+        }
+      }
+      return {
+        ok: hits.length === 0,
+        detail: hits.length
+          ? `${hits.length} line(s): ${hits.slice(0, 6).join(", ")}`
+          : "no host, path, account or private host in tracked files",
+      };
+    },
+  ],
+  [
     "docs",
     async () => {
       const submodule = join(import.meta.dir, "third_party", "bun", "docs");

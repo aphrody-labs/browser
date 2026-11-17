@@ -2,4 +2,6 @@
 /out
 *.log
 node_modules/
+/.local/
+/.claude.local.md
 /third_party/chromium/

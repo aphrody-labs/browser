@@ -7,3 +7,4 @@ license = "Apache-2.0"
 repository = "https://github.com/h4ckf0r0day/obscura"
 
 [dependencies]
+browser-detect = {path = "../../../components/browser-detect", default-features = false}

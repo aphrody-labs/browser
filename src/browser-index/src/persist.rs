@@ -237,13 +237,61 @@ fn align8(x: u64) -> u64 {
     (x + 7) & !7
 }
 
-fn tmp_path(path: &Path) -> PathBuf {
-    let mut name = path
+/// Creates a temporary file next to `path`: a random suffix, exclusive creation (`O_EXCL`: an
+/// existing file or symlink of that name is never opened, followed or truncated), retried on
+/// collision.
+fn create_temp(path: &Path) -> std::io::Result<(File, PathBuf)> {
+    use std::{
+        collections::hash_map::RandomState,
+        hash::{BuildHasher, Hasher},
+    };
+    let base = path
         .file_name()
         .map(|n| n.to_os_string())
         .unwrap_or_default();
-    name.push(format!(".tmp-{}", std::process::id()));
-    path.with_file_name(name)
+    let mut last = None;
+    for _ in 0..32 {
+        let mut hasher = RandomState::new().build_hasher();
+        hasher.write_u32(std::process::id());
+        let mut name = std::ffi::OsString::from(".");
+        name.push(&base);
+        name.push(format!(".tmp-{:016x}", hasher.finish()));
+        let tmp = path.with_file_name(name);
+        match std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&tmp)
+        {
+            Ok(file) => return Ok((file, tmp)),
+            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => last = Some(e),
+            Err(e) => return Err(e),
+        }
+    }
+    Err(last.unwrap_or_else(|| std::io::Error::other("no free temporary file name")))
+}
+
+/// Writes `path` atomically: `fill` writes into a fresh temporary file in the same directory,
+/// which is synced and renamed over `path`. On any error the temporary file is removed and
+/// `path` is left as it was.
+fn write_atomic(path: &Path, fill: impl FnOnce(&mut BufWriter<File>) -> Result<()>) -> Result<()> {
+    let (file, tmp) = create_temp(path)?;
+    let result = (|| -> Result<()> {
+        let mut w = BufWriter::with_capacity(1 << 20, file);
+        fill(&mut w)?;
+        w.flush()?;
+        let file = w.into_inner().map_err(|e| e.into_error())?;
+        file.sync_all()?;
+        Ok(())
+    })();
+    if let Err(err) = result {
+        let _ = std::fs::remove_file(&tmp);
+        return Err(err);
+    }
+    if let Err(err) = std::fs::rename(&tmp, path) {
+        let _ = std::fs::remove_file(&tmp);
+        return Err(err.into());
+    }
+    Ok(())
 }
 
 #[cfg(target_endian = "big")]
@@ -307,11 +355,9 @@ pub(crate) fn save(inner: &Inner, path: &Path) -> Result<()> {
     }
     header.resize(HEADER_LEN, 0);
 
-    let tmp = tmp_path(path);
-    let result = (|| -> Result<()> {
-        let file = File::create(&tmp)?;
+    write_atomic(path, |out| {
         let mut w = HashingWriter {
-            inner: BufWriter::with_capacity(1 << 20, file),
+            inner: out,
             hasher: Xxh64::new(0),
             pos: 0,
         };
@@ -323,16 +369,8 @@ pub(crate) fn save(inner: &Inner, path: &Path) -> Result<()> {
         w.pad_to(data_end)?;
         let checksum = w.hasher.finish();
         w.inner.write_all(&checksum.to_le_bytes())?;
-        let file = w.inner.into_inner().map_err(|e| e.into_error())?;
-        file.sync_all()?;
         Ok(())
-    })();
-    if let Err(err) = result {
-        let _ = std::fs::remove_file(&tmp);
-        return Err(err);
-    }
-    std::fs::rename(&tmp, path)?;
-    Ok(())
+    })
 }
 
 // ---------------------------------------------------------------------------
@@ -591,6 +629,93 @@ pub(crate) fn load(path: &Path) -> Result<Inner> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn scratch(tag: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!("browser-index-{tag}-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("dir");
+        dir
+    }
+
+    #[test]
+    fn temp_files_are_random_exclusive_and_in_the_destination_directory() {
+        let dir = scratch("temp");
+        let dest = dir.join("a.idx");
+        let (_f1, t1) = create_temp(&dest).expect("first");
+        let (_f2, t2) = create_temp(&dest).expect("second");
+        assert_ne!(t1, t2);
+        assert_eq!(t1.parent(), Some(dir.as_path()));
+        let name = t1.file_name().expect("name").to_string_lossy().into_owned();
+        assert!(name.starts_with(".a.idx.tmp-"), "{name}");
+        std::fs::remove_dir_all(&dir).expect("cleanup");
+    }
+
+    #[test]
+    fn a_planted_file_at_the_old_predictable_name_is_not_touched() {
+        let dir = scratch("planted");
+        let dest = dir.join("a.idx");
+        let old = dir.join(format!("a.idx.tmp-{}", std::process::id()));
+        let hidden = dir.join(format!(".a.idx.tmp-{}", std::process::id()));
+        std::fs::write(&old, b"precious").expect("plant");
+        std::fs::write(&hidden, b"precious").expect("plant");
+        write_atomic(&dest, |w| Ok(w.write_all(b"new")?)).expect("write");
+        assert_eq!(std::fs::read(&dest).expect("dest"), b"new");
+        assert_eq!(std::fs::read(&old).expect("old"), b"precious");
+        assert_eq!(std::fs::read(&hidden).expect("hidden"), b"precious");
+        std::fs::remove_dir_all(&dir).expect("cleanup");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn a_symlink_at_the_old_temp_name_is_not_followed_or_truncated() {
+        let dir = scratch("symlink");
+        let victim = dir.join("victim.txt");
+        std::fs::write(&victim, b"victim data").expect("victim");
+        let dest = dir.join("a.idx");
+        for name in [
+            format!("a.idx.tmp-{}", std::process::id()),
+            format!(".a.idx.tmp-{}", std::process::id()),
+        ] {
+            std::os::unix::fs::symlink(&victim, dir.join(name)).expect("symlink");
+        }
+        write_atomic(&dest, |w| Ok(w.write_all(b"new")?)).expect("write");
+        assert_eq!(std::fs::read(&victim).expect("victim"), b"victim data");
+        assert_eq!(std::fs::read(&dest).expect("dest"), b"new");
+        std::fs::remove_dir_all(&dir).expect("cleanup");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn a_symlink_at_the_destination_is_replaced_not_written_through() {
+        let dir = scratch("destlink");
+        let victim = dir.join("victim.txt");
+        std::fs::write(&victim, b"victim data").expect("victim");
+        let dest = dir.join("a.idx");
+        std::os::unix::fs::symlink(&victim, &dest).expect("symlink");
+        write_atomic(&dest, |w| Ok(w.write_all(b"new")?)).expect("write");
+        assert_eq!(std::fs::read(&victim).expect("victim"), b"victim data");
+        assert_eq!(std::fs::read(&dest).expect("dest"), b"new");
+        std::fs::remove_dir_all(&dir).expect("cleanup");
+    }
+
+    #[test]
+    fn a_failed_write_leaves_the_destination_untouched_and_no_temp_file() {
+        let dir = scratch("failed");
+        let dest = dir.join("a.idx");
+        std::fs::write(&dest, b"old index").expect("old");
+        let err = write_atomic(&dest, |w| {
+            w.write_all(b"partial")?;
+            Err(corrupt("injected failure"))
+        });
+        assert!(err.is_err());
+        assert_eq!(std::fs::read(&dest).expect("dest"), b"old index");
+        let leftovers: Vec<_> = std::fs::read_dir(&dir)
+            .expect("dir")
+            .map(|e| e.expect("entry").file_name())
+            .collect();
+        assert_eq!(leftovers, [std::ffi::OsString::from("a.idx")]);
+        std::fs::remove_dir_all(&dir).expect("cleanup");
+    }
 
     #[test]
     fn xxh64_known_vectors() {

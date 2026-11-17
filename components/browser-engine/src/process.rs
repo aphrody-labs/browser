@@ -1,11 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-//! Child processes that never open a console window.
-//!
-//! Windows gives a console program started by a process without a console (a service, a GUI, a
-//! detached process) a new console window. When the parent is attached to a console the child
-//! shares it, so a window is only suppressed when the parent has no console: `CREATE_NO_WINDOW`
-//! would also detach the child from an interactive terminal. Everywhere else this crate adds
-//! nothing.
+//! Child processes that never open a console window on Windows when the parent has none.
 
 use std::ffi::OsStr;
 use std::process::Command;
@@ -23,7 +17,6 @@ mod win {
 }
 
 /// Whether this process is attached to a console that a child would share.
-/// `GetConsoleWindow` is not the test: a pseudoconsole has no window.
 #[cfg(windows)]
 pub fn has_console() -> bool {
     let mut pid = 0u32;
@@ -58,8 +51,6 @@ pub fn command<S: AsRef<OsStr>>(program: S) -> Command {
 
 /// Opens no console window for the child of a [`Command`].
 pub trait NoWindow {
-    /// Adds [`creation_flags`]. `CommandExt::creation_flags` replaces the previous value, so a
-    /// command that sets its own flags ORs `creation_flags()` into them instead.
     fn no_window(&mut self) -> &mut Self;
 }
 

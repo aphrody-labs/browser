@@ -1,3 +1,7 @@
+[test]
+# third_party holds submodules with their own test suites and dependencies: not part of this repository's tests.
+pathIgnorePatterns = ["third_party/**", "target/**", "out/**"]
+
 # Native tooling (`bun fmt`, `bun lint`, `bun check`, `bun test`): no ESLint, no Prettier, no tsc, no Jest.
 # Rules live here and nowhere else; each rule has a page under docs/lint/rules/ of the Bun fork.
 [fmt]
@@ -20,3 +24,10 @@ printWidth = 120
 # Bun's review rules: never swallow a failure, every promise handled.
 "eslint/no-empty" = "error"
 "typescript/no-floating-promises" = "error"
+
+[install]
+linker = "isolated"
+globalStore = true
+exact = true
+saveTextLockfile = true
+minimumReleaseAge = 259200

@@ -26,6 +26,9 @@ inherits = "release"
 panic = "unwind"
 
 [profile.dev]
+incremental = true
+codegen-units = 16
+debug = "limited"
 panic = "abort"
 # Debuginfo goes into .dwo files next to each object instead of into the rlibs: less disk, full information for gdb/lldb.
 split-debuginfo = "unpacked"
@@ -200,3 +203,8 @@ webrender_build = {path = "third_party/webrender/webrender_build"}
 wr_glyph_rasterizer = {path = "third_party/webrender/wr_glyph_rasterizer"}
 wr_malloc_size_of = {path = "third_party/webrender/wr_malloc_size_of"}
 xml5ever = {path = "third_party/html5ever/xml5ever"}
+
+[profile.dev.build-override]
+codegen-units = 16
+split-debuginfo = "unpacked"
+debug = "limited"

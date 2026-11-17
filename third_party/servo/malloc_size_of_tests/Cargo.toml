@@ -1,0 +1,16 @@
+[package]
+name = "malloc_size_of_tests"
+publish = false
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+rust-version = "1.88.0"
+
+[lib]
+path = "lib.rs"
+test = false
+
+[dev-dependencies]
+malloc_size_of = {package = "servo-malloc-size-of", version = "=0.8.0", path = "../servo-malloc-size-of"}
+servo_arc = {path = "../../stylo/servo_arc"}

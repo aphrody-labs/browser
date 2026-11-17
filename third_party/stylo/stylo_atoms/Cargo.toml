@@ -1,0 +1,19 @@
+[package]
+name = "stylo_atoms"
+authors = ["The Servo Project Developers"]
+documentation = "https://docs.rs/stylo_atoms/"
+description = "Interned string type for the Servo and Stylo projects"
+repository = "https://github.com/servo/stylo"
+license = "MPL-2.0"
+edition = "2018"
+build = "build.rs"
+version = "0.24.0"
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+string_cache = {path = "../../string-cache/string_cache"}
+
+[build-dependencies]
+string_cache_codegen = {path = "../../string-cache/string_cache_codegen"}

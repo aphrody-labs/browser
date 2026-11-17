@@ -1,0 +1,22 @@
+[package]
+name = "script_tests"
+publish = false
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+rust-version = "1.88.0"
+
+[lib]
+name = "script_tests"
+path = "lib.rs"
+
+[dependencies]
+embedder_traits = {package = "servo-embedder-traits", version = "=0.8.0", path = "../servo-embedder-traits"}
+encoding_rs = {version = "0.8", features = ["serde"]}
+euclid = {path = "../../euclid/euclid"}
+keyboard-types = {version = "0.8.3", features = ["serde", "webdriver"]}
+script = {package = "servo-script", version = "=0.8.0", path = "../servo-script"}
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-url = {version = "=0.8.0", path = "../servo-url"}
+tempfile = "3"

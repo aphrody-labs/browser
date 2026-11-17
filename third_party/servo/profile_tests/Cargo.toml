@@ -1,0 +1,21 @@
+[package]
+name = "profile_tests"
+publish = false
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+rust-version = "1.88.0"
+
+[lib]
+name = "profile_tests"
+path = "lib.rs"
+doctest = false
+
+[dependencies]
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+ipc-channel = {path = "../../ipc-channel/ipc-channel"}
+profile = {package = "servo-profile", version = "=0.8.0", path = "../servo-profile"}
+profile_traits = {package = "servo-profile-traits", version = "=0.8.0", path = "../servo-profile-traits"}
+servo-config = {version = "=0.8.0", path = "../servo-config"}
+time = {package = "time", version = "0.3", features = ["large-dates", "local-offset", "serde"]}

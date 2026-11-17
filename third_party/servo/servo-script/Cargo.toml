@@ -1,0 +1,180 @@
+[package]
+name = "servo-script"
+build = "build.rs"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+name = "script"
+path = "lib.rs"
+
+[features]
+bluetooth = ['servo-bluetooth-traits', 'script_bindings/bluetooth']
+# Allow brotli to be used in stream/compressionstream
+brotli-compression-stream = ["dep:brotli"]
+crown = ['js/crown']
+debugmozjs = ['js/debugmozjs']
+devtools = [
+    "dep:devtools_traits",
+    "script_bindings/devtools",
+    "script_traits/devtools",
+    "servo-constellation-traits/devtools",
+]
+gamepad = ["script_bindings/gamepad", "embedder_traits/gamepad"]
+jitspew = ['js/jitspew']
+js_backtrace = []
+js_jit = ["js/jit"]
+profilemozjs = ['js/profilemozjs']
+testbinding = ["script_bindings/testbinding"]
+tracing = ["dep:tracing", "script_bindings/tracing"]
+
+# Enable SubtleCrypto.
+subtlecrypto = ["script_webcrypto/subtlecrypto"]
+webgl_backtrace = ["servo-canvas-traits/webgl_backtrace"]
+webgl = [
+    "dep:mozangle",
+    "script_bindings/webgl",
+    "script_traits/webgl",
+    "servo-constellation-traits/webgl",
+]
+webgpu = [
+    "dep:script_webgpu",
+    "dep:webgpu_traits",
+    "script_bindings/webgpu",
+    "script_traits/webgpu",
+]
+webxr = ["webgl", "gamepad", "webxr-api", "script_bindings/webxr"]
+
+[dependencies]
+accesskit = {version = "0.24.0", features = ["serde"]}
+app_units = {path = "../../app_units/app_units"}
+arrayvec = "0.7"
+atomic_refcell = "0.1.14"
+backtrace = "0.3"
+base64 = "0.23.0"
+bitflags = "2.11"
+brotli = {version = "9.1.1", optional = true}
+buf-read-ext = "0.4"
+bytes = {version = "1.0", features = ["serde"]}
+chardetng = "1.0"
+chrono = {version = "0.4", features = ["serde"]}
+content-security-policy = {version = "0.9", features = ["serde"]}
+cookie = {package = "cookie", version = "0.18"}
+crossbeam-channel = "0.5"
+cssparser = {features = ["serde"], path = "../../rust-cssparser/cssparser"}
+data-url = {path = "../../rust-url/data-url"}
+deny_public_fields = {package = "servo-deny-public-fields", version = "=0.8.0", path = "../servo-deny-public-fields"}
+devtools_traits = {package = "servo-devtools-traits", version = "=0.8.0", path = "../servo-devtools-traits", optional = true}
+dom_struct = {package = "servo-dom-struct", version = "=0.8.0", path = "../servo-dom-struct"}
+embedder_traits = {package = "servo-embedder-traits", version = "=0.8.0", path = "../servo-embedder-traits"}
+encoding_rs = {version = "0.8", features = ["serde"]}
+euclid = {path = "../../euclid/euclid"}
+flate2 = "1.1"
+fonts = {package = "servo-fonts", version = "=0.8.0", path = "../servo-fonts"}
+fonts_traits = {package = "servo-fonts-traits", version = "=0.8.0", path = "../servo-fonts-traits"}
+glow = "0.17.0"
+hashlink = "0.11"
+headers = "0.4"
+html5ever = {path = "../../html5ever/html5ever"}
+http = "1.4"
+httparse = "1.9"
+hyper_serde = {package = "servo-hyper-serde", version = "=0.8.0", path = "../servo-hyper-serde"}
+icu_locale_core = "2.1.0"
+indexmap = {version = "2.14.0", features = ["std"]}
+ipc-channel = {path = "../../ipc-channel/ipc-channel"}
+itertools = "0.15"
+js = {package = "mozjs", default-features = false, features = ["intl", "libz-sys"], path = "../../mozjs/mozjs"}
+jstraceable_derive = {package = "servo-jstraceable-derive", version = "=0.8.0", path = "../servo-jstraceable-derive"}
+keyboard-types = {version = "0.8.3", features = ["serde", "webdriver"]}
+layout_api = {package = "servo-layout-api", version = "=0.8.0", path = "../servo-layout-api"}
+libc = "0.2"
+log = "0.4.32"
+malloc_size_of = {package = "servo-malloc-size-of", version = "=0.8.0", path = "../servo-malloc-size-of"}
+malloc_size_of_derive = "0.1"
+markup5ever = {path = "../../html5ever/markup5ever"}
+media = {package = "servo-media-thread", version = "=0.8.0", path = "../servo-media-thread"}
+metrics = {package = "servo-metrics", version = "=0.8.0", path = "../servo-metrics"}
+mime = "0.3.13"
+mime_guess = "2.0.5"
+net_traits = {package = "servo-net-traits", version = "=0.8.0", path = "../servo-net-traits"}
+nom-rfc8288 = "0.4.0"
+num-traits = "0.2"
+num_cpus = "1.17.0"
+paint_api = {package = "servo-paint-api", version = "=0.8.0", path = "../servo-paint-api"}
+parking_lot = {version = "0.12", features = ["serde"]}
+percent-encoding = {path = "../../rust-url/percent-encoding"}
+phf = {version = "0.14", features = ["macros"]}
+pixels = {package = "servo-pixels", version = "=0.8.0", path = "../servo-pixels"}
+postcard = {version = "1.1.3", default-features = false, features = ["use-std"]}
+profile_traits = {package = "servo-profile-traits", version = "=0.8.0", path = "../servo-profile-traits"}
+rand = "0.10"
+regex = "1.12"
+resvg = "0.50.0"
+rustc-hash = "2.1.2"
+script_bindings = {package = "servo-script-bindings", version = "=0.8.0", path = "../servo-script-bindings"}
+script_webcrypto = {package = "servo-script-webcrypto", version = "=0.8.0", path = "../servo-script-webcrypto"}
+script_webgpu = {package = "servo-script-webgpu", version = "=0.8.0", path = "../servo-script-webgpu", optional = true}
+script_traits = {package = "servo-script-traits", version = "=0.8.0", path = "../servo-script-traits"}
+selectors = {path = "../../stylo/selectors"}
+serde = {version = "1.0.228", features = ["derive"]}
+serde_json = {version = "1.0", features = ["preserve_order"]}
+servo-background-hang-monitor-api = {version = "=0.8.0", path = "../servo-background-hang-monitor-api"}
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-bluetooth-traits = {version = "=0.8.0", path = "../servo-bluetooth-traits", optional = true}
+servo-canvas-traits = {version = "=0.8.0", path = "../servo-canvas-traits"}
+servo-config = {version = "=0.8.0", path = "../servo-config"}
+servo-constellation-traits = {version = "=0.8.0", path = "../servo-constellation-traits"}
+servo-geometry = {version = "=0.8.0", path = "../servo-geometry"}
+servo-media = {version = "=0.8.0", path = "../servo-media"}
+servo-tracing = {version = "=0.8.0", path = "../servo-tracing"}
+servo-url = {version = "=0.8.0", path = "../servo-url"}
+servo-webvtt = {version = "=0.8.0", path = "../servo-webvtt"}
+servo_arc = {path = "../../stylo/servo_arc"}
+smallvec = {version = "1.15", features = ["serde", "union"]}
+storage_traits = {package = "servo-storage-traits", version = "=0.8.0", path = "../servo-storage-traits"}
+strum = {version = "0.28", features = ["derive"]}
+stylo = {path = "../../stylo/stylo"}
+stylo_atoms = {path = "../../stylo/stylo_atoms"}
+stylo_dom = {path = "../../stylo/stylo_dom"}
+stylo_malloc_size_of = {path = "../../stylo/stylo_malloc_size_of"}
+stylo_traits = {path = "../../stylo/stylo_traits"}
+swapper = "0.1"
+tempfile = "3"
+tendril = {features = ["encoding_rs"], path = "../../html5ever/tendril"}
+time = {package = "time", version = "0.3", features = ["large-dates", "local-offset", "serde"]}
+timers = {package = "servo-timers", version = "=0.8.0", path = "../servo-timers"}
+tracing = {version = "0.1.44", optional = true}
+unicode-bidi = {path = "../../unicode-bidi/unicode-bidi"}
+unicode-script = "0.5"
+url = {path = "../../rust-url/rust-url-url"}
+urlpattern = "0.3"
+uuid = {version = "1.23.3", features = ["v4", "v5", "serde"]}
+web_atoms = {path = "../../html5ever/web_atoms"}
+webdriver = "0.54.0"
+webgpu_traits = {package = "servo-webgpu-traits", version = "=0.8.0", path = "../servo-webgpu-traits", optional = true}
+webrender_api = {path = "../../webrender/webrender_api"}
+webxr-api = {package = "servo-webxr-api", version = "=0.8.0", path = "../servo-webxr-api", optional = true}
+xml5ever = {path = "../../html5ever/xml5ever"}
+xpath = {package = "servo-xpath", version = "=0.8.0", path = "../servo-xpath"}
+
+[target.'cfg(not(target_os = "ios"))'.dependencies]
+mozangle = {optional = true, path = "../../mozangle/mozangle"}
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

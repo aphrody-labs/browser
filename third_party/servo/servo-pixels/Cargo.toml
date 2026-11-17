@@ -1,0 +1,50 @@
+[package]
+name = "servo-pixels"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+name = "pixels"
+path = "lib.rs"
+
+[dependencies]
+euclid = {path = "../../euclid/euclid"}
+image = {version = "0.25", default-features = false, features = ["bmp", "gif", "ico", "jpeg", "png", "rayon", "webp"]}
+log = "0.4.32"
+malloc_size_of = {package = "servo-malloc-size-of", version = "=0.8.0", path = "../servo-malloc-size-of"}
+malloc_size_of_derive = "0.1"
+serde = {version = "1.0.228", features = ["derive"]}
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+webrender_api = {path = "../../webrender/webrender_api"}
+
+[dev-dependencies]
+criterion = {version = "0.8.2", features = ["html_reports"]}
+
+[[bench]]
+name = "load_from_memory"
+path = "benches/load_from_memory.rs"
+harness = false
+
+[[bench]]
+name = "unmultiply_inplace"
+path = "benches/unmultiply_inplace.rs"
+harness = false
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

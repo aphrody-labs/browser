@@ -1,0 +1,60 @@
+[package]
+name = "servo-base"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+name = "servo_base"
+path = "lib.rs"
+test = true
+doctest = false
+
+[features]
+multiprocess = []
+
+[dependencies]
+accesskit = {version = "0.24.0", features = ["serde"]}
+crossbeam-channel = "0.5"
+ipc-channel = {path = "../../ipc-channel/ipc-channel"}
+log = "0.4.32"
+malloc_size_of = {package = "servo-malloc-size-of", version = "=0.8.0", path = "../servo-malloc-size-of"}
+malloc_size_of_derive = "0.1"
+parking_lot = {version = "0.12", features = ["serde"]}
+rayon = "1"
+regex = "1.12"
+serde = "1.0.228"
+serde_json = "1.0"
+smallvec = {version = "1.15", features = ["serde", "union"]}
+servo-config = {version = "=0.8.0", path = "../servo-config"}
+time = {package = "time", version = "0.3", features = ["large-dates", "local-offset", "serde"]}
+unicode-segmentation = "1.13.3"
+uuid = {version = "1.23.3", features = ["v4", "v5", "serde"]}
+webrender_api = {path = "../../webrender/webrender_api"}
+
+[target.'cfg(any(target_os = "macos", target_os = "ios"))'.dependencies]
+mach2 = "0.7"
+
+[target.'cfg(all(unix, not(any(target_os = "macos", target_os = "ios"))))'.dependencies]
+libc = "0.2"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows-sys = {version = "0.61", features = ["Win32_System_Performance"]}
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

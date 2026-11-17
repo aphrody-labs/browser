@@ -1,0 +1,82 @@
+[package]
+name = "servo-constellation"
+version = "0.8.0"
+edition = "2024"
+authors = ["The Servo Project Developers"]
+license = "MPL-2.0"
+repository = "https://github.com/servo/servo"
+description = "A component of the servo web-engine."
+rust-version = "1.88.0"
+publish = true
+
+[lib]
+name = "servo_constellation"
+path = "lib.rs"
+
+[features]
+default = []
+bluetooth = ["servo-bluetooth-traits"]
+devtools = ["dep:devtools_traits", "script_traits/devtools"]
+gamepad = ["embedder_traits/gamepad"]
+tracing = ["dep:tracing", "servo-canvas/tracing"]
+multiprocess = []
+vello = ["servo-canvas/vello"]
+webgpu = ["dep:webgpu", "dep:webgpu_traits", "script_traits/webgpu"]
+webgl = []
+
+[dependencies]
+accesskit = {version = "0.24.0", features = ["serde"]}
+backtrace = "0.3"
+base64 = "0.23.0"
+content-security-policy = {version = "0.9", features = ["serde"]}
+crossbeam-channel = "0.5"
+devtools_traits = {package = "servo-devtools-traits", version = "=0.8.0", path = "../servo-devtools-traits", optional = true}
+embedder_traits = {package = "servo-embedder-traits", version = "=0.8.0", path = "../servo-embedder-traits"}
+euclid = {path = "../../euclid/euclid"}
+fonts = {package = "servo-fonts", version = "=0.8.0", path = "../servo-fonts"}
+ipc-channel = {path = "../../ipc-channel/ipc-channel"}
+keyboard-types = {version = "0.8.3", features = ["serde", "webdriver"]}
+layout_api = {package = "servo-layout-api", version = "=0.8.0", path = "../servo-layout-api"}
+log = "0.4.32"
+media = {package = "servo-media-thread", version = "=0.8.0", path = "../servo-media-thread"}
+net = {package = "servo-net", version = "=0.8.0", path = "../servo-net"}
+net_traits = {package = "servo-net-traits", version = "=0.8.0", path = "../servo-net-traits"}
+paint_api = {package = "servo-paint-api", version = "=0.8.0", path = "../servo-paint-api"}
+parking_lot = {version = "0.12", features = ["serde"]}
+profile_traits = {package = "servo-profile-traits", version = "=0.8.0", path = "../servo-profile-traits"}
+rand = "0.10"
+rustc-hash = "2.1.2"
+script_traits = {package = "servo-script-traits", version = "=0.8.0", path = "../servo-script-traits"}
+serde = "1.0.228"
+servo-background-hang-monitor = {version = "=0.8.0", path = "../servo-background-hang-monitor"}
+servo-background-hang-monitor-api = {version = "=0.8.0", path = "../servo-background-hang-monitor-api"}
+servo-base = {version = "=0.8.0", path = "../servo-base"}
+servo-bluetooth-traits = {version = "=0.8.0", path = "../servo-bluetooth-traits", optional = true}
+servo-canvas = {version = "=0.8.0", path = "../servo-canvas"}
+servo-canvas-traits = {version = "=0.8.0", path = "../servo-canvas-traits"}
+servo-config = {version = "=0.8.0", path = "../servo-config"}
+servo-constellation-traits = {version = "=0.8.0", path = "../servo-constellation-traits"}
+servo-tracing = {version = "=0.8.0", path = "../servo-tracing"}
+servo-url = {version = "=0.8.0", path = "../servo-url"}
+storage_traits = {package = "servo-storage-traits", version = "=0.8.0", path = "../servo-storage-traits"}
+stylo = {path = "../../stylo/stylo"}
+tracing = {version = "0.1.44", optional = true}
+webgpu = {package = "servo-webgpu", version = "=0.8.0", path = "../servo-webgpu", optional = true}
+webgpu_traits = {package = "servo-webgpu-traits", version = "=0.8.0", path = "../servo-webgpu-traits", optional = true}
+webxr-api = {package = "servo-webxr-api", version = "=0.8.0", path = "../servo-webxr-api"}
+
+[target.'cfg(any(target_os="macos", all(not(target_os = "windows"), not(target_os = "ios"), not(target_os="android"), not(target_env="ohos"), not(target_arch="arm"), not(target_arch="aarch64"), not(target_arch="riscv32"), not(target_arch="riscv64"))))'.dependencies]
+gaol = {path = "../../gaol/gaol"}
+
+[lints.clippy]
+manual_string_new = "warn"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(crown)', 'cfg(coverage)', 'cfg(llvm_pgo)', 'cfg(ohos_mock)'] }
+
+# RSA key generation could be very slow without compilation
+# optimizations, in development mode. Without optimizations, WPT might
+# consider RSA key generation tests fail due to timeout.
+# Building with higher optimization levels can speed up the key
+# generation process to avoid false negative result in those tests.
+# More details: <https://docs.rs/rsa/0.10.0-rc.18/rsa/index.html>

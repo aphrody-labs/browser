@@ -16,9 +16,10 @@ A cross-platform, low-level toolkit for GPU surface management
 
 Local Modifications:
 Updated with tools/import.py surfman (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
-The crates (1) live in third_party/surfman/<crate>, one directory per package; their manifests are rewritten by
-tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
-tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/surfman/ unchanged.
+The crates (1) live in third_party/surfman/<crate>, one directory per package; their manifests are rewritten by tools/flatten.py
+(path dependencies, inlined workspace inheritance, one version per crate). Lockfiles of the upstream are not kept.
+Patches: none. Integration fixes: yes, in tools/fixups.sh.
+Everything else of the upstream is in third_party/surfman/ unchanged.
 
 Crates:
   surfman 0.14.0 third_party/surfman/surfman

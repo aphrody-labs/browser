@@ -16,9 +16,10 @@ Fast browser automation CLI for AI agents
 
 Local Modifications:
 Updated with tools/import.py agent-browser (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
-The crates (1) live in third_party/agent-browser/<crate>, one directory per package; their manifests are rewritten by
-tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
-tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/agent-browser/ unchanged.
+The crates (1) live in third_party/agent-browser/<crate>, one directory per package; their manifests are rewritten by tools/flatten.py
+(path dependencies, inlined workspace inheritance, one version per crate). Lockfiles of the upstream are not kept.
+Patches: none. Integration fixes: none.
+Everything else of the upstream is in third_party/agent-browser/ unchanged.
 
 - JavaScript and TypeScript tooling converted to native Bun (docs/, examples/, packages/, benchmarks/, evals/, scripts/, bin/, test/): pnpm, Node, tsx, tsc-ts, esbuild, oxlint and the pnpm lockfiles and workspace files removed, bun.lock files and package.json workspaces in their place
 - scripts/*.js and bin/agent-browser.js are TypeScript on Bun APIs (Bun.file, Bun.spawn with windowsHide, Bun.env); tests are bun:test

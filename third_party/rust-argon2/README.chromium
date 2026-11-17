@@ -16,9 +16,10 @@ Rust implementation of the Argon2 password hashing function.
 
 Local Modifications:
 Updated with tools/import.py rust-argon2 (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
-The crates (1) live in third_party/rust-argon2/<crate>, one directory per package; their manifests are rewritten by
-tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
-tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/rust-argon2/ unchanged.
+The crates (1) live in third_party/rust-argon2/<crate>, one directory per package; their manifests are rewritten by tools/flatten.py
+(path dependencies, inlined workspace inheritance, one version per crate). Lockfiles of the upstream are not kept.
+Patches: rust-argon2/fallible-memory.patch, rust-argon2/legacy-low-memory.patch. Integration fixes: none.
+Everything else of the upstream is in third_party/rust-argon2/ unchanged.
 
 Crates:
   rust-argon2 3.0.0 third_party/rust-argon2/rust-argon2

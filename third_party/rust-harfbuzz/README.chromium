@@ -16,9 +16,10 @@ High-level Rust bindings to the HarfBuzz text shaping engine
 
 Local Modifications:
 Updated with tools/import.py rust-harfbuzz (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
-The crates (3) live in third_party/rust-harfbuzz/<crate>, one directory per package; their manifests are rewritten by
-tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
-tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/rust-harfbuzz/ unchanged.
+The crates (3) live in third_party/rust-harfbuzz/<crate>, one directory per package; their manifests are rewritten by tools/flatten.py
+(path dependencies, inlined workspace inheritance, one version per crate). Lockfiles of the upstream are not kept.
+Patches: none. Integration fixes: none.
+Everything else of the upstream is in third_party/rust-harfbuzz/ unchanged.
 
 Crates:
   harfbuzz 0.8.0 third_party/rust-harfbuzz/harfbuzz

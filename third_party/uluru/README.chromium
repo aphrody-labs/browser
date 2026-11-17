@@ -16,9 +16,10 @@ A simple, fast, LRU cache implementation
 
 Local Modifications:
 Updated with tools/import.py uluru (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
-The crates (1) live in third_party/uluru/<crate>, one directory per package; their manifests are rewritten by
-tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
-tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/uluru/ unchanged.
+The crates (1) live in third_party/uluru/<crate>, one directory per package; their manifests are rewritten by tools/flatten.py
+(path dependencies, inlined workspace inheritance, one version per crate). Lockfiles of the upstream are not kept.
+Patches: none. Integration fixes: none.
+Everything else of the upstream is in third_party/uluru/ unchanged.
 
 Crates:
   uluru 3.1.0 third_party/uluru/uluru

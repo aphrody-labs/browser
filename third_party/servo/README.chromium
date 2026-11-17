@@ -16,9 +16,10 @@ A component of the servo web-engine.
 
 Local Modifications:
 Updated with tools/import.py servo (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
-The crates (78) live in third_party/servo/<crate>, one directory per package; their manifests are rewritten by
-tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
-tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/servo/ unchanged. Not imported: tests/wpt/tests.
+The crates (78) live in third_party/servo/<crate>, one directory per package; their manifests are rewritten by tools/flatten.py
+(path dependencies, inlined workspace inheritance, one version per crate). Lockfiles of the upstream are not kept.
+Patches: none. Integration fixes: yes, in tools/fixups.sh.
+Everything else of the upstream is in third_party/servo/ unchanged. Not imported: tests/wpt/tests.
 
 Crates:
   servo-allocator 0.8.0 third_party/servo/servo-allocator

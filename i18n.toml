@@ -1,0 +1,3 @@
+[config]
+# Vendored upstream trees keep their own bytes.
+exclude_extra = ["src/lol_html/**", "src/mozjs_sys/**", "src/mozjs_icu_collator/**", "src/wrench/**", "src/servo-*/**", "src/html5ever/**", "src/agent-browser/**", "src/runtime/**", "src/windows-app-info.rc", "src/**/third_party/**"]

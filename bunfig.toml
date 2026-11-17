@@ -1,3 +1,22 @@
-# Native formatter (`bun fmt`); the checker is `bun check -p tools`, the linter `bun lint`.
+# Native tooling (`bun fmt`, `bun lint`, `bun check -p tools`, `bun test`): no ESLint, no Prettier, no tsc, no Jest.
+# Rules live here and nowhere else; each rule's page is docs/lint/rules/<plugin>/<rule>.mdx of the Bun fork.
 [fmt]
 printWidth = 120
+
+[lint.rules]
+# Bun APIs first: a Node.js module only where Bun has no API (node:path for path strings, node:util parseArgs,
+# node:os for hostname/tmpdir/loadavg). The rule counts Bun's own modules (bun, bun:sqlite, ...) as builtins too.
+"import/no-nodejs-modules" = ["error", { allow = ["node:path", "node:util", "node:os", "bun", "bun:sqlite", "bun:test", "bun:ffi"] }]
+"eslint/no-process-env" = "error"          # Bun.env
+"bun/prefer-builtin-sleep" = "error"       # Bun.sleep
+"bun/no-literal-temp-dir" = "error"        # os.tmpdir(), never "/tmp"
+"bun/no-cwd-dependent-path" = "error"      # import.meta.dir, not the directory the process started in
+"bun/prefer-url-for-sibling-files" = "error"
+"bun/prefer-timeout-signal" = "error"      # AbortSignal.timeout
+"bun/no-unportable-commands" = "error"
+"bun/no-console-window-flash" = "error"    # windowsHide on every spawn
+"bun/no-redundant-catch-type" = "error"
+"bun/no-useless-spread-fallback" = "error"
+# Bun's review rules: never swallow a failure, every promise handled.
+"eslint/no-empty" = "error"
+"typescript/no-floating-promises" = "error"

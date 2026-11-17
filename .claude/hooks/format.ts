@@ -2,5 +2,5 @@
 // Reads the hook payload on stdin; never fails the edit.
 const input = (await Bun.stdin.json().catch(() => null)) as { tool_input?: { file_path?: string } } | null;
 const path = input?.tool_input?.file_path?.replaceAll("\\", "/");
-if (path && /\/(tools|\.claude)\/.+\.(ts|json|html)$/.test(path) && !path.includes("/upstream/"))
-  await Bun.spawn(["bun", "fmt", path], { stdout: "ignore", stderr: "ignore" }).exited;
+if (path && /\/(tools|\.claude)\/.+\.ts$/.test(path) && !path.includes("/upstream/"))
+  await spawn(["bun", "fmt", path], { stdout: "ignore", stderr: "ignore" }).exited;

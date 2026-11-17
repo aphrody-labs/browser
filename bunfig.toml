@@ -1,0 +1,3 @@
+# Native formatter (`bun fmt`); the checker is `bun check -p tools`, the linter `bun lint`.
+[fmt]
+printWidth = 120

@@ -1,0 +1,6 @@
+{
+  "mcpServers": {
+    "agent-browser": { "command": "agent-browser", "args": ["mcp"] },
+    "obscura": { "command": "obscura", "args": ["mcp"] }
+  }
+}

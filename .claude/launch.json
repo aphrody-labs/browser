@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "acceptance dashboard",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["tools/acceptance.ts", "serve"],
+      "port": 4680
+    }
+  ]
+}

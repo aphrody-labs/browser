@@ -1,0 +1,17 @@
+id = "browser"
+kind = "browser"
+org = "aphrody-labs"
+
+[legacy]
+# Registries never free a name. crates.io holds bun_browser and bun_browser_* (18 crates, 1.4.8, published from aphrody-labs/bun-obscura under the
+# runtime's name); the checker compares hyphenated names. New crates of this repository are named browser-<unit>.
+# The other prefixes are workspace units that keep an upstream name byte for byte (the runtime's bun-* crates, Servo, Mozilla, HarfBuzz and
+# platform binding crates, agent-browser): nothing of them is published from here.
+crates = [
+  "bun-", "agent-browser", "app-units", "cgl", "cocoa", "compositor", "core-foundation", "core-graphics", "core-text", "cssparser",
+  "data-url", "dwrote", "euclid", "fnv", "fontsan", "form-urlencoded", "freetype", "gaol", "gleam", "glsl-to-cxx", "harfbuzz",
+  "hello-wasm", "html5ever", "idna", "io-surface", "ipc-channel", "lol-html", "markup5ever", "mozangle", "mozjs",
+]
+
+[exceptions]
+N013 = "crates that keep an upstream name byte for byte (bun_*, app_units, ...) keep its underscores; new crates are hyphenated browser-<unit>"

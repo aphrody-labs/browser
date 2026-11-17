@@ -210,4 +210,13 @@ const results: Result[] = await Promise.all(
   })),
 );
 for (const r of results) console.log(`${r.ok ? "ok  " : "FAIL"} ${r.name.padEnd(12)} ${r.detail}`);
+// The status line and the session start read this: private, git-ignored.
+await Bun.write(
+  ".local/presubmit.json",
+  JSON.stringify({
+    at: new Date().toISOString(),
+    ok: results.every((r) => r.ok),
+    failed: results.filter((r) => !r.ok).map((r) => r.name),
+  }) + "\n",
+);
 process.exit(results.every((r) => r.ok) ? 0 : 1);

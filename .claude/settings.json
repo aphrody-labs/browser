@@ -1,10 +1,39 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "disableClaudeAiConnectors": true,
+  "enableAllProjectMcpServers": true,
+  "attribution": { "commit": "", "pr": "" },
+  "permissions": {
+    "allow": [
+      "Bash(bun *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git ls-files *)",
+      "Bash(git grep *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git fetch *)",
+      "Bash(git merge --ff-only *)",
+      "Bash(git push origin main)",
+      "Bash(gh api *)",
+      "Bash(gh run list *)",
+      "Bash(ssh -o BatchMode=yes *)"
+    ]
+  },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [{ "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR/.claude/hooks/session.ts\"", "timeout": 10 }]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [{ "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR/.claude/hooks/format.ts\"" }]
       }
     ]
-  }
+  },
+  "statusLine": { "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR/.claude/hooks/status.ts\"" }
 }

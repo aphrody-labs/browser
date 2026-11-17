@@ -5,21 +5,21 @@ description: Test the browser's engines (Chromium headless_shell, Obscura, the a
 
 # acceptance
 
-One Bun tool, `tools/acceptance.ts` (modules in `tools/acceptance/`, data in `tools/acceptance.toml`). Nothing is a stored
+One Bun tool, `testing/acceptance.ts` (modules in `testing/acceptance/`, data in `testing/acceptance.toml`). Nothing is a stored
 result: engines, versions, hosts, the corpus and the upstream heads are read live.
 
 | Need | Command |
 |---|---|
-| Which engines and tools exist here | `bun tools/acceptance.ts engines` |
-| Newest upstream baselines (Chrome for Testing canary, Obscura release) | `bun tools/acceptance.ts install` |
-| The corpus (seeds + recursive link index from abc.xyz) | `bun tools/acceptance.ts sites` |
-| Load the corpus in every engine, judge, store, report | `bun tools/acceptance.ts run [--install] [--site <part>] [--no-discover]` |
-| Cold start + memory, hyperfine | `bun tools/acceptance.ts bench [url...]` |
-| JetStream in the full engines | `bun tools/acceptance.ts bench --jetstream [--test <workload>]` |
-| Upstream heads, releases, channels against our pins | `bun tools/acceptance.ts track` |
-| Live dashboard (HTML, `/api/state`, SSE `/api/events`) + cron | `bun tools/acceptance.ts serve --schedule` |
-| Worker + tunnel config for the published host | `bun tools/acceptance.ts deploy` |
-| Last report | `bun tools/acceptance.ts report [run] [--json]` |
+| Which engines and tools exist here | `bun testing/acceptance.ts engines` |
+| Newest upstream baselines (Chrome for Testing canary, Obscura release) | `bun testing/acceptance.ts install` |
+| The corpus (seeds + recursive link index from abc.xyz) | `bun testing/acceptance.ts sites` |
+| Load the corpus in every engine, judge, store, report | `bun testing/acceptance.ts run [--install] [--site <part>] [--no-discover]` |
+| Cold start + memory, hyperfine | `bun testing/acceptance.ts bench [url...]` |
+| JetStream in the full engines | `bun testing/acceptance.ts bench --jetstream [--test <workload>]` |
+| Upstream heads, releases, channels against our pins | `bun testing/acceptance.ts track` |
+| Live dashboard (HTML, `/api/state`, SSE `/api/events`) + cron | `bun testing/acceptance.ts serve --schedule` |
+| Worker + tunnel config for the published host | `bun testing/acceptance.ts deploy` |
+| Last report | `bun testing/acceptance.ts report [run] [--json]` |
 
 ## Where to run it
 Linux builds and heavy runs go to the build hosts, never the workstation: copy `tools/` and run there (`BROWSER_ENGINES`
@@ -37,7 +37,7 @@ reported `SKIP` there and `ok` on Linux.
   cache and instant wake-up for the dashboard; without a server the tool still works.
 
 ## Rules for changing it
-- Policy and data go to `tools/acceptance.toml`, never into the code; versions and URLs are never literals.
-- Quality gates are native: `bun check -p tools`, `bun lint tools/acceptance*`, `bun fmt` (the edit hook formats), `bun test tools/acceptance`.
+- Policy and data go to `testing/acceptance.toml`, never into the code; versions and URLs are never literals.
+- Quality gates are native and run together by `bun PRESUBMIT.ts` (`bun check`, `bun lint`, `bun fmt --check`, `bun test`); the edit hook formats TypeScript. Style and proof: `styleguide/bun/README.md`.
 - Publishing the hostname needs the zone's DNS: `deploy` only plans (wrangler `--dry-run`) and reports what is missing; do not edit the zone from here.
 - Screenshots and reports live in `out/` (ignored); cookies exported by `cookies` are credentials: never commit them.

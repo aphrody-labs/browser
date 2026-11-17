@@ -1,5 +1,5 @@
-# Native tooling (`bun fmt`, `bun lint`, `bun check -p tools`, `bun test`): no ESLint, no Prettier, no tsc, no Jest.
-# Rules live here and nowhere else; each rule's page is docs/lint/rules/<plugin>/<rule>.mdx of the Bun fork.
+# Native tooling (`bun fmt`, `bun lint`, `bun check`, `bun test`): no ESLint, no Prettier, no tsc, no Jest.
+# Rules live here and nowhere else; each rule has a page under docs/lint/rules/ of the Bun fork.
 [fmt]
 printWidth = 120
 

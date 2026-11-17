@@ -1,0 +1,3 @@
+# Commits that moved or reformatted without changing behaviour: `git config blame.ignoreRevsFile .git-blame-ignore-revs`.
+# layout: bun/, components/, third_party/<upstream>/ on the Chromium model (60.8k renames)
+e820b9d26cb

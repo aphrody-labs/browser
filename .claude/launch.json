@@ -4,7 +4,7 @@
     {
       "name": "acceptance dashboard",
       "runtimeExecutable": "bun",
-      "runtimeArgs": ["tools/acceptance.ts", "serve"],
+      "runtimeArgs": ["testing/acceptance.ts", "serve"],
       "port": 4680
     }
   ]

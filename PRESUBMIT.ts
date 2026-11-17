@@ -1,0 +1,138 @@
+#!/usr/bin/env bun
+// Presubmit, as in Chromium's PRESUBMIT.py: what must hold before a change is pushed. Native Bun tooling only.
+//   bun PRESUBMIT.ts            run every check, print one line each, exit 1 if one failed
+// The docs check needs the Bun fork's docs (BUN_DOCS=<fork>/docs, else ../bun/docs when it exists) and says so when skipped.
+import { join } from "node:path";
+
+type Result = { name: string; ok: boolean; detail: string };
+const layout = Bun.TOML.parse(await Bun.file(new URL("./tools/layout.toml", import.meta.url)).text()) as {
+  javascript: { first_party: string[]; forbidden_files: string[]; forbidden_script_words: string[] };
+  third_party: { dir: string };
+};
+const run = async (argv: string[]) => {
+  const proc = Bun.spawn(argv, { stdout: "pipe", stderr: "pipe", windowsHide: true });
+  const [out, err, code] = await Promise.all([
+    new Response(proc.stdout).text(),
+    new Response(proc.stderr).text(),
+    proc.exited,
+  ]);
+  return { out, err, code };
+};
+const tracked = async (...paths: string[]) =>
+  (await run(["git", "ls-files", "-z", "--", ...paths])).out.split("\0").filter(Boolean);
+const last = (text: string) => text.trim().split("\n").at(-1) ?? "";
+
+const checks: [string, () => Promise<Omit<Result, "name">>][] = [
+  [
+    "types",
+    async () => {
+      const { out, err, code } = await run(["bun", "check"]);
+      return { ok: code === 0, detail: last(out + err) };
+    },
+  ],
+  [
+    "lint",
+    async () => {
+      const { out, err, code } = await run(["bun", "lint", "tools", "testing", ".claude"]);
+      return { ok: code === 0, detail: last(out + err) };
+    },
+  ],
+  [
+    "format",
+    async () => {
+      const files = (await tracked("*.ts")).filter((f) => !f.startsWith("third_party/") && !f.startsWith("bun/"));
+      const { out, err, code } = await run(["bun", "fmt", "--check", ...files]);
+      return { ok: code === 0, detail: last(out + err) };
+    },
+  ],
+  [
+    "tests",
+    async () => {
+      const { out, err, code } = await run(["bun", "test", "testing", "tools"]);
+      return {
+        ok: code === 0,
+        detail: (out + err)
+          .split("\n")
+          .filter((l) => /^\s*\d+ (pass|fail)/.test(l))
+          .map((l) => l.trim())
+          .join(", "),
+      };
+    },
+  ],
+  [
+    "layout",
+    async () => {
+      const legacy = await tracked("src", "upstream");
+      const plan = await run(["bun", "tools/layout.ts", "plan", "."]);
+      const moves = last(plan.out);
+      return {
+        ok: legacy.length === 0 && moves === "0 moves",
+        detail: `${legacy.length} files in src/ or upstream/, ${moves}`,
+      };
+    },
+  ],
+  [
+    "third_party",
+    async () => {
+      await run(["bun", "tools/third_party.ts", "."]);
+      const { out } = await run(["git", "diff", "--name-only", "--", `${layout.third_party.dir}/*/README.chromium`]);
+      const stale = out.split("\n").filter(Boolean);
+      return {
+        ok: stale.length === 0,
+        detail: stale.length ? `stale: ${stale.join(", ")}` : "README.chromium up to date",
+      };
+    },
+  ],
+  [
+    "bun-native",
+    async () => {
+      const { first_party, forbidden_files, forbidden_script_words } = layout.javascript;
+      const problems: string[] = [];
+      for (const file of await tracked(...first_party)) {
+        const name = file.split("/").at(-1)!;
+        if (forbidden_files.includes(name)) problems.push(`${file}: ${name} is not a Bun file`);
+        if (name === "package.json") {
+          const scripts = ((await Bun.file(file).json()) as { scripts?: Record<string, string> }).scripts ?? {};
+          for (const [key, cmd] of Object.entries(scripts)) {
+            const word = forbidden_script_words.find((w) => new RegExp(`(^|[\\s;&|(])${w}(\\s|$)`).test(cmd));
+            if (word) problems.push(`${file}: script "${key}" runs ${word}`);
+          }
+        }
+      }
+      return {
+        ok: problems.length === 0,
+        detail: problems.length ? problems.slice(0, 5).join("; ") : "no Node.js package manager, runtime or tool left",
+      };
+    },
+  ],
+  [
+    "docs",
+    async () => {
+      const docs = Bun.env.BUN_DOCS ?? join(import.meta.dir, "..", "bun", "docs");
+      if (!(await Bun.file(join(docs, "index.mdx")).exists()))
+        return {
+          ok: !Bun.env.BUN_DOCS, // an explicit BUN_DOCS that points nowhere is an error, a missing fork checkout only a skip
+          detail: `no fork docs at ${docs}${Bun.env.BUN_DOCS ? "" : " (skipped; set BUN_DOCS)"}`,
+        };
+      const guide = await Bun.file("styleguide/bun/README.md").text();
+      const cited = [...new Set([...guide.matchAll(/`docs\/([^`]+\.mdx)`/g)].map((m) => m[1]))];
+      const missing: string[] = [];
+      for (const page of cited) if (!(await Bun.file(join(docs, page)).exists())) missing.push(page);
+      return {
+        ok: missing.length === 0,
+        detail: missing.length
+          ? `missing in the fork: ${missing.join(", ")}`
+          : `${cited.length} cited pages exist in the fork`,
+      };
+    },
+  ],
+];
+
+const results: Result[] = await Promise.all(
+  checks.map(async ([name, check]) => ({
+    name,
+    ...(await check().catch((error: Error) => ({ ok: false, detail: error.message }))),
+  })),
+);
+for (const r of results) console.log(`${r.ok ? "ok  " : "FAIL"} ${r.name.padEnd(12)} ${r.detail}`);
+process.exit(results.every((r) => r.ok) ? 0 : 1);

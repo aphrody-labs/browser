@@ -15,13 +15,13 @@ agent-browser is a native Rust CLI that gives an AI agent a browser it can drive
 ## Install
 
 ```bash
-npm install -g agent-browser
+bun add -g agent-browser
 agent-browser install           # download Chrome for Testing (first time only)
 ```
 
 - **Homebrew:** `brew install agent-browser`, then `agent-browser install`.
 - **Linux:** `agent-browser install --with-deps` also installs the browser's system libraries.
-- **No install:** `npx agent-browser open example.com`.
+- **No install:** `bunx agent-browser open example.com`.
 
 Project installs, building from source, `upgrade`, and `doctor` are covered in [Installation](https://agent-browser.dev/installation).
 
@@ -67,7 +67,7 @@ agent-browser skills list                     # specialized skills: electron, sl
 Install the discovery skill into an agent harness from [skills.sh](https://skills.sh/vercel-labs/agent-browser):
 
 ```bash
-npx skills add vercel-labs/agent-browser
+bunx skills add vercel-labs/agent-browser
 ```
 
 The installed skill is a thin stub that tells the agent to load `agent-browser skills get core`, so its instructions always match the installed CLI. Or add this to your `AGENTS.md`:
@@ -105,12 +105,12 @@ Native binaries ship for macOS (ARM64, x64), Linux (ARM64, x64, glibc and musl),
 
 ## Development
 
-Building from source requires Node.js 24 or later, pnpm 11 or later, and Rust:
+Building from source requires Bun and Rust:
 
 ```bash
-pnpm install
-pnpm build:source               # builds the dashboard and the native CLI
-pnpm link --global
+bun install
+bun run build:source            # builds the dashboard and the native CLI
+bun link
 agent-browser install
 ```
 

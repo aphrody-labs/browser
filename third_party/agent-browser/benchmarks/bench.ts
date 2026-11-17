@@ -14,48 +14,22 @@
  *   - Binary and distribution size on disk
  *
  * Usage:
- *   pnpm bench                        # default: 10 iterations, 1 warmup
- *   pnpm bench -- --iterations 20     # override iterations
- *   pnpm bench -- --warmup 2          # override warmup count
- *   pnpm bench -- --json              # write results.json
- *   pnpm bench -- --branch my-branch  # override native branch (default: ctate/native-2)
- *   pnpm bench -- --vcpus 8           # sandbox vCPUs (default: 8, higher = faster Rust build)
+ *   bun run bench                        # default: 10 iterations, 1 warmup
+ *   bun run bench --iterations 20     # override iterations
+ *   bun run bench --warmup 2          # override warmup count
+ *   bun run bench --json              # write results.json
+ *   bun run bench --branch my-branch  # override native branch (default: ctate/native-2)
+ *   bun run bench --vcpus 8           # sandbox vCPUs (default: 8, higher = faster Rust build)
  */
 
 import { Sandbox } from "@vercel/sandbox";
-import { readFileSync, writeFileSync } from "fs";
 import { scenarios, type Scenario } from "./scenarios.js";
 
-// ---------------------------------------------------------------------------
-// Env
-// ---------------------------------------------------------------------------
-
-function loadEnv() {
-  try {
-    const content = readFileSync(".env", "utf-8");
-    for (const line of content.split("\n")) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith("#")) continue;
-      const eq = trimmed.indexOf("=");
-      if (eq === -1) continue;
-      const key = trimmed.slice(0, eq);
-      let val = trimmed.slice(eq + 1);
-      if (
-        (val.startsWith('"') && val.endsWith('"')) ||
-        (val.startsWith("'") && val.endsWith("'"))
-      ) {
-        val = val.slice(1, -1);
-      }
-      process.env[key] = val;
-    }
-  } catch {}
-}
-loadEnv();
-
+// Bun loads .env on startup.
 const credentials = {
-  token: process.env.SANDBOX_VERCEL_TOKEN!,
-  teamId: process.env.SANDBOX_VERCEL_TEAM_ID!,
-  projectId: process.env.SANDBOX_VERCEL_PROJECT_ID!,
+  token: Bun.env.SANDBOX_VERCEL_TOKEN!,
+  teamId: Bun.env.SANDBOX_VERCEL_TEAM_ID!,
+  projectId: Bun.env.SANDBOX_VERCEL_PROJECT_ID!,
 };
 
 if (!credentials.token || !credentials.teamId || !credentials.projectId) {
@@ -70,7 +44,7 @@ if (!credentials.token || !credentials.teamId || !credentials.projectId) {
 // ---------------------------------------------------------------------------
 
 function parseArgs() {
-  const args = process.argv.slice(2);
+  const args = Bun.argv.slice(2);
   let iterations = 10;
   let warmup = 1;
   let json = false;
@@ -138,18 +112,12 @@ const CHROMIUM_SYSTEM_DEPS = [
 
 type SandboxInstance = InstanceType<typeof Sandbox>;
 
-async function run(
-  sandbox: SandboxInstance,
-  cmd: string,
-  args: string[],
-): Promise<string> {
+async function run(sandbox: SandboxInstance, cmd: string, args: string[]): Promise<string> {
   const result = await sandbox.runCommand(cmd, args);
   const stdout = await result.stdout();
   const stderr = await result.stderr();
   if (result.exitCode !== 0) {
-    throw new Error(
-      `Command failed (exit ${result.exitCode}): ${cmd} ${args.join(" ")}\n${stderr || stdout}`,
-    );
+    throw new Error(`Command failed (exit ${result.exitCode}): ${cmd} ${args.join(" ")}\n${stderr || stdout}`);
   }
   return stdout;
 }
@@ -180,8 +148,7 @@ function computeStats(samples: number[]): Stats {
   const sorted = [...samples].sort((a, b) => a - b);
   const sum = sorted.reduce((a, b) => a + b, 0);
   const avg = sum / sorted.length;
-  const variance =
-    sorted.reduce((acc, v) => acc + (v - avg) ** 2, 0) / sorted.length;
+  const variance = sorted.reduce((acc, v) => acc + (v - avg) ** 2, 0) / sorted.length;
   return {
     avgMs: Math.round(avg),
     stddevMs: Math.round(Math.sqrt(variance)),
@@ -219,38 +186,23 @@ interface DaemonMetrics {
   totalCpuTimeSec: number;
 }
 
-async function findDaemonPids(
-  sandbox: SandboxInstance,
-  _session: string,
-): Promise<number[]> {
+async function findDaemonPids(sandbox: SandboxInstance, _session: string): Promise<number[]> {
   // The daemon process name is "agent-browser" but session/daemon flags are
   // env vars, not command-line args, so we can't grep them from `ps`.
   // Instead, find all agent-browser processes that look like long-running daemons
   // (not short-lived CLI invocations -- those exit immediately).
-  const raw = await shellSafe(
-    sandbox,
-    `pgrep -x agent-browser 2>/dev/null || true`,
-  );
+  const raw = await shellSafe(sandbox, `pgrep -x agent-browser 2>/dev/null || true`);
   if (!raw) {
     // Fallback: broader match on process name
-    const fallback = await shellSafe(
-      sandbox,
-      `pgrep -f 'agent-browser' 2>/dev/null | head -5 || true`,
-    );
+    const fallback = await shellSafe(sandbox, `pgrep -f 'agent-browser' 2>/dev/null | head -5 || true`);
     if (!fallback) return [];
     return fallback.split("\n").map(Number).filter(Boolean);
   }
   return raw.split("\n").map(Number).filter(Boolean);
 }
 
-async function collectProcessMetrics(
-  sandbox: SandboxInstance,
-  pid: number,
-): Promise<ProcessMetrics | null> {
-  const raw = await shellSafe(
-    sandbox,
-    `ps -p ${pid} -o pid=,rss=,vsz=,%cpu=,%mem=,cputime=,comm= 2>/dev/null || true`,
-  );
+async function collectProcessMetrics(sandbox: SandboxInstance, pid: number): Promise<ProcessMetrics | null> {
+  const raw = await shellSafe(sandbox, `ps -p ${pid} -o pid=,rss=,vsz=,%cpu=,%mem=,cputime=,comm= 2>/dev/null || true`);
   if (!raw) return null;
 
   const parts = raw.trim().split(/\s+/);
@@ -276,33 +228,18 @@ async function collectProcessMetrics(
   };
 }
 
-async function getPeakRssKb(
-  sandbox: SandboxInstance,
-  pid: number,
-): Promise<number> {
-  const raw = await shellSafe(
-    sandbox,
-    `cat /proc/${pid}/status 2>/dev/null | grep VmHWM | awk '{print $2}' || echo 0`,
-  );
+async function getPeakRssKb(sandbox: SandboxInstance, pid: number): Promise<number> {
+  const raw = await shellSafe(sandbox, `cat /proc/${pid}/status 2>/dev/null | grep VmHWM | awk '{print $2}' || echo 0`);
   return Number(raw) || 0;
 }
 
-async function getChildPids(
-  sandbox: SandboxInstance,
-  pid: number,
-): Promise<number[]> {
-  const raw = await shellSafe(
-    sandbox,
-    `pgrep -P ${pid} 2>/dev/null || true`,
-  );
+async function getChildPids(sandbox: SandboxInstance, pid: number): Promise<number[]> {
+  const raw = await shellSafe(sandbox, `pgrep -P ${pid} 2>/dev/null || true`);
   if (!raw) return [];
   return raw.split("\n").map(Number).filter(Boolean);
 }
 
-async function getAllDescendantPids(
-  sandbox: SandboxInstance,
-  pid: number,
-): Promise<number[]> {
+async function getAllDescendantPids(sandbox: SandboxInstance, pid: number): Promise<number[]> {
   const all: number[] = [];
   const queue = [pid];
   while (queue.length > 0) {
@@ -382,21 +319,13 @@ async function collectDaemonMetrics(
   };
 }
 
-async function getBinarySize(
-  sandbox: SandboxInstance,
-): Promise<number> {
+async function getBinarySize(sandbox: SandboxInstance): Promise<number> {
   // Follow symlinks to get the real binary/script size
-  const raw = await shellSafe(
-    sandbox,
-    `stat -L -c %s "$(readlink -f "$(which agent-browser)")" 2>/dev/null || echo 0`,
-  );
+  const raw = await shellSafe(sandbox, `stat -L -c %s "$(readlink -f "$(which agent-browser)")" 2>/dev/null || echo 0`);
   return Number(raw) || 0;
 }
 
-async function getDistributionSize(
-  sandbox: SandboxInstance,
-  mode: DaemonMode,
-): Promise<number> {
+async function getDistributionSize(sandbox: SandboxInstance, mode: DaemonMode): Promise<number> {
   if (mode === "node") {
     // Total size of the npm package + Playwright browser
     const npmPkg = await shellSafe(
@@ -449,11 +378,7 @@ function daemonEnv(mode: DaemonMode): Record<string, string> {
   return { AGENT_BROWSER_SESSION: `bench-${mode}` };
 }
 
-async function agentBrowser(
-  sandbox: SandboxInstance,
-  args: string[],
-  mode: DaemonMode,
-): Promise<void> {
+async function agentBrowser(sandbox: SandboxInstance, args: string[], mode: DaemonMode): Promise<void> {
   const result = await sandbox.runCommand({
     cmd: "agent-browser",
     args,
@@ -462,17 +387,11 @@ async function agentBrowser(
   if (result.exitCode !== 0) {
     const stderr = await result.stderr();
     const stdout = await result.stdout();
-    throw new Error(
-      `agent-browser ${args.join(" ")} failed (exit ${result.exitCode}): ${stderr || stdout}`,
-    );
+    throw new Error(`agent-browser ${args.join(" ")} failed (exit ${result.exitCode}): ${stderr || stdout}`);
   }
 }
 
-async function timedAgentBrowser(
-  sandbox: SandboxInstance,
-  args: string[],
-  mode: DaemonMode,
-): Promise<number> {
+async function timedAgentBrowser(sandbox: SandboxInstance, args: string[], mode: DaemonMode): Promise<number> {
   const start = Date.now();
   const result = await sandbox.runCommand({
     cmd: "agent-browser",
@@ -483,9 +402,7 @@ async function timedAgentBrowser(
   if (result.exitCode !== 0) {
     const stderr = await result.stderr();
     const stdout = await result.stdout();
-    throw new Error(
-      `agent-browser ${args.join(" ")} failed (exit ${result.exitCode}): ${stderr || stdout}`,
-    );
+    throw new Error(`agent-browser ${args.join(" ")} failed (exit ${result.exitCode}): ${stderr || stdout}`);
   }
   return elapsed;
 }
@@ -537,7 +454,7 @@ async function runScenario(
       description: scenario.description,
       stats: computeStats(samples),
     };
-  } catch (err: unknown) {
+  } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return {
       name: scenario.name,
@@ -559,11 +476,7 @@ interface DaemonResults {
   metrics: DaemonMetrics;
 }
 
-async function benchmarkDaemon(
-  sandbox: SandboxInstance,
-  mode: DaemonMode,
-  label: string,
-): Promise<DaemonResults> {
+async function benchmarkDaemon(sandbox: SandboxInstance, mode: DaemonMode, label: string): Promise<DaemonResults> {
   console.log(`\n--- ${label} ---`);
 
   // Measure sizes before launch
@@ -582,13 +495,7 @@ async function benchmarkDaemon(
   const results: ScenarioResult[] = [];
   for (const scenario of scenarios) {
     process.stdout.write(`  ${scenario.name} `);
-    const result = await runScenario(
-      sandbox,
-      scenario,
-      mode,
-      config.iterations,
-      config.warmup,
-    );
+    const result = await runScenario(sandbox, scenario, mode, config.iterations, config.warmup);
     if (result.error) {
       console.log(`FAILED: ${result.error.slice(0, 120)}`);
     } else {
@@ -603,19 +510,10 @@ async function benchmarkDaemon(
 
   // Collect system metrics after scenarios (daemon is still running)
   const session = `bench-${mode}`;
-  const metrics = await collectDaemonMetrics(
-    sandbox,
-    session,
-    coldStartMs,
-    binarySizeBytes,
-    distributionSizeBytes,
-  );
+  const metrics = await collectDaemonMetrics(sandbox, session, coldStartMs, binarySizeBytes, distributionSizeBytes);
 
   // Also grab a full process snapshot for context
-  const psOutput = await shellSafe(
-    sandbox,
-    `ps aux --sort=-rss | head -20`,
-  );
+  const psOutput = await shellSafe(sandbox, `ps aux --sort=-rss | head -20`);
   console.log(`\n  Process snapshot (top by RSS):`);
   for (const line of psOutput.split("\n").slice(0, 10)) {
     console.log(`    ${line}`);
@@ -664,38 +562,23 @@ async function installNativeDaemon(sandbox: SandboxInstance, branch: string) {
 
   console.log("  Installing build tools and Rust toolchain...");
   const rustStart = Date.now();
-  await shell(
-    sandbox,
-    "sudo dnf install -y gcc gcc-c++ make perl-core openssl-devel 2>&1",
-  );
-  await shell(
-    sandbox,
-    "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>&1",
-  );
+  await shell(sandbox, "sudo dnf install -y gcc gcc-c++ make perl-core openssl-devel 2>&1");
+  await shell(sandbox, "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>&1");
   console.log(`  Rust + build tools installed (${Math.round((Date.now() - rustStart) / 1000)}s)`);
 
   console.log(`  Cloning repo (branch: ${branch})...`);
   const cloneStart = Date.now();
-  await shell(
-    sandbox,
-    `git clone --depth 1 --branch ${branch} ${REPO_URL} /tmp/agent-browser 2>&1`,
-  );
+  await shell(sandbox, `git clone --depth 1 --branch ${branch} ${REPO_URL} /tmp/agent-browser 2>&1`);
   console.log(`  Cloned (${Math.round((Date.now() - cloneStart) / 1000)}s)`);
 
   console.log("  Building release binary (cargo build --release)...");
   const buildStart = Date.now();
-  await shell(
-    sandbox,
-    "source $HOME/.cargo/env && cd /tmp/agent-browser/cli && cargo build --release 2>&1",
-  );
+  await shell(sandbox, "source $HOME/.cargo/env && cd /tmp/agent-browser/cli && cargo build --release 2>&1");
   console.log(`  Built (${Math.round((Date.now() - buildStart) / 1000)}s)`);
 
   const npmBinPath = (await shell(sandbox, "which agent-browser")).trim();
   console.log(`  Replacing ${npmBinPath} with native build...`);
-  await shell(
-    sandbox,
-    `sudo cp /tmp/agent-browser/cli/target/release/agent-browser ${npmBinPath}`,
-  );
+  await shell(sandbox, `sudo cp /tmp/agent-browser/cli/target/release/agent-browser ${npmBinPath}`);
 
   const version = await shell(sandbox, "agent-browser --version 2>&1 || true");
   console.log(`  version: ${version.trim()}`);
@@ -708,8 +591,7 @@ async function installNativeDaemon(sandbox: SandboxInstance, branch: string) {
 function printResults(node: DaemonResults, native: DaemonResults) {
   console.log("\n\n========== COMMAND LATENCY ==========\n");
 
-  const header =
-    "Scenario".padEnd(20) + "| Node avg +/-sd  | Rust avg +/-sd  | Speedup";
+  const header = "Scenario".padEnd(20) + "| Node avg +/-sd  | Rust avg +/-sd  | Speedup";
   const sep = "-".repeat(20) + "|-----------------|-----------------|--------";
   console.log(header);
   console.log(sep);
@@ -728,10 +610,7 @@ function printResults(node: DaemonResults, native: DaemonResults) {
 
     const nodeVal = `${n.stats.avgMs} +/-${n.stats.stddevMs}ms`.padEnd(15);
     const rustVal = `${r.stats.avgMs} +/-${r.stats.stddevMs}ms`.padEnd(15);
-    const speedup =
-      r.stats.avgMs > 0
-        ? (n.stats.avgMs / r.stats.avgMs).toFixed(2) + "x"
-        : "--";
+    const speedup = r.stats.avgMs > 0 ? (n.stats.avgMs / r.stats.avgMs).toFixed(2) + "x" : "--";
     console.log(`${name}| ${nodeVal} | ${rustVal} | ${speedup.padStart(6)}`);
   }
 
@@ -746,12 +625,7 @@ function printResults(node: DaemonResults, native: DaemonResults) {
   }
 
   const metricRows: [string, string, string, string][] = [
-    [
-      "Cold start",
-      `${nm.coldStartMs}ms`,
-      `${rm.coldStartMs}ms`,
-      ratio(nm.coldStartMs, rm.coldStartMs),
-    ],
+    ["Cold start", `${nm.coldStartMs}ms`, `${rm.coldStartMs}ms`, ratio(nm.coldStartMs, rm.coldStartMs)],
     [
       "Binary size",
       formatBytes(nm.binarySizeBytes),
@@ -764,53 +638,30 @@ function printResults(node: DaemonResults, native: DaemonResults) {
       formatBytes(rm.distributionSizeBytes),
       ratio(nm.distributionSizeBytes, rm.distributionSizeBytes),
     ],
-    [
-      "Daemon RSS",
-      formatKb(nm.daemonRssKb),
-      formatKb(rm.daemonRssKb),
-      ratio(nm.daemonRssKb, rm.daemonRssKb),
-    ],
+    ["Daemon RSS", formatKb(nm.daemonRssKb), formatKb(rm.daemonRssKb), ratio(nm.daemonRssKb, rm.daemonRssKb)],
     [
       "Daemon peak RSS",
       formatKb(nm.daemonPeakRssKb),
       formatKb(rm.daemonPeakRssKb),
       ratio(nm.daemonPeakRssKb, rm.daemonPeakRssKb),
     ],
-    [
-      "Browser RSS",
-      formatKb(nm.browserRssKb),
-      formatKb(rm.browserRssKb),
-      ratio(nm.browserRssKb, rm.browserRssKb),
-    ],
+    ["Browser RSS", formatKb(nm.browserRssKb), formatKb(rm.browserRssKb), ratio(nm.browserRssKb, rm.browserRssKb)],
     [
       "Daemon CPU time",
       `${nm.daemonCpuTimeSec.toFixed(1)}s`,
       `${rm.daemonCpuTimeSec.toFixed(1)}s`,
       ratio(nm.daemonCpuTimeSec, rm.daemonCpuTimeSec),
     ],
-    [
-      "Daemon processes",
-      String(nm.daemonProcesses.length),
-      String(rm.daemonProcesses.length),
-      "--",
-    ],
-    [
-      "Browser processes",
-      String(nm.browserProcesses.length),
-      String(rm.browserProcesses.length),
-      "--",
-    ],
+    ["Daemon processes", String(nm.daemonProcesses.length), String(rm.daemonProcesses.length), "--"],
+    ["Browser processes", String(nm.browserProcesses.length), String(rm.browserProcesses.length), "--"],
   ];
 
-  const mHeader =
-    "Metric".padEnd(20) + "| Node".padEnd(14) + "| Rust".padEnd(14) + "| Ratio";
+  const mHeader = "Metric".padEnd(20) + "| Node".padEnd(14) + "| Rust".padEnd(14) + "| Ratio";
   const mSep = "-".repeat(20) + "|" + "-".repeat(13) + "|" + "-".repeat(13) + "|--------";
   console.log(mHeader);
   console.log(mSep);
   for (const [metric, nodeVal, rustVal, ratio] of metricRows) {
-    console.log(
-      `${metric.padEnd(20)}| ${nodeVal.padEnd(12)}| ${rustVal.padEnd(12)}| ${ratio}`,
-    );
+    console.log(`${metric.padEnd(20)}| ${nodeVal.padEnd(12)}| ${rustVal.padEnd(12)}| ${ratio}`);
   }
 }
 
@@ -839,19 +690,11 @@ async function main() {
 
     // Phase 1: Node.js daemon (from published npm package)
     await installNodeDaemon(sandbox);
-    const nodeResults = await benchmarkDaemon(
-      sandbox,
-      "node",
-      "Node.js Daemon (npm)",
-    );
+    const nodeResults = await benchmarkDaemon(sandbox, "node", "Node.js Daemon (npm)");
 
     // Phase 2: Rust native daemon (built from branch)
     await installNativeDaemon(sandbox, config.branch);
-    const nativeResults = await benchmarkDaemon(
-      sandbox,
-      "native",
-      `Rust Native Daemon (${config.branch})`,
-    );
+    const nativeResults = await benchmarkDaemon(sandbox, "native", `Rust Native Daemon (${config.branch})`);
 
     printResults(nodeResults, nativeResults);
 
@@ -881,10 +724,10 @@ async function main() {
           metrics: nativeResults.metrics,
         },
       };
-      writeFileSync("results.json", JSON.stringify(output, null, 2));
+      await Bun.write(new URL("results.json", import.meta.url), JSON.stringify(output, null, 2));
       console.log("\nResults written to results.json");
     }
-  } catch (err: unknown) {
+  } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`\nFatal error: ${message}`);
     process.exit(1);
@@ -898,4 +741,4 @@ async function main() {
   }
 }
 
-main();
+await main();

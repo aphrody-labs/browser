@@ -1,50 +1,28 @@
-import assert from "node:assert/strict";
-import { createRequire } from "node:module";
-import { test } from "node:test";
-import { runInNewContext } from "node:vm";
+import { expect, test } from "bun:test";
 import { evaluate } from "@mdx-js/mdx";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import * as runtime from "react/jsx-runtime";
-import { transformSync } from "esbuild";
-import {
-  baseline,
-  pages,
-  normalize,
-  text,
-  renderedHeadings,
-} from "./helpers.mjs";
+import { evaluateOriginal } from "../scripts/original-modules.ts";
+import { baseline, pages, normalize, text, renderedHeadings } from "./helpers.ts";
 
-const require = createRequire(import.meta.url);
-const evaluated = { exports: {} };
-runInNewContext(
-  transformSync(baseline.sources["docs/mdx-components.tsx"].raw, {
-    sourcefile: "original-mdx-components.tsx",
-    loader: "tsx",
-    format: "cjs",
-    target: "es2022",
-    jsx: "automatic",
-  }).code,
+const evaluated = await evaluateOriginal<{ useMDXComponents: (components: object) => Record<string, unknown> }>(
+  baseline.sources["docs/mdx-components.tsx"].raw,
+  "original-mdx-components.tsx",
   {
-    module: evaluated,
-    exports: evaluated.exports,
-    require(specifier) {
-      if (specifier === "react/jsx-runtime") return require(specifier);
-      if (specifier === "next/link")
-        return {
-          __esModule: true,
-          default: (props) => React.createElement("a", props),
-        };
-      if (specifier === "@/components/code-block")
-        return {
-          CodeBlock: ({ code }) => React.createElement("pre", null, code),
-        };
-      throw new Error(`Unexpected original component import ${specifier}`);
+    "react/jsx-runtime": runtime,
+    "react/jsx-dev-runtime": await import("react/jsx-dev-runtime"),
+    "next/link": {
+      __esModule: true,
+      default: (props) => React.createElement("a", props),
+    },
+    "@/components/code-block": {
+      CodeBlock: ({ code }) => React.createElement("pre", null, code),
     },
   },
 );
 const components = {
-  ...evaluated.exports.useMDXComponents({}),
+  ...evaluated.useMDXComponents({}),
   pre: (props) => React.createElement("pre", props),
   DiffDemo: () => null,
 };
@@ -52,10 +30,7 @@ const components = {
 test("actual original React heading components recurse through nested inline children without deduplicating", () => {
   const children = [
     "Nested ",
-    React.createElement("strong", { key: "bold" }, [
-      "bold ",
-      React.createElement("code", { key: "code" }, "--Flag"),
-    ]),
+    React.createElement("strong", { key: "bold" }, ["bold ", React.createElement("code", { key: "code" }, "--Flag")]),
     " & ",
     React.createElement("a", { key: "link", href: "/" }, "Link"),
     " ",
@@ -69,7 +44,7 @@ test("actual original React heading components recurse through nested inline chi
       React.createElement(components.h2, null, children),
     ),
   );
-  assert.deepEqual(renderedHeadings(html), [
+  expect(renderedHeadings(html)).toStrictEqual([
     {
       level: 2,
       text: "Nested bold --Flag & Link 42",
@@ -90,15 +65,13 @@ for (const page of pages) {
       "",
     );
     const { default: Content } = await evaluate(raw, { ...runtime });
-    const html = renderToStaticMarkup(
-      React.createElement(Content, { components }),
-    );
-    assert.deepEqual(renderedHeadings(html), page.headings);
+    const html = renderToStaticMarkup(React.createElement(Content, { components }));
+    expect(renderedHeadings(html)).toStrictEqual(page.headings);
     const visible = text(html);
     for (const sample of page.content)
-      assert.ok(
+      expect(
         visible.includes(normalize(sample)),
         `${page.path}: invalid SSR oracle sample ${JSON.stringify(sample)}`,
-      );
+      ).toBeTruthy();
   });
 }

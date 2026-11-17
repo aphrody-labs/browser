@@ -1,9 +1,9 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
  * Copies release binaries into the per-platform npm packages.
  *
- * Usage: node scripts/stage-native-packages.js <artifacts-dir>
+ * Usage: bun scripts/stage-native-packages.ts <artifacts-dir>
  *
  * The artifacts directory holds the files built by the release workflow
  * (agent-browser-linux-x64, agent-browser-win32-x64.exe, ...), in any layout.
@@ -11,11 +11,10 @@
  * if any binary is missing or implausibly small.
  */
 
-import { chmodSync, copyFileSync, mkdirSync, readdirSync, statSync } from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { basename, join } from 'node:path';
+import { ensureExecutable } from './native.ts';
+import { rootDir } from './workspace.ts';
 
-const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MIN_SIZE = 100000;
 
 // Release artifact name -> platform package directory and executable name
@@ -27,28 +26,23 @@ const NATIVE_PACKAGES = [
   ['agent-browser-linux-musl-x64', 'cli-linux-x64-musl', 'agent-browser'],
   ['agent-browser-linux-musl-arm64', 'cli-linux-arm64-musl', 'agent-browser'],
   ['agent-browser-win32-x64.exe', 'cli-win32-x64-msvc', 'agent-browser.exe'],
-];
+] as const;
 
-function findFiles(directory) {
-  const files = new Map();
-  for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    const path = join(directory, entry.name);
-    if (entry.isDirectory()) {
-      for (const [name, nested] of findFiles(path)) files.set(name, nested);
-    } else {
-      files.set(entry.name, path);
-    }
+async function findFiles(directory: string): Promise<Map<string, string>> {
+  const files = new Map<string, string>();
+  for await (const path of new Bun.Glob('**/*').scan({ cwd: directory, absolute: true })) {
+    files.set(basename(path), path);
   }
   return files;
 }
 
-const artifactsDir = process.argv[2];
+const artifactsDir = Bun.argv[2];
 if (!artifactsDir) {
-  console.error('Usage: node scripts/stage-native-packages.js <artifacts-dir>');
+  console.error('Usage: bun scripts/stage-native-packages.ts <artifacts-dir>');
   process.exit(1);
 }
 
-const artifacts = findFiles(artifactsDir);
+const artifacts = await findFiles(artifactsDir);
 let errors = 0;
 for (const [artifact, packageDir, file] of NATIVE_PACKAGES) {
   const source = artifacts.get(artifact);
@@ -57,16 +51,15 @@ for (const [artifact, packageDir, file] of NATIVE_PACKAGES) {
     errors++;
     continue;
   }
-  const size = statSync(source).size;
+  const size = Bun.file(source).size;
   if (size < MIN_SIZE) {
     console.error(`ERROR: ${artifact} is too small (${size} bytes, expected >= ${MIN_SIZE})`);
     errors++;
     continue;
   }
   const destination = join(rootDir, 'packages', '@agent-browser', packageDir, 'bin', file);
-  mkdirSync(dirname(destination), { recursive: true });
-  copyFileSync(source, destination);
-  chmodSync(destination, 0o755);
+  await Bun.write(destination, Bun.file(source));
+  await ensureExecutable(destination);
   console.log(`OK: ${artifact} -> packages/@agent-browser/${packageDir}/bin/${file} (${size} bytes)`);
 }
 

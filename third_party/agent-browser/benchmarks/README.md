@@ -28,14 +28,14 @@ System metrics collected while the daemon runs:
 
 ## Prerequisites
 
-- Node.js and pnpm
+- Bun
 - Vercel Sandbox credentials: token, team ID, and project ID
 
 ## Setup
 
 ```bash
 cd benchmarks
-pnpm install
+bun install
 cp .env.example .env
 ```
 
@@ -50,12 +50,12 @@ SANDBOX_VERCEL_PROJECT_ID=your_project_id
 ## Usage
 
 ```bash
-pnpm bench                             # 10 iterations, 1 warmup, 8 vCPUs
-pnpm bench -- --iterations 20          # more iterations for tighter stats
-pnpm bench -- --warmup 2               # extra warmup iterations
-pnpm bench -- --json                   # write results.json
-pnpm bench -- --branch main            # build phase 2 from another branch
-pnpm bench -- --vcpus 16               # more vCPUs for a faster Rust build
+bun run bench                             # 10 iterations, 1 warmup, 8 vCPUs
+bun run bench --iterations 20          # more iterations for tighter stats
+bun run bench --warmup 2               # extra warmup iterations
+bun run bench --json                   # write results.json
+bun run bench --branch main            # build phase 2 from another branch
+bun run bench --vcpus 16               # more vCPUs for a faster Rust build
 ```
 
 ## How it works

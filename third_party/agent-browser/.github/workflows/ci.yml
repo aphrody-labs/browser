@@ -15,13 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Check version sync
-        run: node scripts/check-version-sync.js
+        run: bun scripts/check-version-sync.ts
 
   launcher:
     name: Launcher
@@ -30,16 +28,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck scripts and launcher
+        run: bun check
 
       - name: Run launcher tests
-        run: pnpm run test:launcher
+        run: bun run test:launcher
 
   docs:
     name: Docs (${{ matrix.environment }})
@@ -53,33 +52,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: pnpm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Test original documentation contract
-        run: pnpm --filter docs test
+        run: bun run --filter docs test
 
       - name: Typecheck documentation
-        run: pnpm --filter docs type-check
-
-      # Also check with the official TypeScript compiler while tsc-ts is new.
-      - name: Typecheck documentation (tsc)
-        run: pnpm --filter docs type-check:tsc
+        run: bun run --filter docs type-check
 
       - name: Build documentation
-        run: pnpm --filter docs build
+        run: bun run --filter docs build
 
       - name: Verify public documentation routes
-        run: pnpm --filter docs test:routes ${{ matrix.environment == 'preview' && '--preview' || '' }}
+        run: bun run --filter docs test:routes ${{ matrix.environment == 'preview' && '--preview' || '' }}
 
   rust:
     name: Rust
@@ -114,20 +103,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: pnpm install --filter dashboard
+        run: bun install --filter dashboard
         working-directory: packages/dashboard
 
       - name: Build dashboard
-        run: pnpm build
+        run: bun run build
         working-directory: packages/dashboard
 
   sandbox-package:
@@ -137,20 +121,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: pnpm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Test sandbox package
-        run: pnpm --filter @agent-browser/sandbox test
+        run: bun run --filter @agent-browser/sandbox test
 
   eve-package:
     name: Eve Package
@@ -159,27 +137,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: pnpm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Typecheck Eve package
-        run: pnpm --filter @agent-browser/eve typecheck
-
-      # Also check with the official TypeScript compiler while tsc-ts is new.
-      - name: Typecheck Eve package (tsc)
-        run: pnpm --filter @agent-browser/eve typecheck:tsc
+        run: bun check -p packages/@agent-browser/eve
 
       - name: Test Eve package
-        run: pnpm --filter @agent-browser/eve test
+        run: bun run --filter @agent-browser/eve test
 
   rust-cross:
     name: Rust (${{ matrix.os }} - ${{ matrix.target }})
@@ -328,13 +296,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -360,13 +323,13 @@ jobs:
           fi
         shell: bash
 
-      # pnpm pack resolves the workspace:* optionalDependencies to this version.
+      # bun pm pack resolves the workspace:* optionalDependencies to this version.
       # npm pack keeps the binary's execute bit, as the release workflow does.
       - name: Pack agent-browser and the platform package
         run: |
-          pnpm install --frozen-lockfile --filter agent-browser
+          bun install --frozen-lockfile --filter agent-browser
           mkdir -p packs
-          pnpm pack --pack-destination packs
+          bun pm pack --destination packs
           (cd packages/@agent-browser/${{ matrix.package }} && npm pack --pack-destination ../../../packs)
           ls -la packs
         shell: bash

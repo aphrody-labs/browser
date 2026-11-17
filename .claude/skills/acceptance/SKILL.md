@@ -19,6 +19,7 @@ result: engines, versions, hosts, the corpus and the upstream heads are read liv
 | Upstream heads, releases, channels against our pins | `bun testing/acceptance.ts track` |
 | Live dashboard (HTML, `/api/state`, SSE `/api/events`) + cron | `bun testing/acceptance.ts serve --schedule` |
 | Worker + tunnel config for the published host | `bun testing/acceptance.ts deploy` |
+| Where each engine fell short of the full one (the router's data) | `bun testing/acceptance.ts lessons [--json]` |
 | Last report | `bun testing/acceptance.ts report [run] [--json]` |
 
 ## Where to run it

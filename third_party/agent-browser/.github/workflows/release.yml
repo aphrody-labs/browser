@@ -28,24 +28,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Compare package.json version to npm and check GitHub release
         id: check
         run: |
-          LOCAL_VERSION=$(node -p "require('./package.json').version")
-          SANDBOX_VERSION=$(node -p "require('./packages/@agent-browser/sandbox/package.json').version")
-          EVE_VERSION=$(node -p "require('./packages/@agent-browser/eve/package.json').version")
+          LOCAL_VERSION=$(bun -p "require('./package.json').version")
+          SANDBOX_VERSION=$(bun -p "require('./packages/@agent-browser/sandbox/package.json').version")
+          EVE_VERSION=$(bun -p "require('./packages/@agent-browser/eve/package.json').version")
           echo "Local version: $LOCAL_VERSION"
           echo "Sandbox package version: $SANDBOX_VERSION"
           echo "Eve package version: $EVE_VERSION"
 
-          NPM_VERSION=$(npm view agent-browser version 2>/dev/null || echo "0.0.0")
-          SANDBOX_NPM_VERSION=$(npm view @agent-browser/sandbox version 2>/dev/null || echo "0.0.0")
-          EVE_NPM_VERSION=$(npm view @agent-browser/eve version 2>/dev/null || echo "0.0.0")
+          NPM_VERSION=$(bun info agent-browser version 2>/dev/null || echo "0.0.0")
+          SANDBOX_NPM_VERSION=$(bun info @agent-browser/sandbox version 2>/dev/null || echo "0.0.0")
+          EVE_NPM_VERSION=$(bun info @agent-browser/eve version 2>/dev/null || echo "0.0.0")
           echo "npm version: $NPM_VERSION"
           echo "@agent-browser/sandbox npm version: $SANDBOX_NPM_VERSION"
           echo "@agent-browser/eve npm version: $EVE_NPM_VERSION"
@@ -143,23 +141,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: pnpm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install npm dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Sync version
-        run: pnpm run version:sync
+        run: bun run version:sync
 
       - name: Build dashboard
-        run: pnpm --filter dashboard build
+        run: bun run --filter dashboard build
 
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -255,21 +247,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      # Bun cannot sign provenance statements yet (bun publish rejects --provenance), so the final publish step
+      # hands the tarball built by bun pm pack to npm.
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: Setup Node.js
+      - name: Setup Node.js for npm provenance
         uses: actions/setup-node@v4
         with:
-          node-version-file: .node-version
-          cache: pnpm
+          node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Sync version
-        run: pnpm run version:sync
+        run: bun run version:sync
 
       - name: Download all binary artifacts
         if: needs.check-release.outputs.should_release == 'true'
@@ -279,11 +272,10 @@ jobs:
 
       - name: Stage binaries into platform packages
         if: needs.check-release.outputs.should_release == 'true'
-        run: node scripts/stage-native-packages.js artifacts
+        run: bun scripts/stage-native-packages.ts artifacts
 
       # Each platform package must exist before agent-browser, which lists them
-      # as optionalDependencies. npm publish keeps the binary's execute bit,
-      # which pnpm pack drops for files that are not bin entries.
+      # as optionalDependencies. npm publish keeps the binary's execute bit.
       - name: Publish platform packages
         if: needs.check-release.outputs.should_release == 'true'
         env:
@@ -291,8 +283,8 @@ jobs:
         run: |
           set -euo pipefail
           for dir in packages/@agent-browser/cli-*; do
-            PACKAGE_NAME=$(node -p "require('./${dir}/package.json').name")
-            if npm view "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
+            PACKAGE_NAME=$(bun -p "require('./${dir}/package.json').name")
+            if bun info "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
               echo "${PACKAGE_NAME}@${VERSION} is already published; skipping"
             else
               (cd "$dir" && npm publish --provenance --access public)
@@ -306,10 +298,11 @@ jobs:
           VERSION: ${{ needs.check-release.outputs.version }}
         run: |
           set -euo pipefail
-          if pnpm view "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
+          if bun info "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
             echo "${PACKAGE_NAME}@${VERSION} is already published; skipping"
           else
-            pnpm publish --provenance --no-git-checks
+            bun pm pack --destination "$RUNNER_TEMP/pack-${PACKAGE_NAME//\//-}" --quiet
+            npm publish "$RUNNER_TEMP/pack-${PACKAGE_NAME//\//-}"/*.tgz --provenance --access public
           fi
 
       - name: Publish @agent-browser/sandbox
@@ -320,10 +313,11 @@ jobs:
           VERSION: ${{ needs.check-release.outputs.version }}
         run: |
           set -euo pipefail
-          if pnpm view "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
+          if bun info "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
             echo "${PACKAGE_NAME}@${VERSION} is already published; skipping"
           else
-            pnpm publish --provenance --access public --no-git-checks
+            bun pm pack --destination "$RUNNER_TEMP/pack-${PACKAGE_NAME//\//-}" --quiet
+            npm publish "$RUNNER_TEMP/pack-${PACKAGE_NAME//\//-}"/*.tgz --provenance --access public
           fi
 
       - name: Publish @agent-browser/eve
@@ -334,10 +328,11 @@ jobs:
           VERSION: ${{ needs.check-release.outputs.version }}
         run: |
           set -euo pipefail
-          if pnpm view "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
+          if bun info "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
             echo "${PACKAGE_NAME}@${VERSION} is already published; skipping"
           else
-            pnpm publish --provenance --access public --no-git-checks
+            bun pm pack --destination "$RUNNER_TEMP/pack-${PACKAGE_NAME//\//-}" --quiet
+            npm publish "$RUNNER_TEMP/pack-${PACKAGE_NAME//\//-}"/*.tgz --provenance --access public
           fi
 
   github-release:

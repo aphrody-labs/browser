@@ -1,12 +1,8 @@
-import { existsSync } from "node:fs";
-import process from "node:process";
+#!/usr/bin/env bun
+
 import { runAgentBrowserCommand, withAgentBrowserSandbox } from "@agent-browser/sandbox/vercel";
 
-if (existsSync(".env.local") && typeof process.loadEnvFile === "function") {
-  process.loadEnvFile(".env.local");
-}
-
-const url = process.argv[2] ?? "https://example.com";
+const url = Bun.argv[2] ?? "https://example.com";
 
 const snapshot = await withAgentBrowserSandbox(async (sandbox) => {
   await runAgentBrowserCommand(sandbox, ["open", url]);

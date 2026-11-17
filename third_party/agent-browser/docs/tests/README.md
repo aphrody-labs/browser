@@ -11,14 +11,14 @@ The generator executes the original slugger and recursive React-child text extra
 Never regenerate fixtures from migrated output to accept a failing assertion. To verify reproducibility from the pinned commit:
 
 ```sh
-node scripts/capture-docs-baseline.mjs --check
+bun scripts/capture-docs-baseline.ts --check
 ```
 
 To reproduce the same frozen baseline explicitly:
 
 ```sh
-node scripts/capture-docs-baseline.mjs
-node scripts/capture-docs-baseline.mjs --check
+bun scripts/capture-docs-baseline.ts
+bun scripts/capture-docs-baseline.ts --check
 ```
 
 ## Running tests
@@ -26,19 +26,19 @@ node scripts/capture-docs-baseline.mjs --check
 Run from `docs/`:
 
 ```sh
-node --test tests/docs-baseline.test.mjs tests/baseline-oracle.test.mjs
-node scripts/test-routes.mjs
+bun test tests/docs-baseline.test.ts tests/baseline-oracle.test.ts
+bun scripts/test-routes.ts
 ```
 
-The route runner requires a completed production build. It starts an isolated `next start` process on an ephemeral loopback port, waits for readiness, runs the Node tests, propagates failures, and cleans up its child processes. It does not build or start a development server. Its lifecycle follows the portless and json-render reference suites.
+The route runner requires a completed production build. It starts an isolated `bun --bun next start` process on an ephemeral loopback port, waits for readiness, runs the Bun tests, propagates failures, and cleans up its child processes. It does not build or start a development server. Its lifecycle follows the portless and json-render reference suites.
 
 Production and preview checks need matching build environments, including statically generated metadata and robots:
 
 ```sh
-VERCEL_ENV=production pnpm run build
-node scripts/test-routes.mjs
-VERCEL_ENV=preview pnpm run build
-node scripts/test-routes.mjs --preview
+VERCEL_ENV=production bun run build
+bun scripts/test-routes.ts
+VERCEL_ENV=preview bun run build
+bun scripts/test-routes.ts --preview
 ```
 
 The runner explicitly sets `VERCEL_ENV` and `DOCS_EXPECT_NOINDEX`. Preview requires `noindex` in HTML metadata and response headers and `Disallow: /` in robots. Reusing a production build can expose metadata baked into the wrong environment.
@@ -46,10 +46,10 @@ The runner explicitly sets `VERCEL_ENV` and `DOCS_EXPECT_NOINDEX`. Preview requi
 To test an already running production server without starting or stopping any server:
 
 ```sh
-DOCS_TEST_URL=http://127.0.0.1:3000 DOCS_EXPECT_NOINDEX=0 node --test tests/docs-routes.test.mjs
+DOCS_TEST_URL=http://127.0.0.1:3000 DOCS_EXPECT_NOINDEX=0 bun test tests/docs-routes.test.ts
 ```
 
-Set `DOCS_EXPECT_NOINDEX=1` when testing an existing preview server. The capture script and original-render oracle use `typescript`, `@mdx-js/mdx`, `react`, and `react-dom`; the HTTP suite uses Node built-ins.
+Set `DOCS_EXPECT_NOINDEX=1` when testing an existing preview server. The capture script and original-render oracle use `@babel/parser`, `@mdx-js/mdx`, `react`, and `react-dom`; the HTTP suite uses Bun's socket and fetch APIs.
 
 ## Regression invariants
 

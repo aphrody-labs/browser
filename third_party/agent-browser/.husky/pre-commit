@@ -1,2 +1,2 @@
-node scripts/sync-version.js
-git add cli/Cargo.toml cli/Cargo.lock
+bun scripts/sync-version.ts
+git add agent-browser/Cargo.toml agent-browser/Cargo.lock

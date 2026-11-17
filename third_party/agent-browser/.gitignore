@@ -59,9 +59,6 @@ docs/.next/
 docs/out/
 docs/package-lock.json
 
-# pnpm
-.pnpm-store/
-
 # TypeScript
 *.tsbuildinfo
 

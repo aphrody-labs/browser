@@ -1,7 +1,9 @@
+#!/usr/bin/env bun
+
 /**
  * Create a Vercel Sandbox snapshot with agent-browser + Chromium pre-installed.
  *
- * Run once:   npx tsx scripts/create-snapshot.ts
+ * Run once:   bun scripts/create-snapshot.ts
  * Then set:   AGENT_BROWSER_SNAPSHOT_ID=<output id>
  *
  * Authentication (one of):
@@ -11,15 +13,10 @@
  * This makes sandbox creation sub-second instead of ~30s.
  */
 
-import "dotenv/config";
 import { createSnapshot, getSandboxCredentials } from "../lib/agent-browser-sandbox";
 
-const hasExplicitCreds = !!(
-  process.env.VERCEL_TOKEN &&
-  process.env.VERCEL_TEAM_ID &&
-  process.env.VERCEL_PROJECT_ID
-);
-const hasOidc = !!process.env.VERCEL_OIDC_TOKEN;
+const hasExplicitCreds = !!(Bun.env.VERCEL_TOKEN && Bun.env.VERCEL_TEAM_ID && Bun.env.VERCEL_PROJECT_ID);
+const hasOidc = !!Bun.env.VERCEL_OIDC_TOKEN;
 
 if (!hasExplicitCreds && !hasOidc) {
   console.error(

@@ -1,13 +1,9 @@
-import { readFileSync } from "fs";
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
 import type { EvalCase } from "../lib/types.ts";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const CORE_PATH = resolve(__dirname, "../../skill-data/core/SKILL.md");
+const CORE_SKILL = await Bun.file(new URL("../../skill-data/core/SKILL.md", import.meta.url)).text();
 
 /** Simulates an agent that already ran `agent-browser skills get core`. */
-export function coreContext(core = readFileSync(CORE_PATH, "utf-8")): string {
+export function coreContext(core = CORE_SKILL): string {
   return [
     "You already ran `agent-browser skills get core`. It printed:",
     "<skill-output>",

@@ -13,7 +13,7 @@ For eve agents, use [`@agent-browser/eve`](../eve/). It mounts the full browser 
 Install `@vercel/sandbox` in the consuming app:
 
 ```bash
-pnpm add @vercel/sandbox
+bun add @vercel/sandbox
 ```
 
 Then use the Vercel provider entry:
@@ -53,7 +53,7 @@ await sandbox.stop();
 
 ## MCP tool catalog
 
-`@agent-browser/sandbox/mcp-tools.json` lists every `agent-browser mcp` tool with its title, description, input schema, annotations, and startup profiles, generated from the CLI of the same version. Use it to build tools for runtimes that cannot run `tools/list`, and call them with `agent-browser mcp call <tool> '<json>'`. Run `pnpm mcp-tools:sync` after changing MCP tools; a Rust test fails while the file is out of date.
+`@agent-browser/sandbox/mcp-tools.json` lists every `agent-browser mcp` tool with its title, description, input schema, annotations, and startup profiles, generated from the CLI of the same version. Use it to build tools for runtimes that cannot run `tools/list`, and call them with `agent-browser mcp call <tool> '<json>'`. Run `bun run mcp-tools:sync` after changing MCP tools; a Rust test fails while the file is out of date.
 
 ## Version pinning
 

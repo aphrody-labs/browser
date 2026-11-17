@@ -12,6 +12,6 @@
     "eval:json": "bun run run.ts --json"
   },
   "devDependencies": {
-    "bun-types": "^1.3.12"
+    "@types/bun": "^1.4.4"
   }
 }

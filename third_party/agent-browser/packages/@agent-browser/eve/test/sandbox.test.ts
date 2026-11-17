@@ -1,5 +1,4 @@
-import assert from "node:assert/strict";
-import test from "node:test";
+import { expect, test } from "bun:test";
 
 import {
   agentBrowserRevalidationKey,
@@ -9,19 +8,16 @@ import {
 } from "../dist/sandbox/sandbox.js";
 
 test("builds Eve revalidation key from install options", () => {
-  assert.equal(
-    agentBrowserRevalidationKey({ installSpec: "agent-browser@1.2.3" }),
+  expect(agentBrowserRevalidationKey({ installSpec: "agent-browser@1.2.3" })).toBe(
     "agent-browser:bootstrap-4:agent-browser@1.2.3:browser:system-deps",
   );
-  assert.equal(
-    agentBrowserRevalidationKey({ installSpec: "agent-browser@1.2.3", installSystemDependencies: false }),
+  expect(agentBrowserRevalidationKey({ installSpec: "agent-browser@1.2.3", installSystemDependencies: false })).toBe(
     "agent-browser:bootstrap-4:agent-browser@1.2.3:browser:no-system-deps",
   );
 });
 
 test("builds Eve shell command", () => {
-  assert.equal(
-    buildAgentBrowserCommand(["open", "https://example.com"], { session: "s1" }),
+  expect(buildAgentBrowserCommand(["open", "https://example.com"], { session: "s1" })).toBe(
     "agent-browser --session s1 open https://example.com --json",
   );
 });
@@ -37,16 +33,16 @@ test("installs agent-browser in an Eve sandbox", async () => {
 
   await installAgentBrowser(sandbox, { installSpec: "agent-browser@1.2.3" });
 
-  assert.equal(commands.length, 3);
-  assert.match(commands[0], /^if command -v apt-get/);
-  assert.match(commands[0], /libglib2\.0-0t64/);
-  assert.match(commands[0], /libasound2t64/);
-  assert.match(commands[0], /libnss3-tools/);
-  assert.match(commands[0], /sudo ldconfig; elif command -v dnf/);
-  assert.match(commands[0], /sudo ldconfig; else echo/);
-  assert.match(commands[0], /sudo dnf install -y --skip-broken -- glib2 nss nss-tools/);
-  assert.equal(commands[1], "npm install -g agent-browser@1.2.3");
-  assert.equal(commands[2], "agent-browser install");
+  expect(commands.length).toBe(3);
+  expect(commands[0]).toMatch(/^if command -v apt-get/);
+  expect(commands[0]).toMatch(/libglib2\.0-0t64/);
+  expect(commands[0]).toMatch(/libasound2t64/);
+  expect(commands[0]).toMatch(/libnss3-tools/);
+  expect(commands[0]).toMatch(/sudo ldconfig; elif command -v dnf/);
+  expect(commands[0]).toMatch(/sudo ldconfig; else echo/);
+  expect(commands[0]).toMatch(/sudo dnf install -y --skip-broken -- glib2 nss nss-tools/);
+  expect(commands[1]).toBe("npm install -g agent-browser@1.2.3");
+  expect(commands[2]).toBe("agent-browser install");
 });
 
 test("skips Eve system dependencies when explicitly disabled", async () => {
@@ -63,7 +59,7 @@ test("skips Eve system dependencies when explicitly disabled", async () => {
     installSystemDependencies: false,
   });
 
-  assert.deepEqual(commands, ["npm install -g agent-browser@1.2.3", "agent-browser install"]);
+  expect(commands).toStrictEqual(["npm install -g agent-browser@1.2.3", "agent-browser install"]);
 });
 
 test("runs agent-browser through ctx.getSandbox", async () => {
@@ -81,8 +77,8 @@ test("runs agent-browser through ctx.getSandbox", async () => {
 
   const result = await runAgentBrowser(ctx, ["open", "https://example.com"]);
 
-  assert.deepEqual(result.json, { ok: true });
-  assert.equal(commands[0], "agent-browser --session eve-default open https://example.com --json");
+  expect(result.json).toStrictEqual({ ok: true });
+  expect(commands[0]).toBe("agent-browser --session eve-default open https://example.com --json");
 });
 
 test("accepts Eve promise-like sandbox methods", async () => {
@@ -103,7 +99,7 @@ test("accepts Eve promise-like sandbox methods", async () => {
 
   const result = await runAgentBrowser(ctx, ["snapshot"]);
 
-  assert.deepEqual(result.json, { ok: true });
+  expect(result.json).toStrictEqual({ ok: true });
 });
 
 test("throws when Eve sandbox command fails", async () => {
@@ -117,5 +113,5 @@ test("throws when Eve sandbox command fails", async () => {
     },
   };
 
-  await assert.rejects(() => runAgentBrowser(ctx, ["snapshot"]), /no chrome/);
+  await expect((() => runAgentBrowser(ctx, ["snapshot"]))()).rejects.toThrow(/no chrome/);
 });

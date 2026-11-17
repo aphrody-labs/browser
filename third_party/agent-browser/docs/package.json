@@ -2,18 +2,15 @@
   "name": "docs",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.1.3",
   "scripts": {
-    "dev": "portless agent-browser next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "oxlint",
-    "postinstall": "fumadocs-mdx",
-    "prebuild": "fumadocs-mdx",
-    "type-check": "fumadocs-mdx && tsc-ts --noEmit",
-    "type-check:tsc": "fumadocs-mdx && tsc --noEmit",
-    "test": "node --test tests/docs-baseline.test.mjs tests/baseline-oracle.test.mjs",
-    "test:routes": "node scripts/test-routes.mjs"
+    "dev": "portless agent-browser bun --bun next dev",
+    "build": "bun --bun next build",
+    "start": "bun --bun next start",
+    "postinstall": "bun --bun fumadocs-mdx",
+    "prebuild": "bun --bun fumadocs-mdx",
+    "type-check": "bun --bun fumadocs-mdx && bun check",
+    "test": "bun test tests/docs-baseline.test.ts tests/baseline-oracle.test.ts",
+    "test:routes": "bun scripts/test-routes.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.80",
@@ -47,15 +44,13 @@
   "devDependencies": {
     "@babel/parser": "7.29.2",
     "@tailwindcss/postcss": "^4",
+    "@types/bun": "^1.4.4",
     "@types/mdx": "^2.0.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "esbuild": "0.27.7",
-    "oxlint": "^1.91.0",
     "tailwindcss": "^4",
     "tailwindcss-animate": "^1.0.7",
-    "tsc-ts": "0.1.3",
     "typescript": "^7.0.2"
   }
 }

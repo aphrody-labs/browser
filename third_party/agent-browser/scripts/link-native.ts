@@ -1,6 +1,6 @@
 /**
  * Points package-manager bin entries for agent-browser at the native binary,
- * so later invocations skip the Node.js launcher entirely.
+ * so later invocations skip the launcher entirely.
  *
  * Run by postinstall when install scripts are allowed, and by the launcher on
  * its first invocation when they are not (npm 12, pnpm and bun block
@@ -8,21 +8,21 @@
  * entry is only rewritten when it provably targets this package's launcher.
  */
 
-import {
-  chmodSync,
-  copyFileSync,
-  existsSync,
-  linkSync,
-  lstatSync,
-  readFileSync,
-  realpathSync,
-  renameSync,
-  rmSync,
-  symlinkSync,
-  writeFileSync,
-} from 'fs';
-import { basename, dirname, join, relative, resolve } from 'path';
-import { platform } from 'os';
+// Bun has no API for hard links, symlinks, lstat, realpath, chmod or an atomic rename: the rest of the file I/O is Bun.file/Bun.write.
+// eslint-disable-next-line import/no-nodejs-modules
+import { chmod, link, lstat, realpath, rename, rm, symlink } from 'node:fs/promises';
+import { basename, dirname, join, relative, resolve } from 'node:path';
+import type { NativeTarget } from './native.ts';
+
+const isWindows = process.platform === 'win32';
+
+// A shim is a few lines; anything larger is a real executable that must not be read as text.
+const MAX_SHIM_SIZE = 64 * 1024;
+
+async function readShim(path: string): Promise<string | null> {
+  const file = Bun.file(path);
+  return file.size > MAX_SHIM_SIZE ? null : await file.text();
+}
 
 /**
  * Ensures the binary lives in this package's own bin/ directory and returns
@@ -30,7 +30,7 @@ import { platform } from 'os';
  * npm only removes such links on uninstall, and bun refuses to replace a
  * global bin entry that points into another package.
  */
-export function materializeBinary(packageRoot, binary, target) {
+export async function materializeBinary(packageRoot: string, binary: string, target: NativeTarget): Promise<string> {
   const binDir = join(packageRoot, 'bin');
   if (dirname(resolve(binary)) === resolve(binDir)) return binary;
 
@@ -38,61 +38,67 @@ export function materializeBinary(packageRoot, binary, target) {
   const staged = `${destination}.install-${process.pid}`;
   try {
     try {
-      linkSync(binary, staged);
+      await link(binary, staged);
     } catch {
-      copyFileSync(binary, staged);
+      // Another filesystem or a store that forbids links: copy instead.
+      await Bun.write(staged, Bun.file(binary));
     }
-    if (platform() !== 'win32') chmodSync(staged, 0o755);
-    renameSync(staged, destination);
+    if (!isWindows) await chmod(staged, 0o755);
+    await rename(staged, destination);
   } finally {
-    rmSync(staged, { force: true });
+    await rm(staged, { force: true });
   }
   return destination;
 }
 
 /** Writes `content` to `path` atomically, leaving the original intact on failure. */
-function replaceFile(path, content, options) {
+async function replaceFile(path: string, content: string, mode?: number): Promise<boolean> {
   const staged = `${path}.install-${process.pid}`;
   try {
-    writeFileSync(staged, content, options);
-    renameSync(staged, path);
+    await Bun.write(staged, content);
+    if (mode !== undefined) await chmod(staged, mode);
+    await rename(staged, path);
     return true;
   } catch {
-    rmSync(staged, { force: true });
+    // Read-only install: the original entry stays and keeps running the launcher.
+    await rm(staged, { force: true });
     return false;
   }
 }
 
-function sameFile(a, b) {
+async function sameFile(a: string, b: string): Promise<boolean> {
   try {
-    return realpathSync(a) === realpathSync(b);
+    return (await realpath(a)) === (await realpath(b));
   } catch {
+    // A path that does not resolve is not the same file.
     return false;
   }
 }
 
-function isLauncherSymlink(entry, launcher) {
+async function isLauncherSymlink(entry: string, launcher: string): Promise<boolean> {
   try {
-    return lstatSync(entry).isSymbolicLink() && sameFile(entry, launcher);
+    return (await lstat(entry)).isSymbolicLink() && (await sameFile(entry, launcher));
   } catch {
+    // No such entry.
     return false;
   }
 }
 
 // npm, yarn and bun link bin entries as symlinks on macOS and Linux.
-function relinkSymlink(entry, binary) {
+async function relinkSymlink(entry: string, binary: string): Promise<boolean> {
   const staged = join(dirname(entry), `.${basename(entry)}-${process.pid}`);
   try {
-    symlinkSync(binary, staged);
-    renameSync(staged, entry);
+    await symlink(binary, staged);
+    await rename(staged, entry);
     return true;
   } catch {
-    rmSync(staged, { force: true });
+    // The directory is not writable: the entry keeps running the launcher.
+    await rm(staged, { force: true });
     return false;
   }
 }
 
-function shellQuote(value) {
+function shellQuote(value: string): string {
   return `'${value.replace(/'/g, `'\\''`)}'`;
 }
 
@@ -101,35 +107,39 @@ function shellQuote(value) {
  * `# cmd-shim-target=` comment. The comment is kept so pnpm still recognizes
  * the shim as its own when it updates or removes the package.
  */
-export function pnpmShimPaths(invokedPath) {
+export function pnpmShimPaths(invokedPath: string): string[] {
   const match = invokedPath.match(
-    /^(.*)[\\/]global[\\/][^\\/]+[\\/](?:[^\\/]+[\\/])?node_modules[\\/]agent-browser[\\/]bin[\\/]agent-browser\.js$/,
+    /^(.*)[\\/]global[\\/][^\\/]+[\\/](?:[^\\/]+[\\/])?node_modules[\\/]agent-browser[\\/]bin[\\/]agent-browser\.ts$/
   );
   if (!match) return [];
   return [join(match[1], 'bin', 'agent-browser'), join(match[1], 'agent-browser')];
 }
 
-function relinkPnpmShim(shim, launcher, binary) {
-  let content;
+async function relinkPnpmShim(shim: string, launcher: string, binary: string): Promise<boolean> {
+  let content: string | null;
   try {
-    content = readFileSync(shim, 'utf8');
+    content = await readShim(shim);
   } catch {
+    // Not a pnpm shim location on this install.
     return false;
   }
+  if (content === null) return false;
   const declared = content.match(/^# cmd-shim-target=(.+)$/m)?.[1];
-  if (!declared || !sameFile(declared, launcher)) return false;
+  if (!declared || !(await sameFile(declared, launcher))) return false;
   const marker = `# cmd-shim-target=${declared}`;
-  return replaceFile(shim, `#!/bin/sh\n${marker}\nexec ${shellQuote(binary)} "$@"\n`, { mode: 0o755 });
+  return replaceFile(shim, `#!/bin/sh\n${marker}\nexec ${shellQuote(binary)} "$@"\n`, 0o755);
 }
 
 /** Returns the launcher path an npm Windows shim runs, or null. */
-function windowsShimTarget(shim, shimDir) {
-  let content;
+async function windowsShimTarget(shim: string, shimDir: string): Promise<string | null> {
+  let content: string | null;
   try {
-    content = readFileSync(shim, 'utf8');
+    content = await readShim(shim);
   } catch {
+    // The package manager wrote no shim of this kind.
     return null;
   }
+  if (content === null) return null;
   const patterns = [
     /"%(?:~dp0|dp0%)\\([^"\r\n]+?)"\s+%\*/,
     /"\$basedir[/\\]([^"\r\n]+?)"\s+\$args/,
@@ -142,7 +152,7 @@ function windowsShimTarget(shim, shimDir) {
   return null;
 }
 
-function windowsShimBody(shim, rel) {
+function windowsShimBody(shim: string, rel: string): string {
   const slash = rel.replace(/\\/g, '/');
   const backslash = rel.replace(/\//g, '\\');
   if (shim.endsWith('.cmd')) return `@ECHO off\r\n"%~dp0\\${backslash}" %*\r\n`;
@@ -157,22 +167,38 @@ function windowsShimBody(shim, rel) {
  * the native binary. Only a shim that resolves to this package's launcher is
  * touched, and each is replaced atomically.
  */
-function relinkWindowsShims(packageRoot, linked) {
+async function relinkWindowsShims(packageRoot: string, linked: () => Promise<string>): Promise<boolean> {
   const nodeModules = dirname(packageRoot);
   if (basename(packageRoot) !== 'agent-browser' || basename(nodeModules) !== 'node_modules') return false;
   const prefix = dirname(nodeModules);
-  const launcher = join(packageRoot, 'bin', 'agent-browser.js');
+  const launcher = join(packageRoot, 'bin', 'agent-browser.ts');
 
-  let binary;
+  let binary: string | undefined;
   let changed = false;
   for (const name of ['agent-browser.cmd', 'agent-browser.ps1', 'agent-browser']) {
     const shim = join(prefix, name);
-    const target = windowsShimTarget(shim, prefix);
-    if (!target || !sameFile(target, launcher)) continue;
-    binary ??= linked();
-    changed = replaceFile(shim, windowsShimBody(shim, relative(prefix, binary))) || changed;
+    const target = await windowsShimTarget(shim, prefix);
+    if (!target || !(await sameFile(target, launcher))) continue;
+    binary ??= await linked();
+    changed = (await replaceFile(shim, windowsShimBody(shim, relative(prefix, binary)))) || changed;
   }
   return changed;
+}
+
+export async function realpathOrSelf(path: string): Promise<string> {
+  try {
+    return await realpath(path);
+  } catch {
+    // The path does not exist yet: it stands for itself.
+    return path;
+  }
+}
+
+export interface LinkNativeOptions {
+  packageRoot: string;
+  binary: string;
+  target: NativeTarget;
+  entries?: string[];
 }
 
 /**
@@ -184,42 +210,34 @@ function relinkWindowsShims(packageRoot, linked) {
  * - binary: the native binary found by findNativeBinary
  * - target: the nativeTarget for this host
  * - entries: paths that may be symlinks to the launcher, pnpm shims, or the
- *   launcher .js a pnpm shim runs (e.g. process.argv[1])
+ *   launcher .ts a pnpm shim runs (e.g. Bun.argv[1])
  *
  * Returns true when at least one entry now runs the native binary.
  */
-export function linkNative({ packageRoot, binary, target, entries = [] }) {
-  const launcher = join(packageRoot, 'bin', 'agent-browser.js');
+export async function linkNative({ packageRoot, binary, target, entries = [] }: LinkNativeOptions): Promise<boolean> {
+  const launcher = join(packageRoot, 'bin', 'agent-browser.ts');
   const linked = () => materializeBinary(packageRoot, binary, target);
 
-  if (platform() === 'win32') {
+  if (isWindows) {
     return relinkWindowsShims(packageRoot, linked);
   }
 
   let changed = false;
   for (const entry of entries) {
-    if (isLauncherSymlink(entry, launcher)) {
+    if (await isLauncherSymlink(entry, launcher)) {
       try {
-        changed = relinkSymlink(entry, linked()) || changed;
+        changed = (await relinkSymlink(entry, await linked())) || changed;
       } catch {
         // Read-only or root-owned install: keep using the launcher.
       }
     }
     for (const shim of [entry, ...pnpmShimPaths(entry)]) {
       try {
-        changed = relinkPnpmShim(shim, launcher, realpathSafe(linked())) || changed;
+        changed = (await relinkPnpmShim(shim, launcher, await realpathOrSelf(await linked()))) || changed;
       } catch {
         // Read-only or root-owned install: keep using the launcher.
       }
     }
   }
   return changed;
-}
-
-function realpathSafe(path) {
-  try {
-    return realpathSync(path);
-  } catch {
-    return path;
-  }
 }

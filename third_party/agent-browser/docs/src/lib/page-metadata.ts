@@ -21,9 +21,7 @@ export function pageMetadata(slug: string): Metadata {
       canonical: canonicalUrlFor(href),
       types: { "text/markdown": slug ? `${href}.md` : "/index.md" },
     },
-    ...(isPreviewDeployment()
-      ? { robots: { index: false, follow: false } }
-      : {}),
+    ...(isPreviewDeployment() && { robots: { index: false, follow: false } }),
     openGraph: {
       type: "website",
       locale: "en_US",

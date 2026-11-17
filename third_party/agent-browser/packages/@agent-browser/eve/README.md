@@ -7,7 +7,7 @@ Mount it once and the agent gets 42 namespaced tools for navigation, accessibili
 ## Install
 
 ```bash
-npm install @agent-browser/eve
+bun add @agent-browser/eve
 ```
 
 `eve` is a peer dependency; the extension runs on the eve installed in your app.

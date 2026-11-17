@@ -4,10 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "bench": "tsx bench.ts"
+    "bench": "bun bench.ts"
   },
   "dependencies": {
-    "@vercel/sandbox": "^1.8.0",
-    "tsx": "^4.19.0"
+    "@vercel/sandbox": "^1.8.0"
   }
 }

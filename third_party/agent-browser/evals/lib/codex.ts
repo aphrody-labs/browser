@@ -1,32 +1,15 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
-import { resolve, dirname, join } from "path";
-import { fileURLToPath } from "url";
-import { tmpdir } from "os";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import type { Provider, ProviderOptions, ProviderResponse } from "./types.ts";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const SKILL_PATH = resolve(__dirname, "../../skills/agent-browser/SKILL.md");
+const SKILL = await Bun.file(new URL("../../skills/agent-browser/SKILL.md", import.meta.url)).text();
 
 const AI_GATEWAY_URL = "https://ai-gateway.vercel.sh/v1";
 const DEFAULT_MODEL = "openai/o3";
 
-let cachedSkillContent: string | null = null;
-
-function getSkillContent(): string {
-  if (!cachedSkillContent) {
-    cachedSkillContent = readFileSync(SKILL_PATH, "utf-8");
-  }
-  return cachedSkillContent;
-}
-
 function buildPrompt(userTask: string, context?: string): string {
-  const skill = getSkillContent();
-  const parts = [
-    "You have the following skill installed:\n",
-    "<skill>",
-    skill,
-    "</skill>\n",
-  ];
+  const skill = SKILL;
+  const parts = ["You have the following skill installed:\n", "<skill>", skill, "</skill>\n"];
   if (context) {
     parts.push(context + "\n");
   }
@@ -39,13 +22,9 @@ function buildPrompt(userTask: string, context?: string): string {
 
 let evalHome: string | null = null;
 
-function getEvalHome(model: string): string {
-  if (!evalHome) {
-    const tmpRoot = existsSync("/private/tmp") ? "/private/tmp" : tmpdir();
-    evalHome = join(tmpRoot, `agent-browser-evals-${process.pid}`);
-  }
-  const configDir = join(evalHome, ".codex");
-  const configPath = join(configDir, "config.toml");
+async function getEvalHome(model: string): Promise<string> {
+  evalHome ??= join(tmpdir(), `agent-browser-evals-${process.pid}`);
+  const configPath = join(evalHome, ".codex", "config.toml");
 
   const config = `model = "${model}"
 model_provider = "vercel-ai-gateway"
@@ -57,23 +36,18 @@ env_key = "AI_GATEWAY_API_KEY"
 wire_api = "responses"
 `;
 
-  if (!existsSync(configDir)) {
-    mkdirSync(configDir, { recursive: true });
-  }
-  writeFileSync(configPath, config, "utf-8");
+  await Bun.write(configPath, config);
   return evalHome;
 }
 
-function getCodexEnv(model: string): Record<string, string> {
-  const apiKey = process.env.AI_GATEWAY_API_KEY;
+async function getCodexEnv(model: string): Promise<Record<string, string>> {
+  const apiKey = Bun.env.AI_GATEWAY_API_KEY;
   if (!apiKey) {
-    throw new Error(
-      "AI_GATEWAY_API_KEY is not set. Export it before running evals.",
-    );
+    throw new Error("AI_GATEWAY_API_KEY is not set. Export it before running evals.");
   }
   return {
-    ...(process.env as Record<string, string>),
-    HOME: getEvalHome(model),
+    ...(Bun.env as Record<string, string>),
+    HOME: await getEvalHome(model),
     AI_GATEWAY_API_KEY: apiKey,
   };
 }
@@ -105,30 +79,23 @@ function parseJsonlOutput(raw: string): string {
   return textParts.join("\n\n").trim();
 }
 
-function spawnCodex(
+async function spawnCodex(
   prompt: string,
   model: string,
   timeout: number,
 ): Promise<{ output: string; stderr: string; exitCode: number }> {
   const proc = Bun.spawn(
-    [
-      "codex",
-      "exec",
-      "--dangerously-bypass-approvals-and-sandbox",
-      "--json",
-      "--model",
-      model,
-      "-",
-    ],
+    ["codex", "exec", "--dangerously-bypass-approvals-and-sandbox", "--json", "--model", model, "-"],
     {
       stdin: "pipe",
       stdout: "pipe",
       stderr: "pipe",
-      env: getCodexEnv(model),
+      env: await getCodexEnv(model),
+      windowsHide: true,
     },
   );
-  proc.stdin.write(prompt);
-  proc.stdin.end();
+  await proc.stdin.write(prompt);
+  await proc.stdin.end();
 
   return Promise.race([
     (async () => {
@@ -150,11 +117,7 @@ export const codexProvider: Provider = {
   name: "codex",
   defaultModel: DEFAULT_MODEL,
 
-  async call(
-    userPrompt: string,
-    options: ProviderOptions = {},
-    context?: string,
-  ): Promise<ProviderResponse> {
+  async call(userPrompt: string, options: ProviderOptions = {}, context?: string): Promise<ProviderResponse> {
     const { model = DEFAULT_MODEL, timeout = 120_000 } = options;
     const prompt = buildPrompt(userPrompt, context);
     const start = performance.now();
@@ -181,10 +144,7 @@ export const codexProvider: Provider = {
     }
   },
 
-  async callRaw(
-    prompt: string,
-    options: ProviderOptions = {},
-  ): Promise<ProviderResponse> {
+  async callRaw(prompt: string, options: ProviderOptions = {}): Promise<ProviderResponse> {
     const { model = DEFAULT_MODEL, timeout = 120_000 } = options;
     const start = performance.now();
 

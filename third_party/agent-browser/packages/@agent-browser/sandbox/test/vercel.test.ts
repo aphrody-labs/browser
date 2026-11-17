@@ -1,5 +1,4 @@
-import assert from "node:assert/strict";
-import test from "node:test";
+import { expect, test } from "bun:test";
 
 import {
   CHROMIUM_SYSTEM_DEPS,
@@ -9,10 +8,10 @@ import {
   installAgentBrowserInVercelSandbox,
   runAgentBrowserCommand,
   withAgentBrowserSandbox,
-} from "../dist/vercel.js";
+} from "../src/vercel.ts";
 
 test("default Vercel dependencies include certutil", () => {
-  assert.ok(CHROMIUM_SYSTEM_DEPS.includes("nss-tools"));
+  expect(CHROMIUM_SYSTEM_DEPS.includes("nss-tools")).toBeTruthy();
 });
 
 function commandResult(stdout = "{}", stderr = "", exitCode = 0) {
@@ -28,19 +27,18 @@ function commandResult(stdout = "{}", stderr = "", exitCode = 0) {
 }
 
 test("imports vercel entry without loading a real @vercel/sandbox module", async () => {
-  assert.equal(typeof getSandboxCredentials, "function");
+  expect(typeof getSandboxCredentials).toBe("function");
 });
 
 test("reads explicit Vercel credentials", () => {
-  assert.deepEqual(
+  expect(
     getSandboxCredentials({
       VERCEL_PROJECT_ID: "project",
       VERCEL_TEAM_ID: "team",
       VERCEL_TOKEN: "token",
     }),
-    { projectId: "project", teamId: "team", token: "token" },
-  );
-  assert.deepEqual(getSandboxCredentials({}), {});
+  ).toStrictEqual({ projectId: "project", teamId: "team", token: "token" });
+  expect(getSandboxCredentials({})).toStrictEqual({});
 });
 
 test("runs agent-browser command in a Vercel sandbox", async () => {
@@ -56,10 +54,8 @@ test("runs agent-browser command in a Vercel sandbox", async () => {
     session: "s1",
   });
 
-  assert.deepEqual(result.json, { ok: true });
-  assert.deepEqual(calls, [
-    ["agent-browser", ["--session", "s1", "open", "https://example.com", "--json"]],
-  ]);
+  expect(result.json).toStrictEqual({ ok: true });
+  expect(calls).toStrictEqual([["agent-browser", ["--session", "s1", "open", "https://example.com", "--json"]]]);
 });
 
 test("creates and bootstraps a fresh Vercel sandbox", async () => {
@@ -87,16 +83,13 @@ test("creates and bootstraps a fresh Vercel sandbox", async () => {
     install: { installSpec: "agent-browser@1.2.3", systemDependencies: ["nss"] },
   });
 
-  assert.equal(calls[0][0], "create");
-  assert.deepEqual(calls[1], [
+  expect(calls[0][0]).toBe("create");
+  expect(calls[1]).toStrictEqual([
     "sh",
-    [
-      "-c",
-      "sudo dnf clean all 2>&1 && sudo dnf install -y --skip-broken -- nss 2>&1 && sudo ldconfig 2>&1",
-    ],
+    ["-c", "sudo dnf clean all 2>&1 && sudo dnf install -y --skip-broken -- nss 2>&1 && sudo ldconfig 2>&1"],
   ]);
-  assert.deepEqual(calls[2], ["npm", ["install", "-g", "agent-browser@1.2.3"]]);
-  assert.deepEqual(calls[3], ["agent-browser", ["install"]]);
+  expect(calls[2]).toStrictEqual(["npm", ["install", "-g", "agent-browser@1.2.3"]]);
+  expect(calls[3]).toStrictEqual(["agent-browser", ["install"]]);
 });
 
 test("skips Vercel system dependencies when explicitly disabled", async () => {
@@ -113,7 +106,7 @@ test("skips Vercel system dependencies when explicitly disabled", async () => {
     installSystemDependencies: false,
   });
 
-  assert.deepEqual(calls, [
+  expect(calls).toStrictEqual([
     ["npm", ["install", "-g", "agent-browser@1.2.3"]],
     ["agent-browser", ["install"]],
   ]);
@@ -128,14 +121,13 @@ test("rejects invalid Vercel system dependency names", async () => {
     },
   };
 
-  await assert.rejects(
-    () =>
+  await expect(
+    (() =>
       installAgentBrowserInVercelSandbox(sandbox, {
         systemDependencies: ["nss; touch /tmp/pwned"],
-      }),
-    /Invalid system dependency name/,
-  );
-  assert.deepEqual(calls, []);
+      }))(),
+  ).rejects.toThrow(/Invalid system dependency name/);
+  expect(calls).toStrictEqual([]);
 });
 
 test("stops a fresh Vercel sandbox when bootstrap fails", async () => {
@@ -152,16 +144,19 @@ test("stops a fresh Vercel sandbox when bootstrap fails", async () => {
     },
   };
 
-  await assert.rejects(
-    () =>
+  await expect(
+    (() =>
       createAgentBrowserSandbox({
-        Sandbox: { async create() { return sandbox; } },
+        Sandbox: {
+          async create() {
+            return sandbox;
+          },
+        },
         env: {},
         install: { systemDependencies: [] },
-      }),
-    /install failed/,
-  );
-  assert.equal(stopped, true);
+      }))(),
+  ).rejects.toThrow(/install failed/);
+  expect(stopped).toBe(true);
 });
 
 test("withAgentBrowserSandbox stops the sandbox", async () => {
@@ -179,13 +174,17 @@ test("withAgentBrowserSandbox stops the sandbox", async () => {
   };
 
   const value = await withAgentBrowserSandbox(async () => 42, {
-    Sandbox: { async create() { return sandbox; } },
+    Sandbox: {
+      async create() {
+        return sandbox;
+      },
+    },
     bootstrap: false,
     env: {},
   });
 
-  assert.equal(value, 42);
-  assert.equal(stopped, true);
+  expect(value).toBe(42);
+  expect(stopped).toBe(true);
 });
 
 test("withAgentBrowserSandbox preserves callback failure when stop fails", async () => {
@@ -201,20 +200,23 @@ test("withAgentBrowserSandbox preserves callback failure when stop fails", async
     },
   };
 
-  await assert.rejects(
-    () =>
+  await expect(
+    (() =>
       withAgentBrowserSandbox(
         async () => {
           throw new Error("work failed");
         },
         {
-          Sandbox: { async create() { return sandbox; } },
+          Sandbox: {
+            async create() {
+              return sandbox;
+            },
+          },
           bootstrap: false,
           env: {},
         },
-      ),
-    /work failed/,
-  );
+      ))(),
+  ).rejects.toThrow(/work failed/);
 });
 
 test("withAgentBrowserSandbox surfaces stop failure after success", async () => {
@@ -230,15 +232,18 @@ test("withAgentBrowserSandbox surfaces stop failure after success", async () => 
     },
   };
 
-  await assert.rejects(
-    () =>
+  await expect(
+    (() =>
       withAgentBrowserSandbox(async () => 42, {
-        Sandbox: { async create() { return sandbox; } },
+        Sandbox: {
+          async create() {
+            return sandbox;
+          },
+        },
         bootstrap: false,
         env: {},
-      }),
-    /stop failed/,
-  );
+      }))(),
+  ).rejects.toThrow(/stop failed/);
 });
 
 test("creates a Vercel sandbox snapshot", async () => {
@@ -253,12 +258,16 @@ test("creates a Vercel sandbox snapshot", async () => {
   };
 
   const snapshotId = await createAgentBrowserSnapshot({
-    Sandbox: { async create() { return sandbox; } },
+    Sandbox: {
+      async create() {
+        return sandbox;
+      },
+    },
     env: {},
     install: { systemDependencies: [] },
   });
 
-  assert.equal(snapshotId, "snap_123");
+  expect(snapshotId).toBe("snap_123");
 });
 
 test("createAgentBrowserSnapshot preserves snapshot failure when stop fails", async () => {
@@ -274,13 +283,16 @@ test("createAgentBrowserSnapshot preserves snapshot failure when stop fails", as
     },
   };
 
-  await assert.rejects(
-    () =>
+  await expect(
+    (() =>
       createAgentBrowserSnapshot({
-        Sandbox: { async create() { return sandbox; } },
+        Sandbox: {
+          async create() {
+            return sandbox;
+          },
+        },
         env: {},
         install: { systemDependencies: [] },
-      }),
-    /snapshot failed/,
-  );
+      }))(),
+  ).rejects.toThrow(/snapshot failed/);
 });

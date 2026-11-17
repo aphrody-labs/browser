@@ -240,7 +240,7 @@ export default function Home() {
   const stepsEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getEnvStatus().then(setEnvStatus);
+    void getEnvStatus().then(setEnvStatus);
   }, []);
 
   function clearResults() {

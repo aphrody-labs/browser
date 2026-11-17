@@ -93,7 +93,7 @@ Providers:
 }
 
 async function main(): Promise<void> {
-  const options = parseArgs(process.argv.slice(2));
+  const options = parseArgs(Bun.argv.slice(2));
   const provider = getProvider(options.provider);
   const model = options.model || provider.defaultModel;
 
@@ -150,4 +150,4 @@ async function main(): Promise<void> {
   process.exit(exitCode);
 }
 
-main();
+await main();

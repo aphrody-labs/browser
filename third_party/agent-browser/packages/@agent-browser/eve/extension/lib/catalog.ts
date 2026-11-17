@@ -86,8 +86,8 @@ export function catalogTool<TOutput = unknown>(name: string, options: CatalogToo
       }
       return (options.output ? await options.output(data, ctx) : data) as TOutput;
     },
-    ...(options.deferred ? { deferred: true } : {}),
-    ...(options.toModelOutput ? { toModelOutput: options.toModelOutput } : {}),
+    ...(options.deferred && { deferred: true }),
+    ...(options.toModelOutput && { toModelOutput: options.toModelOutput }),
   });
 }
 

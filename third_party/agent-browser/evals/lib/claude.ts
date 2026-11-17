@@ -1,31 +1,13 @@
-import { readFileSync } from "fs";
-import { resolve, dirname } from "path";
-import { fileURLToPath } from "url";
 import type { Provider, ProviderOptions, ProviderResponse } from "./types.ts";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const SKILL_PATH = resolve(__dirname, "../../skills/agent-browser/SKILL.md");
+const SKILL = await Bun.file(new URL("../../skills/agent-browser/SKILL.md", import.meta.url)).text();
 
 const AI_GATEWAY_URL = "https://ai-gateway.vercel.sh";
 const DEFAULT_MODEL = "anthropic/claude-sonnet-4.6";
 
-let cachedSkillContent: string | null = null;
-
-function getSkillContent(): string {
-  if (!cachedSkillContent) {
-    cachedSkillContent = readFileSync(SKILL_PATH, "utf-8");
-  }
-  return cachedSkillContent;
-}
-
 function buildPrompt(userTask: string, context?: string): string {
-  const skill = getSkillContent();
-  const parts = [
-    "You have the following skill installed:\n",
-    "<skill>",
-    skill,
-    "</skill>\n",
-  ];
+  const skill = SKILL;
+  const parts = ["You have the following skill installed:\n", "<skill>", skill, "</skill>\n"];
   if (context) {
     parts.push(context + "\n");
   }
@@ -37,14 +19,12 @@ function buildPrompt(userTask: string, context?: string): string {
 }
 
 function getGatewayEnv(): Record<string, string> {
-  const apiKey = process.env.AI_GATEWAY_API_KEY;
+  const apiKey = Bun.env.AI_GATEWAY_API_KEY;
   if (!apiKey) {
-    throw new Error(
-      "AI_GATEWAY_API_KEY is not set. Export it before running evals.",
-    );
+    throw new Error("AI_GATEWAY_API_KEY is not set. Export it before running evals.");
   }
   return {
-    ...(process.env as Record<string, string>),
+    ...(Bun.env as Record<string, string>),
     ANTHROPIC_API_KEY: apiKey,
     ANTHROPIC_BASE_URL: AI_GATEWAY_URL,
   };
@@ -55,14 +35,12 @@ function spawnClaude(
   model: string,
   timeout: number,
 ): Promise<{ output: string; stderr: string; exitCode: number }> {
-  const proc = Bun.spawn(
-    ["claude", "-p", "--output-format", "text", "--model", model, prompt],
-    {
-      stdout: "pipe",
-      stderr: "pipe",
-      env: getGatewayEnv(),
-    },
-  );
+  const proc = Bun.spawn(["claude", "-p", "--output-format", "text", "--model", model, prompt], {
+    stdout: "pipe",
+    stderr: "pipe",
+    env: getGatewayEnv(),
+    windowsHide: true,
+  });
 
   return Promise.race([
     (async () => {
@@ -84,11 +62,7 @@ export const claudeProvider: Provider = {
   name: "claude",
   defaultModel: DEFAULT_MODEL,
 
-  async call(
-    userPrompt: string,
-    options: ProviderOptions = {},
-    context?: string,
-  ): Promise<ProviderResponse> {
+  async call(userPrompt: string, options: ProviderOptions = {}, context?: string): Promise<ProviderResponse> {
     const { model = DEFAULT_MODEL, timeout = 60_000 } = options;
     const prompt = buildPrompt(userPrompt, context);
     const start = performance.now();
@@ -113,10 +87,7 @@ export const claudeProvider: Provider = {
     }
   },
 
-  async callRaw(
-    prompt: string,
-    options: ProviderOptions = {},
-  ): Promise<ProviderResponse> {
+  async callRaw(prompt: string, options: ProviderOptions = {}): Promise<ProviderResponse> {
     const { model = DEFAULT_MODEL, timeout = 60_000 } = options;
     const start = performance.now();
 

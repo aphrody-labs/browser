@@ -89,7 +89,7 @@ const checks: [string, () => Promise<Omit<Result, "name">>][] = [
         if (name === "package.json") {
           const scripts = ((await Bun.file(file).json()) as { scripts?: Record<string, string> }).scripts ?? {};
           for (const [key, cmd] of Object.entries(scripts)) {
-            const word = forbidden_script_words.find((w) => new RegExp(`(^|[\\s;&|(])${w}(\\s|$)`).test(cmd));
+            const word = forbidden_script_words.find((w) => new RegExp(`(^|[;&|(]\\s*)${w}(\\s|$)`).test(cmd)); // a command, not an argument such as `--target node`
             if (word) problems.push(`${file}: script "${key}" runs ${word}`);
           }
         }

@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "bun --bun next dev",
+    "build": "bun --bun next build",
+    "start": "bun --bun next start"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
@@ -16,7 +15,6 @@
     "@vercel/sandbox": "^1.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "dotenv": "^17.3.1",
     "geist": "^1.7.0",
     "lucide-react": "^0.577.0",
     "next": "^16.1.6",

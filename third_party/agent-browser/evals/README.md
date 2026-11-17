@@ -7,8 +7,8 @@ Tests whether the thin SKILL.md + CLI-served skills approach works: do agents lo
 - [Bun](https://bun.sh) installed
 - `AI_GATEWAY_API_KEY` set (Vercel AI Gateway key)
 - One or both CLIs installed:
-  - `claude` CLI (`npm i -g @anthropic-ai/claude-code`) for the Claude provider
-  - `codex` CLI (`npm i -g @openai/codex`) for the Codex provider
+  - `claude` CLI (`bun add -g @anthropic-ai/claude-code`) for the Claude provider
+  - `codex` CLI (`bun add -g @openai/codex`) for the Codex provider
 
 The evals route all calls through the Vercel AI Gateway (`https://ai-gateway.vercel.sh`). Set your key before running:
 

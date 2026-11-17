@@ -21,9 +21,9 @@
     "./mcp-tools.json": "./mcp-tools.json"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "prepack": "pnpm run build",
-    "test": "pnpm run build && node --test test/*.test.mjs"
+    "build": "bun build src/index.ts src/mcp.ts src/shared.ts src/vercel.ts src/version.ts --root src --outdir dist --no-bundle --target node --dts",
+    "prepack": "bun run build",
+    "test": "bun test"
   },
   "keywords": [
     "agent-browser",
@@ -54,6 +54,6 @@
     }
   },
   "devDependencies": {
-    "typescript": "7.0.2"
+    "@types/bun": "^1.4.4"
   }
 }

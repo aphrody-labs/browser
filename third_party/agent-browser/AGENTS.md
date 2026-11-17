@@ -4,7 +4,7 @@ Instructions for AI coding agents working with this codebase.
 
 ## Package Manager
 
-This project uses **pnpm**. Always use `pnpm` instead of `npm` or `yarn` for installing dependencies, running scripts, etc. (e.g., `pnpm install`, `pnpm run build`).
+This project uses **Bun** for everything JavaScript and TypeScript: `bun install`, `bun run <script>`, `bun --filter <package> <script>`, `bun test`, `bun check` (type check), `bun lint` and `bun fmt`. Never use `npm`, `pnpm`, `yarn`, `npx`, `node`, `tsx`, `tsc`, `vitest` or `jest`. Repository scripts are Bun TypeScript (`scripts/*.ts`, `bin/agent-browser.ts`).
 
 ## Code Style
 
@@ -35,9 +35,9 @@ When adding or changing any CLI command, flag, behavior, output, environment var
 
 In the `docs/content/docs/` MDX files, always use HTML `<table>` syntax for tables (not markdown pipe tables). This matches the existing convention across the docs site. Page titles and descriptions live in frontmatter; do not duplicate the title as an H1 in the body.
 
-For documentation changes, run `pnpm --filter docs test`, `pnpm --filter docs type-check`, `pnpm --filter docs build`, and `pnpm --filter docs test:routes`. The route suite starts its own production server. Its frozen migration fixtures cover the original public routes, metadata, content, anchors, and API contracts; only update affected fixtures when deliberately changing that contract.
+For documentation changes, run `bun run --filter docs test`, `bun run --filter docs type-check`, `bun run --filter docs build`, and `bun run --filter docs test:routes`. The route suite starts its own production server. Its frozen migration fixtures cover the original public routes, metadata, content, anchors, and API contracts; only update affected fixtures when deliberately changing that contract.
 
-The Vercel docs project uses `docs` as its Root Directory and must enable **Include source files outside of the Root Directory in the Build Step** (`sourceFilesOutsideRootDirectory`). Installation requires the repository's `pnpm-workspace.yaml`, root `pnpm-lock.yaml`, and `patches/`. Keep the docs `packageManager` pin aligned with the root and use the Corepack commands in `docs/vercel.json`; do not create a separate docs lockfile or disable frozen installs.
+The Vercel docs project uses `docs` as its Root Directory and must enable **Include source files outside of the Root Directory in the Build Step** (`sourceFilesOutsideRootDirectory`). Installation requires the repository's root `package.json` (workspaces, `patchedDependencies`, `trustedDependencies`), `bunfig.toml`, root `bun.lock`, and `patches/`. Use the Bun commands in `docs/vercel.json`; do not create a separate docs lockfile or disable frozen installs.
 
 ## Dashboard (packages/dashboard)
 
@@ -52,7 +52,7 @@ To prepare a release:
 
 1. Create a branch (e.g. `prepare-v0.24.0`)
 2. Bump `version` in `package.json`
-3. Run `pnpm version:sync` to update `cli/Cargo.toml`, `cli/Cargo.lock`, and `packages/dashboard/package.json`
+3. Run `bun run version:sync` to update the crate's `Cargo.toml` and `Cargo.lock`, and the `packages/*` manifests
 4. Write the changelog entry in `CHANGELOG.md` at the top, under a new `## <version>` heading, wrapped in `<!-- release:start -->` and `<!-- release:end -->` markers. Remove the `<!-- release:start -->` and `<!-- release:end -->` markers from the previous release entry so only the new release has markers.
 5. Add a matching entry to `docs/content/docs/changelog.mdx` at the top (below the frontmatter)
 6. Open a PR and merge to `main`
@@ -161,10 +161,10 @@ Use this source code when you need to understand how a package works internally,
 To fetch source code for a package or repository you need to understand, run:
 
 ```bash
-npx opensrc <package>           # npm package (e.g., npx opensrc zod)
-npx opensrc pypi:<package>      # Python package (e.g., npx opensrc pypi:requests)
-npx opensrc crates:<package>    # Rust crate (e.g., npx opensrc crates:serde)
-npx opensrc <owner>/<repo>      # GitHub repo (e.g., npx opensrc vercel/ai)
+bunx opensrc <package>           # npm package (e.g., bunx opensrc zod)
+bunx opensrc pypi:<package>      # Python package (e.g., bunx opensrc pypi:requests)
+bunx opensrc crates:<package>    # Rust crate (e.g., bunx opensrc crates:serde)
+bunx opensrc <owner>/<repo>      # GitHub repo (e.g., bunx opensrc vercel/ai)
 ```
 
 <!-- opensrc:end -->

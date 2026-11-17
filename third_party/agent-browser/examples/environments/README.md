@@ -12,8 +12,8 @@ The UI streams progress via Server-Sent Events so you can see each step as it ru
 
 ```bash
 cd examples/environments
-pnpm install
-pnpm dev
+bun install
+bun dev
 ```
 
 For local development, set `VERCEL_TOKEN`, `VERCEL_TEAM_ID`, and `VERCEL_PROJECT_ID` in `.env.local` so the Sandbox SDK can authenticate.
@@ -25,7 +25,7 @@ Without a snapshot, each sandbox run installs system dependencies, agent-browser
 Create a sandbox snapshot by running the helper script once:
 
 ```bash
-npx tsx scripts/create-snapshot.ts
+bun scripts/create-snapshot.ts
 # Output: AGENT_BROWSER_SNAPSHOT_ID=snap_xxxxxxxxxxxx
 ```
 

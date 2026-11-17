@@ -1,0 +1,27 @@
+Name: html5ever
+Short Name: html5ever
+URL: https://github.com/servo/html5ever
+Version: 0.40.1
+Revision: 492f52a02fd07c2321e59ccff90038e26b9c90bc
+Update Mechanism: Manual (tools/import.py html5ever, history replayed linearly)
+License: MIT OR Apache-2.0
+License File: LICENSE-APACHE, LICENSE-MIT
+Security Critical: yes
+Shipped: yes
+
+Description:
+High-performance browser-grade HTML5 parser
+
+Local Modifications:
+The crates (7) live in third_party/html5ever/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/html5ever/ unchanged.
+
+Crates:
+  html5ever 0.40.1 third_party/html5ever/html5ever
+  markup5ever 0.40.1 third_party/html5ever/markup5ever
+  markup5ever_rcdom 0.40.1 third_party/html5ever/markup5ever_rcdom
+  tendril 0.5.1 third_party/html5ever/tendril
+  tendril-bench  third_party/html5ever/tendril-bench
+  web_atoms 0.3.0 third_party/html5ever/web_atoms
+  xml5ever 0.40.1 third_party/html5ever/xml5ever

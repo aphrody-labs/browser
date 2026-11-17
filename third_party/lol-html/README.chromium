@@ -1,0 +1,21 @@
+Name: lol-html
+Short Name: lol-html
+URL: https://github.com/oven-sh/lol-html
+Version: 3.0.1
+Revision: e1a306d32355e264a93ab41e2580f56444971aef
+Update Mechanism: Manual (tools/import.py lol-html, history replayed linearly)
+License: BSD-3-Clause
+License File: N/A (see the crate manifests)
+Security Critical: yes
+Shipped: yes
+
+Description:
+Streaming HTML rewriter/parser with CSS selector-based API
+
+Local Modifications:
+The crates (1) live in third_party/lol-html/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/lol-html/ unchanged.
+
+Crates:
+  lol_html 3.0.1 third_party/lol-html/lol_html

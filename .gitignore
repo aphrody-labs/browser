@@ -2,3 +2,4 @@
 /out
 *.log
 node_modules/
+/third_party/chromium/

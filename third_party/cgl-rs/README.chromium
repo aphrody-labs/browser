@@ -1,0 +1,21 @@
+Name: cgl-rs
+Short Name: cgl-rs
+URL: https://github.com/servo/cgl-rs
+Version: 0.3.3
+Revision: d97cc08f93bfbf5b5f6520cfa0f49ac3fa01e07c
+Update Mechanism: Manual (tools/import.py cgl-rs, history replayed linearly)
+License: MIT / Apache-2.0
+License File: N/A (see the crate manifests)
+Security Critical: yes
+Shipped: yes
+
+Description:
+Rust bindings for CGL on Mac
+
+Local Modifications:
+The crates (1) live in third_party/cgl-rs/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/cgl-rs/ unchanged.
+
+Crates:
+  cgl 0.3.3 third_party/cgl-rs/cgl

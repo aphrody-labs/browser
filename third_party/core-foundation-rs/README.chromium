@@ -1,0 +1,28 @@
+Name: core-foundation-rs
+Short Name: core-foundation-rs
+URL: https://github.com/servo/core-foundation-rs
+Version: 0.27.0
+Revision: 5eb228da0e6268cfafd9f9c49fc3ac2dc7c5d434
+Update Mechanism: Manual (tools/import.py core-foundation-rs, history replayed linearly)
+License: MIT OR Apache-2.0
+License File: LICENSE-APACHE, LICENSE-MIT
+Security Critical: yes
+Shipped: yes
+
+Description:
+Bindings to Cocoa for macOS
+
+Local Modifications:
+The crates (8) live in third_party/core-foundation-rs/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/core-foundation-rs/ unchanged.
+
+Crates:
+  cocoa 0.27.0 third_party/core-foundation-rs/cocoa
+  cocoa-foundation 0.2.1 third_party/core-foundation-rs/cocoa-foundation
+  core-foundation 0.10.1 third_party/core-foundation-rs/core-foundation
+  core-foundation-sys 0.8.7 third_party/core-foundation-rs/core-foundation-sys
+  core-graphics 0.25.0 third_party/core-foundation-rs/core-graphics
+  core-graphics-types 0.2.0 third_party/core-foundation-rs/core-graphics-types
+  core-text 22.0.0 third_party/core-foundation-rs/core-text
+  io-surface 0.16.1 third_party/core-foundation-rs/io-surface

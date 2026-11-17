@@ -1,0 +1,34 @@
+Name: webrender
+Short Name: webrender
+URL: https://github.com/servo/webrender
+Version: 0.1.0
+Revision: e1c924ebad9ffdfe8c8c606aba77eb3f888c396a
+Update Mechanism: Manual (tools/import.py webrender, history replayed linearly)
+License: MIT OR Apache-2.0, MIT/Apache-2.0, MPL-2.0
+License File: LICENSE
+Security Critical: yes
+Shipped: yes
+
+Description:
+A mechanism for serializing and deserializing data into/from byte buffers, for use in WebRender.
+
+Local Modifications:
+The crates (14) live in third_party/webrender/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/webrender/ unchanged.
+
+Crates:
+  compositor 0.1.0 third_party/webrender/compositor
+  compositor-wayland 0.1.0 third_party/webrender/compositor-wayland
+  compositor-windows 0.1.0 third_party/webrender/compositor-windows
+  webrender-examples 0.1.0 third_party/webrender/webrender-examples (not in the workspace)
+  glsl-to-cxx 0.1.0 third_party/webrender/glsl-to-cxx
+  peek-poke 0.3.0 third_party/webrender/peek-poke
+  peek-poke-derive 0.3.0 third_party/webrender/peek-poke-derive
+  swgl 0.1.0 third_party/webrender/swgl
+  webrender 0.62.0 third_party/webrender/webrender
+  webrender_api 0.62.0 third_party/webrender/webrender_api
+  webrender_build 0.0.2 third_party/webrender/webrender_build
+  wr_glyph_rasterizer 0.1.0 third_party/webrender/wr_glyph_rasterizer
+  wr_malloc_size_of 0.0.2 third_party/webrender/wr_malloc_size_of
+  wrench 0.3.0 third_party/webrender/wrench (not in the workspace)

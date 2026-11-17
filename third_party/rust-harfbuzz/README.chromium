@@ -1,0 +1,23 @@
+Name: rust-harfbuzz
+Short Name: rust-harfbuzz
+URL: https://github.com/servo/rust-harfbuzz
+Version: 0.8.0
+Revision: 0d3ac4d874ed81a637c05f90d29ce4024b72c745
+Update Mechanism: Manual (tools/import.py rust-harfbuzz, history replayed linearly)
+License: MIT OR Apache-2.0
+License File: LICENSE-APACHE, LICENSE-MIT
+Security Critical: yes
+Shipped: yes
+
+Description:
+High-level Rust bindings to the HarfBuzz text shaping engine
+
+Local Modifications:
+The crates (3) live in third_party/rust-harfbuzz/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/rust-harfbuzz/ unchanged.
+
+Crates:
+  harfbuzz 0.8.0 third_party/rust-harfbuzz/harfbuzz
+  harfbuzz-sys 0.8.0 third_party/rust-harfbuzz/harfbuzz-sys
+  harfbuzz-traits 0.6.0 third_party/rust-harfbuzz/harfbuzz-traits

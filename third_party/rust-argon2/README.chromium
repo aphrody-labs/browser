@@ -1,0 +1,21 @@
+Name: rust-argon2
+Short Name: rust-argon2
+URL: https://github.com/sru-systems/rust-argon2
+Version: 3.0.0
+Revision: ed81866f163f0c7026aa6fd8388adf37242eb32a
+Update Mechanism: Manual (tools/import.py rust-argon2, history replayed linearly)
+License: MIT/Apache-2.0
+License File: N/A (see the crate manifests)
+Security Critical: yes
+Shipped: yes
+
+Description:
+Rust implementation of the Argon2 password hashing function.
+
+Local Modifications:
+The crates (1) live in third_party/rust-argon2/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/rust-argon2/ unchanged.
+
+Crates:
+  rust-argon2 3.0.0 third_party/rust-argon2/rust-argon2

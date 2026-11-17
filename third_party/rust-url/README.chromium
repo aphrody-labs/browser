@@ -1,0 +1,26 @@
+Name: rust-url
+Short Name: rust-url
+URL: https://github.com/servo/rust-url
+Version: 0.3.2
+Revision: bcf5a2a98986dd5dfb252d3e977d2da380b09fda
+Update Mechanism: Manual (tools/import.py rust-url, history replayed linearly)
+License: MIT OR Apache-2.0
+License File: LICENSE-APACHE, LICENSE-MIT
+Security Critical: yes
+Shipped: yes
+
+Description:
+Processing of data: URL according to WHATWG’s Fetch Standard
+
+Local Modifications:
+The crates (6) live in third_party/rust-url/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/rust-url/ unchanged.
+
+Crates:
+  data-url 0.3.2 third_party/rust-url/data-url
+  form_urlencoded 1.2.2 third_party/rust-url/form_urlencoded
+  idna 1.1.0 third_party/rust-url/idna
+  percent-encoding 2.3.2 third_party/rust-url/percent-encoding
+  url 2.5.8 third_party/rust-url/rust-url-url
+  url_debug_tests 0.0.0 third_party/rust-url/url_debug_tests

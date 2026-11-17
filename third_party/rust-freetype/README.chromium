@@ -1,0 +1,21 @@
+Name: rust-freetype
+Short Name: rust-freetype
+URL: https://github.com/servo/rust-freetype
+Version: 0.8.0
+Revision: cdd3cd616be819f74aa34586022d00ff0a2e6c3c
+Update Mechanism: Manual (tools/import.py rust-freetype, history replayed linearly)
+License: MIT OR Apache-2.0
+License File: N/A (see the crate manifests)
+Security Critical: yes
+Shipped: yes
+
+Description:
+Bindings for FreeType used by Servo.
+
+Local Modifications:
+The crates (1) live in third_party/rust-freetype/<crate>, one directory per package; their manifests are rewritten by
+tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
+tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/rust-freetype/ unchanged.
+
+Crates:
+  freetype 0.8.0 third_party/rust-freetype/freetype

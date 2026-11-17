@@ -1,0 +1,3 @@
+[submodule "bun"]
+	path = third_party/bun
+	url = ../bun

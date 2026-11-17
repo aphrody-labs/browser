@@ -13,4 +13,5 @@ Code that is not written in this repository, on the model of Chromium's `//third
 - A dependency that is only built, never edited, and large (Chromium itself) is not imported: it is a checkout on the build
   host (`CHROMIUM_SRC`, see `build/engines`), listed in `tools/layout.toml` under `external` and ignored by git.
 
-First-party code is in `components/`, the Bun runtime in `bun/`: see `tools/layout.toml`.
+First-party code is in `components/`; the Bun runtime is the submodule `third_party/bun`: see `tools/layout.toml`. A fork that has a
+build system of its own is a submodule (relative URL, one checkout), never an import.

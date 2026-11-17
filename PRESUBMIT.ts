@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // Presubmit, as in Chromium's PRESUBMIT.py: what must hold before a change is pushed. Native Bun tooling only.
 //   bun PRESUBMIT.ts            run every check, print one line each, exit 1 if one failed
-// The docs check needs the Bun fork's docs (BUN_DOCS=<fork>/docs, else ../bun/docs when it exists) and says so when skipped.
+// The docs check needs the Bun fork's docs (BUN_DOCS=<fork>/docs, else third_party/bun/docs when the submodule is initialised, else ../bun/docs) and says so when skipped.
 import { join } from "node:path";
 
 type Result = { name: string; ok: boolean; detail: string };
@@ -40,7 +40,7 @@ const checks: [string, () => Promise<Omit<Result, "name">>][] = [
   [
     "format",
     async () => {
-      const files = (await tracked("*.ts")).filter((f) => !f.startsWith("third_party/") && !f.startsWith("bun/"));
+      const files = (await tracked("*.ts")).filter((f) => !f.startsWith("third_party/"));
       const { out, err, code } = await run(["bun", "fmt", "--check", ...files]);
       return { ok: code === 0, detail: last(out + err) };
     },
@@ -62,13 +62,8 @@ const checks: [string, () => Promise<Omit<Result, "name">>][] = [
   [
     "layout",
     async () => {
-      const legacy = await tracked("src", "upstream");
-      const plan = await run(["bun", "tools/layout.ts", "plan", "."]);
-      const moves = last(plan.out);
-      return {
-        ok: legacy.length === 0 && moves === "0 moves",
-        detail: `${legacy.length} files in src/ or upstream/, ${moves}`,
-      };
+      const { out, code } = await run(["bun", "tools/layout.ts", "."]);
+      return { ok: code === 0, detail: out.trim().split("\n").join("; ") };
     },
   ],
   [
@@ -108,7 +103,12 @@ const checks: [string, () => Promise<Omit<Result, "name">>][] = [
   [
     "docs",
     async () => {
-      const docs = Bun.env.BUN_DOCS ?? join(import.meta.dir, "..", "bun", "docs");
+      const submodule = join(import.meta.dir, "third_party", "bun", "docs");
+      const docs =
+        Bun.env.BUN_DOCS ??
+        ((await Bun.file(join(submodule, "index.mdx")).exists())
+          ? submodule
+          : join(import.meta.dir, "..", "bun", "docs"));
       if (!(await Bun.file(join(docs, "index.mdx")).exists()))
         return {
           ok: !Bun.env.BUN_DOCS, // an explicit BUN_DOCS that points nowhere is an error, a missing fork checkout only a skip

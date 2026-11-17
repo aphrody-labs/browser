@@ -1,3 +1,6 @@
 [submodule "bun"]
 	path = third_party/bun
 	url = ../bun
+[submodule "kitesurf"]
+	path = third_party/kitesurf
+	url = ../kitesurf

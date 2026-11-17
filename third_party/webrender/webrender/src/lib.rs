@@ -196,3 +196,9 @@ pub use glyph_rasterizer;
 
 #[cfg(feature = "sw_compositor")]
 pub use crate::compositor::sw_compositor;
+
+/// Monotonic nanoseconds since the first call: time 0.1's `precise_time_ns`, which time 0.3 no longer has.
+pub(crate) fn precise_time_ns() -> u64 {
+    static START: std::sync::OnceLock<std::time::Instant> = std::sync::OnceLock::new();
+    START.get_or_init(std::time::Instant::now).elapsed().as_nanos() as u64
+}

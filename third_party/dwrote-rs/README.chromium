@@ -3,16 +3,19 @@ Short Name: dwrote-rs
 URL: https://github.com/servo/dwrote-rs
 Version: 0.11.5
 Revision: be9593628212e00b6ef7466de6684547bd56357a
-Update Mechanism: Manual (tools/import.py dwrote-rs, history replayed linearly)
+Update Mechanism: Manual
 License: MPL-2.0
-License File: N/A (see the crate manifests)
+License File: N/A
+License Android Compatible: no
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 Lightweight binding to DirectWrite.
 
 Local Modifications:
+Updated with tools/import.py dwrote-rs (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (1) live in third_party/dwrote-rs/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/dwrote-rs/ unchanged.

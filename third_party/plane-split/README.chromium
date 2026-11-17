@@ -3,16 +3,19 @@ Short Name: plane-split
 URL: https://github.com/servo/plane-split
 Version: 0.18.0
 Revision: cb400581bcbb7c8a491377653d6a0e2945053151
-Update Mechanism: Manual (tools/import.py plane-split, history replayed linearly)
+Update Mechanism: Manual
 License: MPL-2.0
-License File: N/A (see the crate manifests)
+License File: plane-split/LICENSE
+License Android Compatible: no
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 Plane splitting
 
 Local Modifications:
+Updated with tools/import.py plane-split (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (1) live in third_party/plane-split/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/plane-split/ unchanged.

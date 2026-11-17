@@ -3,16 +3,19 @@ Short Name: fontsan
 URL: https://github.com/servo/fontsan
 Version: 0.7.0
 Revision: 04d3e6cc12893731bb916ece3afe3bf93cb8089e
-Update Mechanism: Manual (tools/import.py fontsan, history replayed linearly)
+Update Mechanism: Manual
 License: BSD-3-Clause
-License File: N/A (see the crate manifests)
+License File: fontsan/LICENSE
+License Android Compatible: yes
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 Sanitiser for untrusted font files
 
 Local Modifications:
+Updated with tools/import.py fontsan (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (1) live in third_party/fontsan/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/fontsan/ unchanged.

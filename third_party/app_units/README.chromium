@@ -3,16 +3,19 @@ Short Name: app_units
 URL: https://github.com/servo/app_units
 Version: 0.7.8
 Revision: 2e4e0e0ad8b43bf49a1d3d84e3ca4c55367314a7
-Update Mechanism: Manual (tools/import.py app_units, history replayed linearly)
+Update Mechanism: Manual
 License: MPL-2.0
-License File: N/A (see the crate manifests)
+License File: N/A
+License Android Compatible: no
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 Servo app units type (Au)
 
 Local Modifications:
+Updated with tools/import.py app_units (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (1) live in third_party/app_units/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/app_units/ unchanged.

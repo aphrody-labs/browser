@@ -3,16 +3,19 @@ Short Name: webrender
 URL: https://github.com/servo/webrender
 Version: 0.1.0
 Revision: e1c924ebad9ffdfe8c8c606aba77eb3f888c396a
-Update Mechanism: Manual (tools/import.py webrender, history replayed linearly)
-License: MIT OR Apache-2.0, MIT/Apache-2.0, MPL-2.0
-License File: LICENSE
+Update Mechanism: Manual
+License: MIT, MPL-2.0
+License File: LICENSE, peek-poke-derive/LICENSE-APACHE, peek-poke-derive/LICENSE-MIT, peek-poke/LICENSE-APACHE, peek-poke/LICENSE-MIT, wr_malloc_size_of/LICENSE-APACHE, wr_malloc_size_of/LICENSE-MIT
+License Android Compatible: no
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 A mechanism for serializing and deserializing data into/from byte buffers, for use in WebRender.
 
 Local Modifications:
+Updated with tools/import.py webrender (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (14) live in third_party/webrender/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/webrender/ unchanged.

@@ -3,16 +3,19 @@ Short Name: mozjs
 URL: https://github.com/servo/mozjs
 Version: 153.7.0
 Revision: 37f1c8fc8ebe7ad26cd88fdb9b203a28fe1860da
-Update Mechanism: Manual (tools/import.py mozjs, history replayed linearly)
-License: Apache-2.0 OR MIT, MPL-2.0, Unicode-3.0
-License File: N/A (see the crate manifests)
+Update Mechanism: Manual
+License: MIT, MPL-2.0, Unicode-3.0
+License File: mozjs_icu_collator_data/LICENSE, mozjs_icu_collator/LICENSE, mozjs_icu_collections/LICENSE, mozjs_icu_normalizer/LICENSE, mozjs_utf16_iter/LICENSE-APACHE, mozjs_utf16_iter/LICENSE-MIT, mozjs_utf8_iter/LICENSE-APACHE, mozjs_utf8_iter/LICENSE-MIT
+License Android Compatible: no
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 Rust bindings to the Mozilla SpiderMonkey JavaScript engine.
 
 Local Modifications:
+Updated with tools/import.py mozjs (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (14) live in third_party/mozjs/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/mozjs/ unchanged.

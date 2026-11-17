@@ -3,16 +3,19 @@ Short Name: gleam
 URL: https://github.com/servo/gleam
 Version: 0.16.0
 Revision: ebf9bb015219e2a082be2defef18ba23670b005e
-Update Mechanism: Manual (tools/import.py gleam, history replayed linearly)
-License: MIT OR Apache-2.0
-License File: N/A (see the crate manifests)
+Update Mechanism: Manual
+License: MIT
+License File: gleam/COPYING, gleam/LICENSE-APACHE, gleam/LICENSE-MIT
+License Android Compatible: yes
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 Generated OpenGL bindings and wrapper for Servo.
 
 Local Modifications:
+Updated with tools/import.py gleam (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (1) live in third_party/gleam/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/gleam/ unchanged.

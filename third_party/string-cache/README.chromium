@@ -3,16 +3,19 @@ Short Name: string-cache
 URL: https://github.com/servo/string-cache
 Version: 0.11.0
 Revision: 5f845e2cdf504e76a53d6827a6f6d4bfcced1c93
-Update Mechanism: Manual (tools/import.py string-cache, history replayed linearly)
-License: MIT OR Apache-2.0
-License File: N/A (see the crate manifests)
+Update Mechanism: Manual
+License: MIT
+License File: string_cache_codegen/LICENSE-APACHE, string_cache_codegen/LICENSE-MIT, string_cache/LICENSE-APACHE, string_cache/LICENSE-MIT
+License Android Compatible: yes
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 A string interning library for Rust, developed as part of the Servo project.
 
 Local Modifications:
+Updated with tools/import.py string-cache (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (3) live in third_party/string-cache/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/string-cache/ unchanged.

@@ -3,16 +3,19 @@ Short Name: gaol
 URL: https://github.com/servo/gaol
 Version: 0.2.1
 Revision: 683cb7dc873e06ff19bc3a464fbe027ad9c65003
-Update Mechanism: Manual (tools/import.py gaol, history replayed linearly)
-License: MIT OR Apache-2.0
-License File: N/A (see the crate manifests)
+Update Mechanism: Manual
+License: MIT
+License File: gaol/LICENSE-APACHE, gaol/LICENSE-MIT
+License Android Compatible: yes
 Security Critical: yes
 Shipped: yes
+CPEPrefix: unknown
 
 Description:
 OS-level application sandboxing library.
 
 Local Modifications:
+Updated with tools/import.py gaol (history replayed linearly); how far behind it is: `bun testing/acceptance.ts track`.
 The crates (1) live in third_party/gaol/<crate>, one directory per package; their manifests are rewritten by
 tools/flatten.py (path dependencies, inlined workspace inheritance, one version per crate) and patched by
 tools/fixups.sh and tools/patches/. Everything else of the upstream is in third_party/gaol/ unchanged.

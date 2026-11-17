@@ -101,6 +101,31 @@ const checks: [string, () => Promise<Omit<Result, "name">>][] = [
     },
   ],
   [
+    "readme-chromium",
+    async () => {
+      // Chromium's own metadata validator (depot_tools/metadata) on every README.chromium: no errors. Where depot_tools is:
+      // DEPOT_TOOLS, else paths.depot_tools of the private .local/config.toml; absent, the check says so and passes.
+      const config = (await Bun.file(".local/config.toml").exists())
+        ? (Bun.TOML.parse(await Bun.file(".local/config.toml").text()) as Record<string, any>)
+        : {};
+      const tools: string | undefined = Bun.env.DEPOT_TOOLS ?? config.paths?.depot_tools;
+      const python = Bun.which("python3") ?? Bun.which("python");
+      if (!tools || !python)
+        return { ok: true, detail: `skipped: ${!tools ? "no depot_tools (DEPOT_TOOLS)" : "no python"}` };
+      const code = `import sys, glob\nsys.path.insert(0, sys.argv[1])\nfrom metadata import validate\nbad = 0\nfor f in sorted(glob.glob("third_party/*/README.chromium")):\n    e, w = validate.check_file(f, ".")\n    for x in e:\n        bad += 1\n        print(f + ": " + x.split(chr(10))[0])\nprint(bad, "errors")`;
+      const proc = Bun.spawn([python, "-c", code, tools], { stdout: "pipe", stderr: "pipe", windowsHide: true });
+      const [out, err] = await Promise.all([
+        new Response(proc.stdout).text(),
+        new Response(proc.stderr).text(),
+        proc.exited,
+      ]);
+      return {
+        ok: /^0 errors/m.test(out),
+        detail: out.trim().split("\n").slice(-3).join("; ") || err.trim().split("\n").at(-1) || "no output",
+      };
+    },
+  ],
+  [
     "private-data",
     async () => {
       // Nothing about a machine, an account or a private host is tracked: those facts live in .local/ and .claude.local.md (generated).

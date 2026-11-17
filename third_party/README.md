@@ -15,3 +15,10 @@ Code that is not written in this repository, on the model of Chromium's `//third
 
 First-party code is in `components/`; the Bun runtime is the submodule `third_party/bun`: see `tools/layout.toml`. A fork that has a
 build system of its own is a submodule (relative URL, one checkout), never an import.
+
+History: the first imports are merge commits (they predate the `main` ruleset that requires a linear history); every import since is replayed
+linearly, with no merge commit. The pin and the replay base of each upstream are in `tools/upstreams.lock.json`.
+
+`README.chromium` follows Chromium's metadata format and is checked with Chromium's own validator (`depot_tools/metadata`, by `bun PRESUBMIT.ts`
+where `DEPOT_TOOLS` or the private config points at it). One deviation: `Update Mechanism: Manual` carries no bug link, because Chromium's
+rule wants a crbug.com link and this repository has none; how far each pin is behind is `bun testing/acceptance.ts track`.

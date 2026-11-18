@@ -1,2 +1,0 @@
-bun scripts/sync-version.ts
-git add agent-browser/Cargo.toml agent-browser/Cargo.lock

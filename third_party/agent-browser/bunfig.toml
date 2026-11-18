@@ -1,7 +1,0 @@
-# Package manager settings of this repository. Lint and format rules are the host repository's bunfig.toml.
-[install]
-# Only versions published at least two days ago (pnpm minimumReleaseAge: 2880 minutes).
-minimumReleaseAge = "2d"
-# First-party packages are exempt so @agent-browser/eve can depend on a just-released @agent-browser/sandbox
-# without waiting out the release age.
-minimumReleaseAgeExcludes = ["@agent-browser/sandbox", "eve"]

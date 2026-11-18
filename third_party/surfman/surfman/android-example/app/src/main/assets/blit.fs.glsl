@@ -1,1 +1,0 @@
-../../../../../resources/examples/blit.fs.glsl

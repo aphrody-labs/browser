@@ -1,1 +1,0 @@
-../../../../../resources/examples/quad.vs.glsl

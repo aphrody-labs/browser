@@ -1,1 +1,0 @@
-../../../../../resources/examples/tri.fs.glsl

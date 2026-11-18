@@ -1,5 +1,0 @@
-[install]
-# Only versions published at least two days ago (pnpm minimumReleaseAge: 2880 minutes).
-minimumReleaseAge = "2d"
-# First-party and Vercel Labs packages are exempt so a just-released eve or AI SDK can be installed immediately.
-minimumReleaseAgeExcludes = ["eve", "@ai-sdk/gateway", "@ai-sdk/provider-utils", "ai"]

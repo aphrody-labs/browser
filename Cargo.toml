@@ -1,18 +1,22 @@
-# One Cargo workspace for everything cargo builds here: the imported crates (third_party/<upstream>/<crate>) and the first-party
-# ones (components/<crate>). tools/flatten.py keeps `members` and `[patch.crates-io]` in step with tools/upstreams.lock.json.
-# The Bun runtime (third_party/bun, a submodule of the aphrody-labs fork) is a workspace of its own with its own build
-# (`bun bd`): a crate of ours that needs one of its crates depends on it by path and stays a non-member. The Chromium
-# checkout is a build input (build/engines), not a member.
+# One Cargo workspace for first-party browser component crates (`components/<crate>`).
+# Upstream browser dependencies are pinned via `tools/upstreams.toml` + `tools/upstreams.lock.json`,
+# and heavy engine checkouts remain optional submodules/build inputs rather than checked-in source copies.
 [workspace]
 resolver = "2"
 exclude = ["third_party/bun", "third_party/chromium", "third_party/kitesurf", "third_party/browse", "third_party/mullvad"]
-members = ["third_party/agent-browser/agent-browser", "third_party/app_units/app_units", "third_party/cgl-rs/cgl", "third_party/core-foundation-rs/cocoa", "third_party/core-foundation-rs/cocoa-foundation", "third_party/core-foundation-rs/core-foundation", "third_party/core-foundation-rs/core-foundation-sys", "third_party/core-foundation-rs/core-graphics", "third_party/core-foundation-rs/core-graphics-types", "third_party/core-foundation-rs/core-text", "third_party/core-foundation-rs/io-surface", "third_party/dwrote-rs/dwrote", "third_party/euclid/euclid", "third_party/fontsan/fontsan", "third_party/gaol/gaol", "third_party/gleam/gleam", "third_party/html5ever/html5ever", "third_party/html5ever/markup5ever", "third_party/html5ever/markup5ever_rcdom", "third_party/html5ever/tendril", "third_party/html5ever/tendril-bench", "third_party/html5ever/web_atoms", "third_party/html5ever/xml5ever", "third_party/hyperfine/hyperfine", "third_party/ipc-channel/ipc-channel", "third_party/lol-html/lol_html", "third_party/mozangle/mozangle", "third_party/mozjs/mozjs", "third_party/mozjs/mozjs_collator_glue", "third_party/mozjs/mozjs_icu_collator", "third_party/mozjs/mozjs_icu_collator_data", "third_party/mozjs/mozjs_icu_collections", "third_party/mozjs/mozjs_icu_normalizer", "third_party/mozjs/mozjs_icu_normalizer_data", "third_party/mozjs/mozjs_locale_glue", "third_party/mozjs/mozjs_normalizer_glue", "third_party/mozjs/mozjs_properties_glue", "third_party/mozjs/mozjs_sys", "third_party/mozjs/mozjs_unicode_bidi_ffi", "third_party/mozjs/mozjs_utf16_iter", "third_party/mozjs/mozjs_utf8_iter", "third_party/obscura/obscura-dom", "third_party/obscura/obscura-net", "third_party/obscura/obscura-render", "third_party/obscura/obscura-ssrf", "third_party/plane-split/plane-split", "third_party/rust-argon2/rust-argon2", "third_party/rust-cssparser/cssparser", "third_party/rust-cssparser/cssparser-color", "third_party/rust-cssparser/cssparser-macros", "third_party/rust-fnv/fnv", "third_party/rust-freetype/freetype", "third_party/rust-harfbuzz/harfbuzz", "third_party/rust-harfbuzz/harfbuzz-sys", "third_party/rust-harfbuzz/harfbuzz-traits", "third_party/rust-url/data-url", "third_party/rust-url/form_urlencoded", "third_party/rust-url/idna", "third_party/rust-url/percent-encoding", "third_party/rust-url/rust-url-url", "third_party/rust-url/url_debug_tests", "third_party/servo/malloc_size_of_tests", "third_party/servo/profile_tests", "third_party/servo/script_tests", "third_party/servo/servo", "third_party/servo/servo-allocator", "third_party/servo/servo-background-hang-monitor", "third_party/servo/servo-background-hang-monitor-api", "third_party/servo/servo-base", "third_party/servo/servo-bluetooth", "third_party/servo/servo-bluetooth-traits", "third_party/servo/servo-canvas", "third_party/servo/servo-canvas-traits", "third_party/servo/servo-capi", "third_party/servo/servo-capi-tests", "third_party/servo/servo-config", "third_party/servo/servo-config-macro", "third_party/servo/servo-constellation", "third_party/servo/servo-constellation-traits", "third_party/servo/servo-default-resources", "third_party/servo/servo-deny-public-fields", "third_party/servo/servo-devtools", "third_party/servo/servo-devtools-traits", "third_party/servo/servo-dom-struct", "third_party/servo/servo-embedder-traits", "third_party/servo/servo-fonts", "third_party/servo/servo-fonts-traits", "third_party/servo/servo-geometry", "third_party/servo/servo-hyper-serde", "third_party/servo/servo-jstraceable-derive", "third_party/servo/servo-layout", "third_party/servo/servo-layout-api", "third_party/servo/servo-malloc-size-of", "third_party/servo/servo-media", "third_party/servo/servo-media-audio", "third_party/servo/servo-media-auto", "third_party/servo/servo-media-derive", "third_party/servo/servo-media-dummy", "third_party/servo/servo-media-examples", "third_party/servo/servo-media-gstreamer", "third_party/servo/servo-media-gstreamer-render", "third_party/servo/servo-media-gstreamer-render-android", "third_party/servo/servo-media-gstreamer-render-unix", "third_party/servo/servo-media-ohos", "third_party/servo/servo-media-player", "third_party/servo/servo-media-streams", "third_party/servo/servo-media-thread", "third_party/servo/servo-media-traits", "third_party/servo/servo-media-webrtc", "third_party/servo/servo-metrics", "third_party/servo/servo-net", "third_party/servo/servo-net-traits", "third_party/servo/servo-paint", "third_party/servo/servo-paint-api", "third_party/servo/servo-pixels", "third_party/servo/servo-profile", "third_party/servo/servo-profile-traits", "third_party/servo/servo-script", "third_party/servo/servo-script-bindings", "third_party/servo/servo-script-traits", "third_party/servo/servo-script-webcrypto", "third_party/servo/servo-script-webgpu", "third_party/servo/servo-storage", "third_party/servo/servo-storage-traits", "third_party/servo/servo-svg", "third_party/servo/servo-timers", "third_party/servo/servo-tracing", "third_party/servo/servo-url", "third_party/servo/servo-wakelock", "third_party/servo/servo-webdriver-server", "third_party/servo/servo-webgl", "third_party/servo/servo-webgpu", "third_party/servo/servo-webgpu-traits", "third_party/servo/servo-webvtt", "third_party/servo/servo-webxr", "third_party/servo/servo-webxr-api", "third_party/servo/servo-xpath", "third_party/servo/servoshell", "third_party/servo/style_tests", "third_party/smallbitvec/smallbitvec", "third_party/string-cache/integration_tests", "third_party/string-cache/string_cache", "third_party/string-cache/string_cache_codegen", "third_party/stylo/selectors", "third_party/stylo/servo_arc", "third_party/stylo/stylo", "third_party/stylo/stylo_atoms", "third_party/stylo/stylo_derive", "third_party/stylo/stylo_dom", "third_party/stylo/stylo_malloc_size_of", "third_party/stylo/stylo_static_prefs", "third_party/stylo/stylo_traits", "third_party/stylo/to_shmem", "third_party/stylo/to_shmem_derive", "third_party/surfman/surfman", "third_party/uluru/uluru", "third_party/unicode-bidi/unicode-bidi", "third_party/webrender/compositor", "third_party/webrender/compositor-wayland", "third_party/webrender/compositor-windows", "third_party/webrender/glsl-to-cxx", "third_party/webrender/peek-poke", "third_party/webrender/peek-poke-derive", "third_party/webrender/swgl", "third_party/webrender/webrender", "third_party/webrender/webrender_api", "third_party/webrender/webrender_build", "third_party/webrender/wr_glyph_rasterizer", "third_party/webrender/wr_malloc_size_of", "components/browser-browse", "components/browser-detect", "components/browser-engine", "components/browser-index", "components/browser-views", "components/browser-vpn"]
+members = [
+    "components/browser-browse",
+    "components/browser-detect",
+    "components/browser-engine",
+    "components/browser-index",
+    "components/browser-views",
+    "components/browser-vpn",
+]
 
 [workspace.package]
 version = "0.0.0"
 edition = "2024"
 
-# Tools and libraries (hyperfine, the CLIs): abort on panic, one codegen unit.
 [profile.release]
 lto = "off"
 codegen-units = 1
@@ -20,7 +24,6 @@ debug = "line-tables-only"
 strip = "none"
 panic = "abort"
 
-# The browser binary: Servo and Obscura contain a panic to the page or thread that raised it, so it unwinds.
 [profile.browser]
 inherits = "release"
 panic = "unwind"
@@ -30,179 +33,7 @@ incremental = true
 codegen-units = 16
 debug = "limited"
 panic = "abort"
-# Debuginfo goes into .dwo files next to each object instead of into the rlibs: less disk, full information for gdb/lldb.
 split-debuginfo = "unpacked"
-
-[patch.crates-io]
-agent-browser = {path = "third_party/agent-browser/agent-browser"}
-app_units = {path = "third_party/app_units/app_units"}
-cgl = {path = "third_party/cgl-rs/cgl"}
-cocoa = {path = "third_party/core-foundation-rs/cocoa"}
-cocoa-foundation = {path = "third_party/core-foundation-rs/cocoa-foundation"}
-compositor = {path = "third_party/webrender/compositor"}
-compositor-wayland = {path = "third_party/webrender/compositor-wayland"}
-compositor-windows = {path = "third_party/webrender/compositor-windows"}
-core-foundation = {path = "third_party/core-foundation-rs/core-foundation"}
-core-foundation-sys = {path = "third_party/core-foundation-rs/core-foundation-sys"}
-core-graphics = {path = "third_party/core-foundation-rs/core-graphics"}
-core-graphics-types = {path = "third_party/core-foundation-rs/core-graphics-types"}
-core-text = {path = "third_party/core-foundation-rs/core-text"}
-cssparser = {path = "third_party/rust-cssparser/cssparser"}
-cssparser-color = {path = "third_party/rust-cssparser/cssparser-color"}
-cssparser-macros = {path = "third_party/rust-cssparser/cssparser-macros"}
-data-url = {path = "third_party/rust-url/data-url"}
-dwrote = {path = "third_party/dwrote-rs/dwrote"}
-euclid = {path = "third_party/euclid/euclid"}
-fnv = {path = "third_party/rust-fnv/fnv"}
-fontsan = {path = "third_party/fontsan/fontsan"}
-form_urlencoded = {path = "third_party/rust-url/form_urlencoded"}
-freetype = {path = "third_party/rust-freetype/freetype"}
-gaol = {path = "third_party/gaol/gaol"}
-gleam = {path = "third_party/gleam/gleam"}
-glsl-to-cxx = {path = "third_party/webrender/glsl-to-cxx"}
-harfbuzz = {path = "third_party/rust-harfbuzz/harfbuzz"}
-harfbuzz-sys = {path = "third_party/rust-harfbuzz/harfbuzz-sys"}
-harfbuzz-traits = {path = "third_party/rust-harfbuzz/harfbuzz-traits"}
-html5ever = {path = "third_party/html5ever/html5ever"}
-hyperfine = {path = "third_party/hyperfine/hyperfine"}
-idna = {path = "third_party/rust-url/idna"}
-integration_tests = {path = "third_party/string-cache/integration_tests"}
-io-surface = {path = "third_party/core-foundation-rs/io-surface"}
-ipc-channel = {path = "third_party/ipc-channel/ipc-channel"}
-lol_html = {path = "third_party/lol-html/lol_html"}
-malloc_size_of_tests = {path = "third_party/servo/malloc_size_of_tests"}
-markup5ever = {path = "third_party/html5ever/markup5ever"}
-markup5ever_rcdom = {path = "third_party/html5ever/markup5ever_rcdom"}
-mozangle = {path = "third_party/mozangle/mozangle"}
-mozjs = {path = "third_party/mozjs/mozjs"}
-mozjs_collator_glue = {path = "third_party/mozjs/mozjs_collator_glue"}
-mozjs_icu_collator = {path = "third_party/mozjs/mozjs_icu_collator"}
-mozjs_icu_collator_data = {path = "third_party/mozjs/mozjs_icu_collator_data"}
-mozjs_icu_collections = {path = "third_party/mozjs/mozjs_icu_collections"}
-mozjs_icu_normalizer = {path = "third_party/mozjs/mozjs_icu_normalizer"}
-mozjs_icu_normalizer_data = {path = "third_party/mozjs/mozjs_icu_normalizer_data"}
-mozjs_locale_glue = {path = "third_party/mozjs/mozjs_locale_glue"}
-mozjs_normalizer_glue = {path = "third_party/mozjs/mozjs_normalizer_glue"}
-mozjs_properties_glue = {path = "third_party/mozjs/mozjs_properties_glue"}
-mozjs_sys = {path = "third_party/mozjs/mozjs_sys"}
-mozjs_unicode_bidi_ffi = {path = "third_party/mozjs/mozjs_unicode_bidi_ffi"}
-mozjs_utf16_iter = {path = "third_party/mozjs/mozjs_utf16_iter"}
-mozjs_utf8_iter = {path = "third_party/mozjs/mozjs_utf8_iter"}
-obscura-dom = {path = "third_party/obscura/obscura-dom"}
-obscura-net = {path = "third_party/obscura/obscura-net"}
-obscura-render = {path = "third_party/obscura/obscura-render"}
-obscura-ssrf = {path = "third_party/obscura/obscura-ssrf"}
-peek-poke = {path = "third_party/webrender/peek-poke"}
-peek-poke-derive = {path = "third_party/webrender/peek-poke-derive"}
-percent-encoding = {path = "third_party/rust-url/percent-encoding"}
-plane-split = {path = "third_party/plane-split/plane-split"}
-profile_tests = {path = "third_party/servo/profile_tests"}
-rust-argon2 = {path = "third_party/rust-argon2/rust-argon2"}
-script_tests = {path = "third_party/servo/script_tests"}
-selectors = {path = "third_party/stylo/selectors"}
-servo = {path = "third_party/servo/servo"}
-servo-allocator = {path = "third_party/servo/servo-allocator"}
-servo-background-hang-monitor = {path = "third_party/servo/servo-background-hang-monitor"}
-servo-background-hang-monitor-api = {path = "third_party/servo/servo-background-hang-monitor-api"}
-servo-base = {path = "third_party/servo/servo-base"}
-servo-bluetooth = {path = "third_party/servo/servo-bluetooth"}
-servo-bluetooth-traits = {path = "third_party/servo/servo-bluetooth-traits"}
-servo-canvas = {path = "third_party/servo/servo-canvas"}
-servo-canvas-traits = {path = "third_party/servo/servo-canvas-traits"}
-servo-capi = {path = "third_party/servo/servo-capi"}
-servo-capi-tests = {path = "third_party/servo/servo-capi-tests"}
-servo-config = {path = "third_party/servo/servo-config"}
-servo-config-macro = {path = "third_party/servo/servo-config-macro"}
-servo-constellation = {path = "third_party/servo/servo-constellation"}
-servo-constellation-traits = {path = "third_party/servo/servo-constellation-traits"}
-servo-default-resources = {path = "third_party/servo/servo-default-resources"}
-servo-deny-public-fields = {path = "third_party/servo/servo-deny-public-fields"}
-servo-devtools = {path = "third_party/servo/servo-devtools"}
-servo-devtools-traits = {path = "third_party/servo/servo-devtools-traits"}
-servo-dom-struct = {path = "third_party/servo/servo-dom-struct"}
-servo-embedder-traits = {path = "third_party/servo/servo-embedder-traits"}
-servo-fonts = {path = "third_party/servo/servo-fonts"}
-servo-fonts-traits = {path = "third_party/servo/servo-fonts-traits"}
-servo-geometry = {path = "third_party/servo/servo-geometry"}
-servo-hyper-serde = {path = "third_party/servo/servo-hyper-serde"}
-servo-jstraceable-derive = {path = "third_party/servo/servo-jstraceable-derive"}
-servo-layout = {path = "third_party/servo/servo-layout"}
-servo-layout-api = {path = "third_party/servo/servo-layout-api"}
-servo-malloc-size-of = {path = "third_party/servo/servo-malloc-size-of"}
-servo-media = {path = "third_party/servo/servo-media"}
-servo-media-audio = {path = "third_party/servo/servo-media-audio"}
-servo-media-auto = {path = "third_party/servo/servo-media-auto"}
-servo-media-derive = {path = "third_party/servo/servo-media-derive"}
-servo-media-dummy = {path = "third_party/servo/servo-media-dummy"}
-servo-media-examples = {path = "third_party/servo/servo-media-examples"}
-servo-media-gstreamer = {path = "third_party/servo/servo-media-gstreamer"}
-servo-media-gstreamer-render = {path = "third_party/servo/servo-media-gstreamer-render"}
-servo-media-gstreamer-render-android = {path = "third_party/servo/servo-media-gstreamer-render-android"}
-servo-media-gstreamer-render-unix = {path = "third_party/servo/servo-media-gstreamer-render-unix"}
-servo-media-ohos = {path = "third_party/servo/servo-media-ohos"}
-servo-media-player = {path = "third_party/servo/servo-media-player"}
-servo-media-streams = {path = "third_party/servo/servo-media-streams"}
-servo-media-thread = {path = "third_party/servo/servo-media-thread"}
-servo-media-traits = {path = "third_party/servo/servo-media-traits"}
-servo-media-webrtc = {path = "third_party/servo/servo-media-webrtc"}
-servo-metrics = {path = "third_party/servo/servo-metrics"}
-servo-net = {path = "third_party/servo/servo-net"}
-servo-net-traits = {path = "third_party/servo/servo-net-traits"}
-servo-paint = {path = "third_party/servo/servo-paint"}
-servo-paint-api = {path = "third_party/servo/servo-paint-api"}
-servo-pixels = {path = "third_party/servo/servo-pixels"}
-servo-profile = {path = "third_party/servo/servo-profile"}
-servo-profile-traits = {path = "third_party/servo/servo-profile-traits"}
-servo-script = {path = "third_party/servo/servo-script"}
-servo-script-bindings = {path = "third_party/servo/servo-script-bindings"}
-servo-script-traits = {path = "third_party/servo/servo-script-traits"}
-servo-script-webcrypto = {path = "third_party/servo/servo-script-webcrypto"}
-servo-script-webgpu = {path = "third_party/servo/servo-script-webgpu"}
-servo-storage = {path = "third_party/servo/servo-storage"}
-servo-storage-traits = {path = "third_party/servo/servo-storage-traits"}
-servo-svg = {path = "third_party/servo/servo-svg"}
-servo-timers = {path = "third_party/servo/servo-timers"}
-servo-tracing = {path = "third_party/servo/servo-tracing"}
-servo-url = {path = "third_party/servo/servo-url"}
-servo-wakelock = {path = "third_party/servo/servo-wakelock"}
-servo-webdriver-server = {path = "third_party/servo/servo-webdriver-server"}
-servo-webgl = {path = "third_party/servo/servo-webgl"}
-servo-webgpu = {path = "third_party/servo/servo-webgpu"}
-servo-webgpu-traits = {path = "third_party/servo/servo-webgpu-traits"}
-servo-webvtt = {path = "third_party/servo/servo-webvtt"}
-servo-webxr = {path = "third_party/servo/servo-webxr"}
-servo-webxr-api = {path = "third_party/servo/servo-webxr-api"}
-servo-xpath = {path = "third_party/servo/servo-xpath"}
-servo_arc = {path = "third_party/stylo/servo_arc"}
-servoshell = {path = "third_party/servo/servoshell"}
-smallbitvec = {path = "third_party/smallbitvec/smallbitvec"}
-string_cache = {path = "third_party/string-cache/string_cache"}
-string_cache_codegen = {path = "third_party/string-cache/string_cache_codegen"}
-style_tests = {path = "third_party/servo/style_tests"}
-stylo = {path = "third_party/stylo/stylo"}
-stylo_atoms = {path = "third_party/stylo/stylo_atoms"}
-stylo_derive = {path = "third_party/stylo/stylo_derive"}
-stylo_dom = {path = "third_party/stylo/stylo_dom"}
-stylo_malloc_size_of = {path = "third_party/stylo/stylo_malloc_size_of"}
-stylo_static_prefs = {path = "third_party/stylo/stylo_static_prefs"}
-stylo_traits = {path = "third_party/stylo/stylo_traits"}
-surfman = {path = "third_party/surfman/surfman"}
-swgl = {path = "third_party/webrender/swgl"}
-tendril = {path = "third_party/html5ever/tendril"}
-tendril-bench = {path = "third_party/html5ever/tendril-bench"}
-to_shmem = {path = "third_party/stylo/to_shmem"}
-to_shmem_derive = {path = "third_party/stylo/to_shmem_derive"}
-uluru = {path = "third_party/uluru/uluru"}
-unicode-bidi = {path = "third_party/unicode-bidi/unicode-bidi"}
-url = {path = "third_party/rust-url/rust-url-url"}
-url_debug_tests = {path = "third_party/rust-url/url_debug_tests"}
-web_atoms = {path = "third_party/html5ever/web_atoms"}
-webrender = {path = "third_party/webrender/webrender"}
-webrender_api = {path = "third_party/webrender/webrender_api"}
-webrender_build = {path = "third_party/webrender/webrender_build"}
-wr_glyph_rasterizer = {path = "third_party/webrender/wr_glyph_rasterizer"}
-wr_malloc_size_of = {path = "third_party/webrender/wr_malloc_size_of"}
-xml5ever = {path = "third_party/html5ever/xml5ever"}
 
 [profile.dev.build-override]
 codegen-units = 16

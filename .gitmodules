@@ -6,7 +6,7 @@
 	url = ../kitesurf
 [submodule "browse"]
 	path = third_party/browse
-	url = ../anomalyco-browse
+	url = ../browse
 [submodule "mullvad"]
 	path = third_party/mullvad
 	url = ../mullvadvpn-app

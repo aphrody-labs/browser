@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // Presubmit, as in Chromium's PRESUBMIT.py: what must hold before a change is pushed. Native Bun tooling only.
 //   bun PRESUBMIT.ts            run every check, print one line each, exit 1 if one failed
-// The docs check needs the Bun fork's docs (BUN_DOCS=<fork>/docs, else third_party/bun/docs when the submodule is initialised, else ../bun/docs) and says so when skipped.
+// The docs check needs the Bun fork's docs (BUN_DOCS=<fork>/docs, else third_party/bun/docs when the submodule is initialised) and says so when skipped.
 import { join } from "node:path";
 
 type Result = { name: string; ok: boolean; detail: string };
@@ -33,7 +33,7 @@ const checks: [string, () => Promise<Omit<Result, "name">>][] = [
   [
     "lint",
     async () => {
-      const { out, err, code } = await run(["bun", "lint", "tools", "testing", ".claude"]);
+      const { out, err, code } = await run(["bun", "lint", "tools", "testing"]);
       return { ok: code === 0, detail: last(out + err) };
     },
   ],

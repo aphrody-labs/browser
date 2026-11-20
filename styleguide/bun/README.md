@@ -3,7 +3,7 @@
 Every JavaScript and TypeScript file of this repository that is ours (`tools/`, `testing/`, `.claude/`, the root
 `package.json`, and our fork `third_party/agent-browser`; the list is `[javascript] first_party` in
 [tools/layout.toml](../../tools/layout.toml)) runs on the Aphrody Bun runtime and uses its own APIs. Vendored trees
-(`third_party/*`, including the `third_party/bun` submodule) keep their bytes.
+(pinned upstreams and forks, including the Bun fork) keep their bytes.
 
 **The rule:** a Bun API before a Node.js module, a built-in before an npm package. A `node:` module is used only where Bun has
 no API of its own: `node:path` (path strings), `node:util` (`parseArgs`), `node:os` (`hostname`, `tmpdir`, `loadavg`).

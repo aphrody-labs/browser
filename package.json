@@ -1,6 +1,10 @@
 {
   "name": "@aphrody/browser",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "dependencies": {},
   "devDependencies": {
     "@types/bun": "^1.4.4"

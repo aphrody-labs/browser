@@ -1,5 +1,5 @@
 set dotenv-load
-set windows-shell := ["pwsh", "-NoLogo", "-NoProfile", "-Command"]
+set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command"]
 
 # List browser recipes
 default:

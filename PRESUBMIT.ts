@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // Presubmit, as in Chromium's PRESUBMIT.py: what must hold before a change is pushed. Native Bun tooling only.
 //   bun PRESUBMIT.ts            run every check, print one line each, exit 1 if one failed
-// The docs check needs the Bun fork's docs (BUN_DOCS=<fork>/docs, else third_party/bun/docs when the submodule is initialised) and says so when skipped.
+// The docs check needs the Bun fork's docs (BUN_DOCS=<fork>/docs, else the sibling ../bun/docs checkout of the fork) and says so when skipped.
 import { join } from "node:path";
 
 type Result = { name: string; ok: boolean; detail: string };
@@ -178,12 +178,7 @@ const checks: [string, () => Promise<Omit<Result, "name">>][] = [
   [
     "docs",
     async () => {
-      const submodule = join(import.meta.dir, "third_party", "bun", "docs");
-      const docs =
-        Bun.env.BUN_DOCS ??
-        ((await Bun.file(join(submodule, "index.mdx")).exists())
-          ? submodule
-          : join(import.meta.dir, "..", "bun", "docs"));
+      const docs = Bun.env.BUN_DOCS ?? join(import.meta.dir, "..", "bun", "docs");
       if (!(await Bun.file(join(docs, "index.mdx")).exists()))
         return {
           ok: !Bun.env.BUN_DOCS, // an explicit BUN_DOCS that points nowhere is an error, a missing fork checkout only a skip

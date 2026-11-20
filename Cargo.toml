@@ -1,21 +1,47 @@
-# One Cargo workspace for first-party browser component crates (`components/<crate>`).
-# Upstream browser dependencies are pinned via `tools/upstreams.toml` + `tools/upstreams.lock.json`,
-# and heavy engine checkouts remain optional submodules/build inputs rather than checked-in source copies.
+# One Cargo workspace for the first-party browser crates (components/<crate>). Upstream engines are pinned, never checked in:
+# tools/upstreams.toml + tools/upstreams.lock.json. browser-chromium downloads CEF at build time, so it is a member but not a default member.
 [workspace]
 resolver = "2"
-exclude = ["third_party/bun", "third_party/chromium", "third_party/kitesurf", "third_party/browse", "third_party/mullvad"]
-members = [
+members = ["components/*"]
+default-members = [
     "components/browser-browse",
     "components/browser-detect",
     "components/browser-engine",
+    "components/browser-headless",
     "components/browser-index",
     "components/browser-views",
     "components/browser-vpn",
 ]
 
 [workspace.package]
-version = "0.0.0"
+version = "0.1.0"
 edition = "2024"
+
+[workspace.dependencies]
+browser-browse = { path = "components/browser-browse" }
+browser-detect = { path = "components/browser-detect", default-features = false }
+browser-engine = { path = "components/browser-engine" }
+browser-views = { path = "components/browser-views" }
+browser-vpn = { path = "components/browser-vpn" }
+napi = { version = "3.16.2", default-features = false }
+napi-build = "2.6.0"
+napi-derive = "3.7.1"
+serde = { version = "1.0.229", features = ["derive", "std"] }
+serde_json = { version = "1.0.154", features = ["std"] }
+thiserror = "2"
+url = { version = "2.5.8", features = ["serde"] }
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+unused_must_use = "deny"
+non_ascii_idents = "deny"
+
+[workspace.lints.clippy]
+todo = "deny"
+unimplemented = "deny"
+dbg_macro = "deny"
+correctness = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
 
 [profile.release]
 lto = "off"

@@ -7,8 +7,36 @@
         "@types/bun": "^1.4.4",
       },
     },
+    "apps/chromium-dash": {
+      "name": "@aphrody/browser-chromium-dash",
+      "version": "0.1.0",
+      "dependencies": {
+        "@aphrody/ay-edge-stack": "file:../../../ay/packages/edge-stack",
+        "@aphrody/browser-chromium-releases": "workspace:*",
+      },
+    },
+    "packages/chromium": {
+      "name": "@aphrody/browser-chromium",
+      "version": "0.1.0",
+      "dependencies": {
+        "@aphrody/browser-chromium-releases": "workspace:*",
+      },
+    },
+    "packages/chromium-releases": {
+      "name": "@aphrody/browser-chromium-releases",
+      "version": "0.1.0",
+      "bin": {
+        "chromium-releases": "src/cli.ts",
+      },
+    },
   },
   "packages": {
+    "@aphrody/browser-chromium": ["@aphrody/browser-chromium@workspace:packages/chromium"],
+
+    "@aphrody/browser-chromium-dash": ["@aphrody/browser-chromium-dash@workspace:apps/chromium-dash"],
+
+    "@aphrody/browser-chromium-releases": ["@aphrody/browser-chromium-releases@workspace:packages/chromium-releases"],
+
     "@types/bun": ["@types/bun@1.4.4", "", { "dependencies": { "bun-types": "1.4.4" } }, "sha512-9wkRDXUXK124pEnAutE6n/l18j+i9GC5IAHK8TmX/2nlySETmky0OU6yL5U8pW1AoKh++AN9auDCr647BfurjQ=="],
 
     "@types/node": ["@types/node@26.6.6", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog=="],
@@ -16,5 +44,7 @@
     "bun-types": ["bun-types@1.4.4", "", { "dependencies": { "@types/node": "*", "undici-types": "*" } }, "sha512-yjrJh5oGX7mMPKGd19YXyIjmEuj4G4zNC30bs7PM9Az7NQ3ndF3j6hbeRdvJTRQEhJ/FYQwW0a2moweEi2hMxQ=="],
 
     "undici-types": ["undici-types@8.9.0", "", {}, "sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg=="],
+
+    "@aphrody/browser-chromium-dash/@aphrody/ay-edge-stack": ["@aphrody/ay-edge-stack@file:../ay/packages/edge-stack", {}],
   }
 }

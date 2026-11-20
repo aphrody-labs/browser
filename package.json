@@ -1,0 +1,8 @@
+{
+  "name": "@aphrody/browser",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@types/bun": "^1.4.4"
+  }
+}

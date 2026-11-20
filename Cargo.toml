@@ -1,0 +1,41 @@
+# One Cargo workspace for first-party browser component crates (`components/<crate>`).
+# Upstream browser dependencies are pinned via `tools/upstreams.toml` + `tools/upstreams.lock.json`,
+# and heavy engine checkouts remain optional submodules/build inputs rather than checked-in source copies.
+[workspace]
+resolver = "2"
+exclude = ["third_party/bun", "third_party/chromium", "third_party/kitesurf", "third_party/browse", "third_party/mullvad"]
+members = [
+    "components/browser-browse",
+    "components/browser-detect",
+    "components/browser-engine",
+    "components/browser-index",
+    "components/browser-views",
+    "components/browser-vpn",
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+
+[profile.release]
+lto = "off"
+codegen-units = 1
+debug = "line-tables-only"
+strip = "none"
+panic = "abort"
+
+[profile.browser]
+inherits = "release"
+panic = "unwind"
+
+[profile.dev]
+incremental = true
+codegen-units = 16
+debug = "limited"
+panic = "abort"
+split-debuginfo = "unpacked"
+
+[profile.dev.build-override]
+codegen-units = 16
+split-debuginfo = "unpacked"
+debug = "limited"

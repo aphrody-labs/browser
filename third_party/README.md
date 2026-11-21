@@ -1,9 +1,9 @@
 # third_party
 
-Code that is not written in this repository, on the model of Chromium's `//third_party`.
+Code that is not written in this repository, on the model of Chromium's `//third_party`. No upstream tree is checked in.
 
 - **Forks with a build of their own** (Bun, kitesurf, browse, mullvad): pinned by commit in `tools/layout.toml` [forks]; no submodule, no checkout here.
-- **Upstream pins (`mode = "pin"`)**: All external Rust/C++ upstream dependencies are tracked by live branch/tag SHA in `tools/upstreams.toml` and `tools/upstreams.lock.json` (`crates = {}`) rather than checked in as duplicated vendor trees. `tools/import.py` resolves live revisions without inflating local disk footprint.
-- **External Chromium checkout**: Managed on the build host via `CHROMIUM_SRC` and `DEPS` (ignored by git).
+- **Upstreams** (`tools/upstreams.toml`, all `mode = "pin"`): the pinned head of each is in `tools/upstreams.lock.json` (`crates = {}`) and Cargo fetches it from there.
+- **Chromium checkout**: on the build host (`CHROMIUM_SRC`, revision in `DEPS`), ignored by git.
 
-First-party code lives in `components/` and is checked by `bun tools/layout.ts` and `bun PRESUBMIT.ts`.
+First-party code lives in `components/`; `bun tools/layout.ts` and `bun PRESUBMIT.ts` check the layout.

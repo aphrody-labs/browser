@@ -1,7 +1,7 @@
 # JavaScript and TypeScript: native Bun
 
-Every JavaScript and TypeScript file of this repository that is ours (`tools/`, `testing/`, `.claude/`, the root
-`package.json`, and our fork `third_party/agent-browser`; the list is `[javascript] first_party` in
+Every JavaScript and TypeScript file of this repository that is ours (`tools/`, `testing/` and the root
+`package.json`; the list is `[javascript] first_party` in
 [tools/layout.toml](../../tools/layout.toml)) runs on the Aphrody Bun runtime and uses its own APIs. Vendored trees
 (pinned upstreams and forks, including the Bun fork) keep their bytes.
 
@@ -47,9 +47,3 @@ From the fork's `REVIEW.md` (Bun's own code review rules, `rule/contributing/*` 
 - Tests are hermetic and leave nothing behind: no external hosts (the live ones are opt-in through an environment variable and skipped
   otherwise), temporary directories removed, every assertion able to fail.
 - One source of truth, dead code deleted in the change that kills it, comments only for what the code cannot say.
-
-## Not migrated
-
-`bun n2b` (the fork's rewrite engine) is not in the installed runtime, so the same rules run as the native linter and the presubmit.
-Next.js applications in `third_party/agent-browser/packages` run on the Bun runtime (`bun --bun next`); their source is
-application code, not tooling.
